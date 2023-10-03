@@ -4,7 +4,10 @@
   "description": "Real Time Chat Application",
   "main": "app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-tsc": "tsc -w",
+    "run-watch": "nodemon ./dist/app.js",
+    "dev": "concurrently \"npm:build-tsc\"  \"npm:run-watch\"",
+    "test": "tsc && jest"
   },
   "repository": {
     "type": "git",
@@ -18,6 +21,7 @@
   },
   "homepage": "https://github.com/obaidofj/RealTimeChat_App#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.18.2",
     "socket.io": "^4.7.2",
     "stripe": "^13.8.0"
