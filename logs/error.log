@@ -1,0 +1,4 @@
+{"level":"error","message":"Failed to connect to DB: Error: connect ECONNREFUSED 127.0.0.1:3306","project":"RealTimeChatApp","time":1696605546009,"timestamp":"2023-10-06T15:19:06.106Z"}
+{"level":"error","message":"Failed to connect to DB: Error: connect ECONNREFUSED 127.0.0.1:3306","project":"RealTimeChatApp","time":1696605549263,"timestamp":"2023-10-06T15:19:09.356Z"}
+{"level":"error","message":"Failed to connect to DB: Error: connect ECONNREFUSED 127.0.0.1:3306","project":"RealTimeChatApp","time":1696606574723,"timestamp":"2023-10-06T15:36:14.820Z"}
+{"level":"error","message":"Failed to connect to DB: Error: connect ECONNREFUSED 127.0.0.1:3306","project":"RealTimeChatApp","time":1696606577663,"timestamp":"2023-10-06T15:36:17.756Z"}
