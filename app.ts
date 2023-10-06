@@ -15,9 +15,9 @@ app.use('/', indexRouter);
 app.listen(process.env.APP_PORT, () => {
     winsLogger.log( {level: 'info',
     message: `App is listening on port ${process.env.APP_PORT}`,
-    timestamp: new Date(),}););
+    timestamp: new Date()});;
     
     initDB();
-  });
+});
    
 export default app;
