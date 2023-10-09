@@ -10,6 +10,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
+// app.use('/auth', authRouter);
 app.listen(process.env.APP_PORT, () => {
     winsLogger.log({ level: 'info',
         message: `App is listening on port ${process.env.APP_PORT}`,
