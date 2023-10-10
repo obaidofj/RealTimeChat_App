@@ -1,5 +1,5 @@
 import express from 'express';
-import { connectionFriendshipController } from '../controllers/connectionFriendshipController';
+import { connectionFriendshipController } from '../controllers/connectionFriendship.controller.js';
 const router = express.Router();
 // Route for sending a friend request
 router.post('/send', connectionFriendshipController.sendFriendRequest);

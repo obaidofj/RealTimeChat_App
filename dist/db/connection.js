@@ -1,5 +1,4 @@
 import { DataSource } from "typeorm";
-import winsLogger from "../middleware/logging.js";
 import { Message } from './entities/messege.entity.js';
 import { Attachment } from './entities/attachment.entity.js';
 import { ChatGroup } from './entities/chatGroup.entity.js';
@@ -17,19 +16,10 @@ const connection = new DataSource({
     username: process.env.DB_USER_NAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    entities: [Message, Attachment, ChatGroup, ConnectionFriendship, MuteBlockUser, Notification, Order, Product, PaymentTransaction, User],
-    migrations: ['./**/migration/*.ts'],
-    synchronize: true,
+    entities: [User, Message, Attachment, ChatGroup, ConnectionFriendship, MuteBlockUser, Notification, Order, Product, PaymentTransaction],
+    // migrations: [ ],
     logging: true,
-});
-export const initDB = async () => await connection.initialize().then(() => {
-    winsLogger.log({ level: 'info',
-        message: 'Connected to DB!',
-        timestamp: new Date(), });
-}).catch(err => {
-    winsLogger.error({ level: 'info',
-        message: 'Failed to connect to DB: ' + err,
-        timestamp: new Date(), });
+    synchronize: true,
 });
 export default connection;
 //# sourceMappingURL=connection.js.map

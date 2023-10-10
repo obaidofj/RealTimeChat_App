@@ -19,6 +19,5 @@ async function applyMigration() {
   }
 }
 
-applyMigration().then(() => {
-  console.log('Migration applied successfully.');
-});
+export default applyMigration;
+

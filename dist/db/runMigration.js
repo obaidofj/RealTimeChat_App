@@ -17,7 +17,5 @@ async function applyMigration() {
         // await connection.close ();
     }
 }
-applyMigration().then(() => {
-    console.log('Migration applied successfully.');
-});
+export default applyMigration;
 //# sourceMappingURL=runMigration.js.map

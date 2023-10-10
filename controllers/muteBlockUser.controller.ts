@@ -17,14 +17,14 @@ export const muteBlockUserController = {
       }
 
       // Check if the user is already muted
-      const existingMute = await UserMuteBlock.findOne({ user, targetUser, mute: true });
+      const existingMute = await MuteBlockUser.findOne({ user, targetUser, mute: true });
 
       if (existingMute) {
         return res.status(400).json({ message: 'User is already muted' });
       }
 
       // Create a new mute record
-      const mute = await UserMuteBlock.create({
+      const mute = await MuteBlockUser.create({
         user,
         targetUser,
         mute: true,
@@ -51,7 +51,7 @@ export const muteBlockUserController = {
       }
 
       // Check if the user is currently muted
-      const existingMute = await UserMuteBlock.findOne({ user, targetUser, mute: true });
+      const existingMute = await MuteBlockUser.findOne({ user, targetUser, mute: true });
 
       if (!existingMute) {
         return res.status(400).json({ message: 'User is not muted' });
@@ -81,14 +81,14 @@ export const muteBlockUserController = {
       }
 
       // Check if the user is already blocked
-      const existingBlock = await UserMuteBlock.findOne({ user, targetUser, block: true });
+      const existingBlock = await MuteBlockUser.findOne({ user, targetUser, block: true });
 
       if (existingBlock) {
         return res.status(400).json({ message: 'User is already blocked' });
       }
 
       // Create a new block record
-      const block = await UserMuteBlock.create({
+      const block = await MuteBlockUser.create({
         user,
         targetUser,
         block: true,
@@ -115,7 +115,7 @@ export const muteBlockUserController = {
       }
 
       // Check if the user is currently blocked
-      const existingBlock = await UserMuteBlock.findOne({ user, targetUser, block: true });
+      const existingBlock = await MuteBlockUser.findOne({ user, targetUser, block: true });
 
       if (!existingBlock) {
         return res.status(400).json({ message: 'User is not blocked' });
@@ -144,8 +144,8 @@ export const muteBlockUserController = {
       }
 
       // Get user's mute and block lists
-      const muteList = await UserMuteBlock.find({ user, mute: true }, { relations: ['targetUser'] });
-      const blockList = await UserMuteBlock.find({ user, block: true }, { relations: ['targetUser'] });
+      const muteList = await MuteBlockUser.find({ user, mute: true }, { relations: ['targetUser'] });
+      const blockList = await MuteBlockUser.find({ user, block: true }, { relations: ['targetUser'] });
 
       return res.status(200).json({ muteList, blockList });
     } catch (error) {

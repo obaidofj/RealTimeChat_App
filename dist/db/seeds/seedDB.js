@@ -5,7 +5,7 @@ async function seedDatabase() {
         const userRepository = connection.getRepository(User);
         // Insert user data
         await userRepository.insert([
-            { username: 'admin', email: 'admin@hostname.com' },
+            { username: 'admin', password: '123456', email: 'admin@hostname.com' },
         ]);
         console.log('Data seeding completed.');
     }
@@ -16,5 +16,5 @@ async function seedDatabase() {
         await connection.close();
     }
 }
-seedDatabase();
+//seedDatabase();
 //# sourceMappingURL=seedDB.js.map
