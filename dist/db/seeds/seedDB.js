@@ -1,11 +1,18 @@
 import connection from '../connection.js';
 import { User } from '../entities/user.entity.js';
-async function seedDatabase() {
+import bcrypt from 'bcrypt';
+import { isSeeded } from '../../utils/generalUtils.js';
+export async function seedDatabase() {
+    if (await isSeeded()) {
+        console.log('Data already seeded.');
+        return; // db is seeded so no need for seed
+    }
     try {
         const userRepository = connection.getRepository(User);
+        const hashedPassword = await bcrypt.hash('123456', 10);
         // Insert user data
         await userRepository.insert([
-            { username: 'admin', password: '123456', email: 'admin@hostname.com' },
+            { username: 'admin', password: `${hashedPassword}`, email: 'admin@hostname.com' },
         ]);
         console.log('Data seeding completed.');
     }
@@ -16,5 +23,5 @@ async function seedDatabase() {
         await connection.close();
     }
 }
-//seedDatabase();
+// seedDatabase();
 //# sourceMappingURL=seedDB.js.map

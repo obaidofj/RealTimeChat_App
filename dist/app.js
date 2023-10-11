@@ -1,5 +1,4 @@
 import './config.js';
-import applyMigration from './db/runMigration.js';
 import express from 'express';
 import dataSource from './db/connection.js';
 import cookieParser from 'cookie-parser';
@@ -33,19 +32,29 @@ app.listen(process.env.APP_PORT, () => {
         timestamp: new Date(), });
     dataSource
         .initialize()
-        .then(() => {
+        .then(async () => {
         winsLogger.log({ level: 'info',
             message: 'Data Source has been initialized!',
             timestamp: new Date(), });
+        const queryRunner = dataSource.createQueryRunner();
+        // try {
+        //   await applyMigration(queryRunner);
+        //   console.log("Migration has been applied successfully.");
+        //   // You can continue with other operations here.
+        // } catch (error) {
+        //   console.error('Error applying migration:', error);
+        //   // Handle errors or perform cleanup here if needed.
+        // } finally {
+        //   // await queryRunner.release();
+        //   // Release the queryRunner when done.
+        // }
+        // await seedDatabase();
     })
         .catch((err) => {
         winsLogger.error({ level: 'info',
             message: 'Error during Data Source initialization: ' + err,
             timestamp: new Date(), });
     });
-});
-applyMigration().then(() => {
-    console.log('Migration applied successfully.');
 });
 export default app;
 //# sourceMappingURL=app.js.map

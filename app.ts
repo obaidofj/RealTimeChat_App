@@ -14,6 +14,8 @@ import orderRouter from './routes/order.routes.js'
 import paymentRouter from './routes/payment.routes.js'
 import productRouter from './routes/product.routes.js'
 import connectionRouter from './routes/connectionFriendship.routes.js'
+import { QueryRunner } from 'typeorm';
+import {seedDatabase} from './db/seeds/seedDB.js'
 
 
 var app = express();
@@ -40,10 +42,23 @@ app.listen(process.env.APP_PORT, () => {
     
 dataSource 
     .initialize() 
-    .then(() => {
+    .then( async () => {
       winsLogger.log(  {level: 'info',
       message: 'Data Source has been initialized!',
-      timestamp: new Date(),});
+      timestamp: new Date(),}); 
+      const queryRunner = dataSource.createQueryRunner()
+      // try {
+      //   await applyMigration(queryRunner);
+      //   console.log("Migration has been applied successfully.");
+      //   // You can continue with other operations here.
+      // } catch (error) {
+      //   console.error('Error applying migration:', error);
+      //   // Handle errors or perform cleanup here if needed.
+      // } finally {
+      //   // await queryRunner.release();
+      //   // Release the queryRunner when done.
+      // }
+      // await seedDatabase();
     })
     .catch((err) => {
       winsLogger.error({level: 'info',
@@ -53,8 +68,6 @@ dataSource
     
   });
 
-  applyMigration().then(() => {
-    console.log('Migration applied successfully.');
-  });
+  
     
 export default app;

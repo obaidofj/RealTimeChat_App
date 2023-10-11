@@ -1,10 +1,11 @@
 import connection from './connection.js';
+import { QueryRunner } from 'typeorm';
 import { StarterMigts1696868409294  } from './migrations/1696868409294-starterMig.js';
 
-async function applyMigration() {
+async function applyMigration(queryRunner: QueryRunner) {
  
-  const queryRunner = connection.createQueryRunner();
-
+//   const queryRunner = new QueryRunner(); connection.createQueryRunner();
+   
   try {
     await queryRunner.startTransaction();
     const migration = new StarterMigts1696868409294(); // Instantiate your migration class
@@ -17,6 +18,7 @@ async function applyMigration() {
     await queryRunner.release();
     // await connection.close ();
   }
+
 }
 
 export default applyMigration;

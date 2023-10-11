@@ -10,6 +10,11 @@ import { Order } from './entities/order.entity.js';
 import { PaymentTransaction } from './entities/paymentTransaction.entity.js'; 
 import { Product } from './entities/product.entity.js'; 
 import { User } from './entities/user.entity.js'; 
+import { Role } from './entities/role.entity.js'; 
+import { Permissions } from './entities/permissions.entity.js'; 
+import { Profile } from './entities/profile.entity.js'; 
+import { Flags } from './entities/flags.entiy.js'; 
+
 
  
     const connection = new DataSource({
@@ -19,8 +24,8 @@ import { User } from './entities/user.entity.js';
       username: process.env.DB_USER_NAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [ User, Message,Attachment,ChatGroup,ConnectionFriendship,MuteBlockUser,Notification,Order,Product,PaymentTransaction], 
-      // migrations: [ ],
+      entities: [ User, Message,Attachment,ChatGroup,ConnectionFriendship,MuteBlockUser,Notification,Order,Product,PaymentTransaction ,Permissions, Profile, Role , Flags], 
+      migrations: [ "db/migrations/*.*" ],
       logging: true,
       synchronize: true,
     });

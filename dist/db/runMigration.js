@@ -1,7 +1,6 @@
-import connection from './connection.js';
 import { StarterMigts1696868409294 } from './migrations/1696868409294-starterMig.js';
-async function applyMigration() {
-    const queryRunner = connection.createQueryRunner();
+async function applyMigration(queryRunner) {
+    //   const queryRunner = new QueryRunner(); connection.createQueryRunner();
     try {
         await queryRunner.startTransaction();
         const migration = new StarterMigts1696868409294(); // Instantiate your migration class
