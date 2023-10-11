@@ -1,6 +1,12 @@
 import { StarterMigts1696868409294 } from './migrations/1696868409294-starterMig.js';
+import { isFlageSet } from '../utils/generalUtils.js';
 async function applyMigration(queryRunner) {
     //   const queryRunner = new QueryRunner(); connection.createQueryRunner();
+    const checkApplied = await isFlageSet('migrationAplied');
+    if (checkApplied || (Array.isArray(checkApplied) && checkApplied.length === 0)) {
+        throw new Error('Migration for Data seeding is already aplied.');
+        return; // migration for seeding is applied so no need for it
+    }
     try {
         await queryRunner.startTransaction();
         const migration = new StarterMigts1696868409294(); // Instantiate your migration class
@@ -9,7 +15,7 @@ async function applyMigration(queryRunner) {
     }
     catch (error) {
         await queryRunner.rollbackTransaction();
-        console.error('Migration failed:', error);
+        throw new Error('Running Migration failed:' + error);
     }
     finally {
         await queryRunner.release();

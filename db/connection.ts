@@ -25,7 +25,7 @@ import { Flags } from './entities/flags.entiy.js';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [ User, Message,Attachment,ChatGroup,ConnectionFriendship,MuteBlockUser,Notification,Order,Product,PaymentTransaction ,Permissions, Profile, Role , Flags], 
-      migrations: [ "db/migrations/*.*" ],
+      migrations: [] ,
       logging: true,
       synchronize: true,
     });

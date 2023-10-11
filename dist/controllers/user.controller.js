@@ -49,11 +49,27 @@ export const userController = {
         }
     },
     // Retrieve user profile
-    async getUserProfile(req, res) {
+    async getUserProfileByID(req, res) {
         try {
-            const userId = req.params.userId;
+            const userId = Number(req.params.userId);
             // Find the user by ID
-            const user = await User.findOne(userId);
+            const user = await User.findBy({ id: userId });
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+            return res.status(200).json({ user });
+        }
+        catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+    },
+    // Retrieve user profile by username
+    async getUserProfileByUserName(req, res) {
+        try {
+            const userName = req.params.userName;
+            // Find the user by ID
+            const user = await User.findBy({ username: userName });
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }

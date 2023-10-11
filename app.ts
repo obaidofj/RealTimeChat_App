@@ -5,7 +5,7 @@ import dataSource from './db/connection.js';
 import cookieParser from 'cookie-parser';
 import winsLogger from './middlewares/logging.js'
 import indexRouter from './routes/index.routes.js'
-import userRouter from './routes/user.routes.js'
+import userRouter from './routes/auth.routes.js'
 import chatGroupRouter from './routes/chatGroup.routes.js'
 import messegeRouter from './routes/message.routes.js'
 import muteBlockRouter from './routes/muteBlockUser.js'
@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(express.json());  
 
 app.use('/', indexRouter);
-app.use('/user', userRouter);
+app.use('/auth', userRouter);
 app.use('/chat', chatGroupRouter);
 app.use('/messege', messegeRouter);
 app.use('/blockmute', muteBlockRouter);
@@ -47,18 +47,21 @@ dataSource
       message: 'Data Source has been initialized!',
       timestamp: new Date(),}); 
       const queryRunner = dataSource.createQueryRunner()
-      // try {
-      //   await applyMigration(queryRunner);
-      //   console.log("Migration has been applied successfully.");
-      //   // You can continue with other operations here.
-      // } catch (error) {
-      //   console.error('Error applying migration:', error);
-      //   // Handle errors or perform cleanup here if needed.
-      // } finally {
-      //   // await queryRunner.release();
-      //   // Release the queryRunner when done.
-      // }
-      // await seedDatabase();
+      try {
+        await applyMigration(queryRunner);
+        console.log("Migration has been applied successfully.");
+        // You can continue with other operations here.
+      } catch (error) {
+        if(error.message=='Migration for Data seeding is already aplied.')
+        console.error(error.message);
+        else
+        console.error(error);
+        // Handle errors or perform cleanup here if needed.
+      } finally {
+        // await queryRunner.release();
+        // Release the queryRunner when done.
+      }
+     
     })
     .catch((err) => {
       winsLogger.error({level: 'info',

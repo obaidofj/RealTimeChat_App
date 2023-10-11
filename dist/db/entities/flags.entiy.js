@@ -10,7 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 let Flags = class Flags extends BaseEntity {
     id;
-    seeded;
+    flag;
+    value;
     createdAt;
 };
 __decorate([
@@ -19,8 +20,12 @@ __decorate([
 ], Flags.prototype, "id", void 0);
 __decorate([
     Column(),
-    __metadata("design:type", Boolean)
-], Flags.prototype, "seeded", void 0);
+    __metadata("design:type", String)
+], Flags.prototype, "flag", void 0);
+__decorate([
+    Column(),
+    __metadata("design:type", String)
+], Flags.prototype, "value", void 0);
 __decorate([
     CreateDateColumn({ type: 'timestamp' }),
     __metadata("design:type", Date)

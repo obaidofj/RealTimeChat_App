@@ -8,7 +8,10 @@ export class Flags extends BaseEntity {
   id: number;
 
   @Column()
-  seeded : boolean;
+  flag : string;
+
+  @Column()
+  value : string;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
