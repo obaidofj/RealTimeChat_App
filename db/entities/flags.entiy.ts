@@ -8,7 +8,7 @@ export class Flags extends BaseEntity {
   id: number;
 
   @Column()
-  flag : string;
+  flag : string; 
 
   @Column()
   value : string;

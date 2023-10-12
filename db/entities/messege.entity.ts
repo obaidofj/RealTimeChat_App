@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn } from 'typeorm';
 
 import { Attachment } from './attachment.entity.js';
 
@@ -11,21 +11,24 @@ export class Message extends BaseEntity {
   id: number;
 
   @Column()
-  content: string;
+  text: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
-  @ManyToOne(() => User, (user) => user.sentMessages, { eager: true }) 
+  @ManyToOne(() => User, (user) => user.getSentMessages)
+  @JoinColumn({ name: 'senderid' }) 
   sender: User;
 
-  @ManyToOne(() => User, (user) => user.receivedMessages, { eager: true  })
+  @Column({ name: 'senderid' }) 
+  senderid: number; 
+
+  @ManyToOne(() => User, (user) => user.getReceivedMessages)
+  @JoinColumn({ name: 'receiverid' }) 
   receiver: User;
+ 
+  @Column({ name: 'receiverid' }) 
+  receiverid: number; 
 
-  attachments: Attachment[]; 
-
-  // @JoinTable()
-  // permissions: Permissions[];
-  // user: User[];
-
+  attachments: Attachment[];
 }

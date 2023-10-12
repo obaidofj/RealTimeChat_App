@@ -19,6 +19,7 @@ export const userController = {
                 password: hashedPassword,
                 email,
             });
+            await user.save();
             return res.status(201).json({ message: 'User registered successfully', user });
         }
         catch (error) {

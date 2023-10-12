@@ -7,14 +7,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn } from 'typeorm';
 import { User } from './user.entity.js';
 let Message = class Message extends BaseEntity {
     id;
-    content;
+    text;
     createdAt;
     sender;
+    senderid;
     receiver;
+    receiverid;
     attachments;
 };
 __decorate([
@@ -24,19 +26,29 @@ __decorate([
 __decorate([
     Column(),
     __metadata("design:type", String)
-], Message.prototype, "content", void 0);
+], Message.prototype, "text", void 0);
 __decorate([
     CreateDateColumn({ type: 'timestamp' }),
     __metadata("design:type", Date)
 ], Message.prototype, "createdAt", void 0);
 __decorate([
-    ManyToOne(() => User, (user) => user.sentMessages, { eager: true }),
+    ManyToOne(() => User, (user) => user.getSentMessages),
+    JoinColumn({ name: 'senderid' }),
     __metadata("design:type", User)
 ], Message.prototype, "sender", void 0);
 __decorate([
-    ManyToOne(() => User, (user) => user.receivedMessages, { eager: true }),
+    Column({ name: 'senderid' }),
+    __metadata("design:type", Number)
+], Message.prototype, "senderid", void 0);
+__decorate([
+    ManyToOne(() => User, (user) => user.getReceivedMessages),
+    JoinColumn({ name: 'receiverid' }),
     __metadata("design:type", User)
 ], Message.prototype, "receiver", void 0);
+__decorate([
+    Column({ name: 'receiverid' }),
+    __metadata("design:type", Number)
+], Message.prototype, "receiverid", void 0);
 Message = __decorate([
     Entity()
 ], Message);

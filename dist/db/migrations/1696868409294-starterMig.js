@@ -6,9 +6,14 @@ export class StarterMigts1696868409294 {
             await queryRunner.query(`
           INSERT INTO user ( username, password , email) VALUES ('admin', '${hashedPassword}','admin@hostname.com')
         `);
-            await queryRunner.query(`
-          Delete from flags where flag='migrationAplied')
-        `);
+            const count = await queryRunner.query(`
+    SELECT COUNT(*) FROM flags WHERE flag = 'migrationAplied'
+  `);
+            // if (count[0].count !== 0) {
+            //   await queryRunner.query(`
+            //     Delete from flags where flag='migrationAplied')
+            //   `);
+            // }
             await queryRunner.query(`
           INSERT INTO flags ( flag, value ) VALUES ('migrationAplied', true)
         `);
@@ -24,6 +29,9 @@ export class StarterMigts1696868409294 {
         await queryRunner.query(`
         Delete from user where username='admin'
       `);
+        await queryRunner.query(`
+      Delete from flags where flag='migrationAplied')
+    `);
     }
 }
 //# sourceMappingURL=1696868409294-starterMig.js.map
