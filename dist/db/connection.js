@@ -1,5 +1,15 @@
 import { DataSource } from "typeorm";
 import winsLogger from "../middleware/logging.js";
+import { Message } from './entities/messege.entity.js';
+import { Attachment } from './entities/attachment.entity.js';
+import { ChatGroup } from './entities/chatGroup.entity.js';
+import { ConnectionFriendship } from './entities/connectionFriendship.entity.js';
+import { MuteBlockUser } from './entities/muteBlockUser.entity.js';
+import { Notification } from './entities/notification.entity.js';
+import { Order } from './entities/order.entity.js';
+import { PaymentTransaction } from './entities/paymentTransaction.entity.js';
+import { Product } from './entities/product.entity.js';
+import { User } from './entities/user.entity.js';
 const connection = new DataSource({
     type: 'mysql',
     host: process.env.DB_HOST,
@@ -7,7 +17,7 @@ const connection = new DataSource({
     username: process.env.DB_USER_NAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    entities: ['/entities/*.js'],
+    entities: [Message, Attachment, ChatGroup, ConnectionFriendship, MuteBlockUser, Notification, Order, Product, PaymentTransaction, User],
     migrations: ['./**/migration/*.ts'],
     synchronize: true,
     logging: true,
