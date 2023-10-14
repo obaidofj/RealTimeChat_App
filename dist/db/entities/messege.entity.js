@@ -9,9 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn } from 'typeorm';
 import { User } from './user.entity.js';
+import { MessegeType } from '../../types/messege.types.js';
 let Message = class Message extends BaseEntity {
     id;
-    text;
+    content;
+    type;
     createdAt;
     sender;
     senderid;
@@ -26,7 +28,15 @@ __decorate([
 __decorate([
     Column(),
     __metadata("design:type", String)
-], Message.prototype, "text", void 0);
+], Message.prototype, "content", void 0);
+__decorate([
+    Column({
+        type: "enum",
+        enum: MessegeType,
+        default: MessegeType.MESSEGE,
+    }),
+    __metadata("design:type", String)
+], Message.prototype, "type", void 0);
 __decorate([
     CreateDateColumn({ type: 'timestamp' }),
     __metadata("design:type", Date)

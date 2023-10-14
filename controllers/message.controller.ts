@@ -1,12 +1,19 @@
 import { Request, Response } from 'express';
 import { Message } from '../db/entities/messege.entity.js';
 import { User } from '../db/entities/user.entity.js';
+import { MessegeType } from '../types/messege.types.js';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import upload from '../middlewares/multerConfig.js';
+
 
 export const messageController = {
   // Send a message
   async sendMessage(req: Request, res: Response) {
+
+
     try {
-      const { senderId, receiverId, text ,attachments } = req.body;
+      let { senderId, receiverId, content ,type } = req.body;
 
       const senderIdNum=parseInt(senderId);
       // Check if sender and receiver users exist
@@ -17,17 +24,31 @@ export const messageController = {
         return res.status(404).json({ message: 'Sender or receiver not found' });
       }
 
+      // if(req.file)
+      
+      if(type==MessegeType.ATTACHMENT)
+      content=req.file.destination + req.file.filename;
+
+      // res.send({
+      //   message: 'File Uploaded Successfully!',
+      //   file: fileURL
+      // });
+
       // Create a new message
+      if (req.file) {
       const message = await Message.create({
         sender,
         receiver,
-        text
+        content,
+        type:MessegeType[type]
       });
-      
-      message.attachments=message;
+       
       await message.save()
 
       return res.status(201).json({ info: 'Message sent successfully', message });
+    }
+    else
+     return res.status(400).json({ info: 'there was error in uploading fiel' });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal server error' });

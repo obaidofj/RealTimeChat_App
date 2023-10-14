@@ -3,6 +3,7 @@ import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDa
 import { Attachment } from './attachment.entity.js';
 
 import { User } from './user.entity.js'; 
+import { MessegeType } from '../../types/messege.types.js';
 
 
 @Entity()
@@ -11,7 +12,14 @@ export class Message extends BaseEntity {
   id: number;
 
   @Column()
-  text: string;
+  content: string;
+
+  @Column({
+    type: "enum",
+    enum: MessegeType,
+    default: MessegeType.MESSEGE,
+  })
+  type: MessegeType;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

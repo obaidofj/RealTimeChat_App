@@ -31,7 +31,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], MuteBlockUser.prototype, "isBlock", void 0);
 __decorate([
-    ManyToOne(() => User, (user) => user.getInitiatedMuteBlocks),
+    ManyToOne(() => User, (user) => user.initiatedMuteBlocks),
     JoinColumn({ name: 'initiatoruserid' }),
     __metadata("design:type", Object)
 ], MuteBlockUser.prototype, "initiatoruser", void 0);
@@ -40,7 +40,7 @@ __decorate([
     __metadata("design:type", Number)
 ], MuteBlockUser.prototype, "initiatoruser", void 0);
 __decorate([
-    ManyToOne(() => User, (user) => user.getReceivedMuteBlocks),
+    ManyToOne(() => User, (user) => user.receivedMuteBlocks),
     JoinColumn({ name: 'receiveduserid' }),
     __metadata("design:type", Object)
 ], MuteBlockUser.prototype, "affecteduser", void 0);
