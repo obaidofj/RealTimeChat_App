@@ -32,18 +32,18 @@ __decorate([
     __metadata("design:type", Date)
 ], Message.prototype, "createdAt", void 0);
 __decorate([
-    ManyToOne(() => User, (user) => user.getSentMessages),
+    ManyToOne(() => User, (user) => user.sentMessages),
     JoinColumn({ name: 'senderid' }),
-    __metadata("design:type", User)
+    __metadata("design:type", Object)
 ], Message.prototype, "sender", void 0);
 __decorate([
     Column({ name: 'senderid' }),
     __metadata("design:type", Number)
 ], Message.prototype, "senderid", void 0);
 __decorate([
-    ManyToOne(() => User, (user) => user.getReceivedMessages),
+    ManyToOne(() => User, (user) => user.receivedMessages),
     JoinColumn({ name: 'receiverid' }),
-    __metadata("design:type", User)
+    __metadata("design:type", Object)
 ], Message.prototype, "receiver", void 0);
 __decorate([
     Column({ name: 'receiverid' }),

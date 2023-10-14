@@ -1,11 +1,11 @@
 import connection  from '../connection.js';
 import { User } from '../entities/user.entity.js';
 import bcrypt from 'bcrypt';
-import {isAppliedMigration} from '../../utils/generalUtils.js'
+import {isFlageSet} from '../../utils/generalUtils.js'
 
 export async function seedDatabase() {
 
-    if(await isAppliedMigration() ){
+    if(await isFlageSet('seeded') ){
         console.log('Data already seeded.');
         return; // db is seeded so no need for seed
      }

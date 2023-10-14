@@ -9,6 +9,8 @@ router.post('/register', userController.register);
 // Route for user login
 router.post('/login', userController.login);
 
+router.post('/profile/', userController.insertProfile);
+
 // Route for retrieving user profile
 router.get('/profile/id/:userId', userController.getUserProfileByID);
 

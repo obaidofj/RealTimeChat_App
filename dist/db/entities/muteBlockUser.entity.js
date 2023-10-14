@@ -7,14 +7,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToOne, Column } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn } from 'typeorm';
 import { User } from './user.entity.js';
 let MuteBlockUser = class MuteBlockUser extends BaseEntity {
     id;
     isMute;
     isBlock;
-    sourceUser;
-    affectedUser;
+    initiatoruser;
+    initiatoruser;
+    affecteduser;
+    senderid;
 };
 __decorate([
     PrimaryGeneratedColumn(),
@@ -29,13 +31,23 @@ __decorate([
     __metadata("design:type", Boolean)
 ], MuteBlockUser.prototype, "isBlock", void 0);
 __decorate([
-    ManyToOne(() => User, (user) => user.initiatedMuteBlocks),
-    __metadata("design:type", User)
-], MuteBlockUser.prototype, "sourceUser", void 0);
+    ManyToOne(() => User, (user) => user.getInitiatedMuteBlocks),
+    JoinColumn({ name: 'initiatoruserid' }),
+    __metadata("design:type", Object)
+], MuteBlockUser.prototype, "initiatoruser", void 0);
 __decorate([
-    ManyToOne(() => User, (user) => user.receivedMuteBlocks),
-    __metadata("design:type", User)
-], MuteBlockUser.prototype, "affectedUser", void 0);
+    Column({ name: 'initiatoruserid' }),
+    __metadata("design:type", Number)
+], MuteBlockUser.prototype, "initiatoruser", void 0);
+__decorate([
+    ManyToOne(() => User, (user) => user.getReceivedMuteBlocks),
+    JoinColumn({ name: 'receiveduserid' }),
+    __metadata("design:type", Object)
+], MuteBlockUser.prototype, "affecteduser", void 0);
+__decorate([
+    Column({ name: 'receiveduserid' }),
+    __metadata("design:type", Number)
+], MuteBlockUser.prototype, "senderid", void 0);
 MuteBlockUser = __decorate([
     Entity()
 ], MuteBlockUser);

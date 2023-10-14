@@ -1,6 +1,8 @@
 import { User } from '../db/entities/user.entity.js';
 import bcrypt from 'bcrypt';
 import { verify } from '../middlewares/authentication.js';
+import connection from '../db/connection.js';
+import { Profile } from '../db/entities/profile.entity.js';
 export const userController = {
     // User registration
     async register(req, res) {
@@ -12,11 +14,11 @@ export const userController = {
                 return res.status(400).json({ message: 'Username or email already exists' });
             }
             // Hash the password
-            const hashedPassword = await bcrypt.hash(password, 10);
+            // const hashedPassword = await bcrypt.hash(password, 10);
             // Create a new user
             const user = await User.create({
                 username,
-                password: hashedPassword,
+                password: password,
                 email,
             });
             await user.save();
@@ -49,16 +51,45 @@ export const userController = {
             return res.status(500).json({ message: 'Internal server error' });
         }
     },
+    async insertProfile(req, res) {
+        const { id, firstName, lastName, dateOfBirth } = req.body;
+        return connection.manager.transaction(async (transaction) => {
+            try {
+                const user = await User.findOne({ where: { id: Number(id) } });
+                if (user) {
+                    const profile = Profile.create({
+                        firstName,
+                        lastName,
+                        dateOfBirth
+                    });
+                    await transaction.save(profile);
+                    user.profile = profile;
+                    await transaction.save(user);
+                    return res.status(200).json({ message: 'The Profile created', profile });
+                } //end if
+                else {
+                    return res.status(500).json({ message: "this user dose not exist" });
+                }
+            }
+            catch (error) {
+                console.log(error);
+                return res.status(500).json({ message: "Something went wrong" });
+            }
+        });
+    },
     // Retrieve user profile
     async getUserProfileByID(req, res) {
         try {
             const userId = Number(req.params.userId);
             // Find the user by ID
             const user = await User.findBy({ id: userId });
-            if (!user) {
-                return res.status(404).json({ message: 'User not found' });
+            if (user.length === 0) {
+                return res.status(404).json({ message: 'User is not found' });
             }
-            return res.status(200).json({ user });
+            if (user[0]?.profile?.id)
+                return res.status(200).json({ userid: user[0].id, profile: user[0].profile });
+            else
+                return res.status(404).json({ messege: 'There is no profile for user :' + user[0].id });
         }
         catch (error) {
             console.error(error);
@@ -71,10 +102,13 @@ export const userController = {
             const userName = req.params.userName;
             // Find the user by ID
             const user = await User.findBy({ username: userName });
-            if (!user) {
-                return res.status(404).json({ message: 'User not found' });
+            if (user.length === 0) {
+                return res.status(404).json({ message: 'User is not found' });
             }
-            return res.status(200).json({ user });
+            if (user[0]?.profile?.id)
+                return res.status(200).json({ userid: user[0].id, profile: user[0].profile });
+            else
+                return res.status(404).json({ messege: 'There is no profile for user :' + user[0].id });
         }
         catch (error) {
             console.error(error);

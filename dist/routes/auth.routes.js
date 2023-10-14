@@ -5,6 +5,7 @@ const router = express.Router();
 router.post('/register', userController.register);
 // Route for user login
 router.post('/login', userController.login);
+router.post('/profile/', userController.insertProfile);
 // Route for retrieving user profile
 router.get('/profile/id/:userId', userController.getUserProfileByID);
 router.get('/profile/name/:userName', userController.getUserProfileByUserName);

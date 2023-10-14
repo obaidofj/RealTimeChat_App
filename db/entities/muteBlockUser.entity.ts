@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToOne, Column, Unique } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToOne, Column, Unique, JoinColumn, Relation } from 'typeorm';
 import { User } from './user.entity.js'; 
 
 @Entity()
@@ -13,9 +13,18 @@ export class MuteBlockUser  extends BaseEntity {
   @Column()
   isBlock: boolean;
 
-  @ManyToOne(() => User, (user) => user.initiatedMuteBlocks)
-  sourceUser: User; 
+  @ManyToOne(() => User, (user) => user.getInitiatedMuteBlocks)
+  @JoinColumn({ name: 'initiatoruserid' }) 
+  initiatoruser: Relation<User>; 
 
-  @ManyToOne(() => User, (user) => user.receivedMuteBlocks)
-  affectedUser: User; 
+  @Column({ name: 'initiatoruserid' }) 
+  initiatoruser: number; 
+
+  @ManyToOne(() => User, (user) => user.getReceivedMuteBlocks)
+  @JoinColumn({ name: 'receiveduserid' }) 
+  affecteduser: Relation<User>; 
+
+  @Column({ name: 'receiveduserid' }) 
+  senderid: number; 
+  
 }

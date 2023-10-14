@@ -7,13 +7,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from './user.entity.js';
 let ConnectionFriendship = class ConnectionFriendship extends BaseEntity {
     id;
     isAccepted;
     initiator;
+    senderid;
     recipient;
+    senderid;
 };
 __decorate([
     PrimaryGeneratedColumn(),
@@ -24,13 +26,23 @@ __decorate([
     __metadata("design:type", Boolean)
 ], ConnectionFriendship.prototype, "isAccepted", void 0);
 __decorate([
-    ManyToOne(() => User, (user) => user.friendshipsInitiated),
-    __metadata("design:type", User)
+    ManyToOne(() => User, (user) => user.getInitiatedConnectionFriendship),
+    JoinColumn({ name: 'initiatoUserId' }),
+    __metadata("design:type", Object)
 ], ConnectionFriendship.prototype, "initiator", void 0);
 __decorate([
-    ManyToOne(() => User, (user) => user.friendshipsReceived),
-    __metadata("design:type", User)
+    Column({ name: 'senderid' }),
+    __metadata("design:type", Number)
+], ConnectionFriendship.prototype, "senderid", void 0);
+__decorate([
+    ManyToOne(() => User, (user) => user.getReceivedConnectionFriendship),
+    JoinColumn({ name: 'recipientUserId' }),
+    __metadata("design:type", Object)
 ], ConnectionFriendship.prototype, "recipient", void 0);
+__decorate([
+    Column({ name: 'recipient' }),
+    __metadata("design:type", Number)
+], ConnectionFriendship.prototype, "senderid", void 0);
 ConnectionFriendship = __decorate([
     Entity()
 ], ConnectionFriendship);

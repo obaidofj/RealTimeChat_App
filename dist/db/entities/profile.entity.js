@@ -13,6 +13,7 @@ let Profile = class Profile extends BaseEntity {
     firstName;
     lastName;
     dateOfBirth;
+    picture;
     user;
 };
 __decorate([
@@ -31,6 +32,10 @@ __decorate([
     Column(),
     __metadata("design:type", String)
 ], Profile.prototype, "dateOfBirth", void 0);
+__decorate([
+    Column(),
+    __metadata("design:type", String)
+], Profile.prototype, "picture", void 0);
 Profile = __decorate([
     Entity()
 ], Profile);

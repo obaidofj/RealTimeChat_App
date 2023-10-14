@@ -4,7 +4,7 @@ export const messageController = {
     // Send a message
     async sendMessage(req, res) {
         try {
-            const { senderId, receiverId, text } = req.body;
+            const { senderId, receiverId, text, attachments } = req.body;
             const senderIdNum = parseInt(senderId);
             // Check if sender and receiver users exist
             const sender = await User.findOne({ where: { id: senderId } });
@@ -16,8 +16,9 @@ export const messageController = {
             const message = await Message.create({
                 sender,
                 receiver,
-                text,
+                text
             });
+            message.attachments = message;
             await message.save();
             return res.status(201).json({ info: 'Message sent successfully', message });
         }
