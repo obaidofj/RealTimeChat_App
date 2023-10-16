@@ -44,16 +44,13 @@ app.use('/connection', connectionRouter);
 
 
 app.listen(process.env.APP_PORT, () => {
-    winsLogger.log( {level: 'info',
-    message: `App is listening on port ${process.env.APP_PORT}`,
-    timestamp: new Date(),});
+    winsLogger.info( `App is listening on port ${process.env.APP_PORT}`
+    );
     
 dataSource 
     .initialize() 
     .then( async () => {
-      winsLogger.log(  {level: 'info',
-      message: 'Data Source has been initialized!',
-      timestamp: new Date(),}); 
+      winsLogger.info(  'Data Source has been initialized!'  ); 
       const queryRunner = dataSource.createQueryRunner()
       try {
         await applyMigration(queryRunner);

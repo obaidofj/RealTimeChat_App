@@ -7,17 +7,19 @@ export const muteBlockUserController = {
   async muteUser(req: Request, res: Response) {
     try {
       const { userId, targetUserId } = req.body;
-
+ 
       // Find the user and target user by IDs
-      const user = await User.findOne(userId);
-      const targetUser = await User.findOne(targetUserId);
+      const user = await User.findOne( { where: {id : userId}});
+      const targetUser = await User.findOne({ where: {id : targetUserId}});
 
       if (!user || !targetUser) {
         return res.status(404).json({ message: 'User or target user not found' });
       }
 
+     
       // Check if the user is already muted
-      const existingMute = await MuteBlockUser.findOne({ user, targetUser, mute: true });
+
+      const existingMute = await MuteBlockUser.findOne({where: {   initiatoruserid : userId, receiveduserid: targetUserId, isMute: true }});
 
       if (existingMute) {
         return res.status(400).json({ message: 'User is already muted' });
@@ -25,10 +27,12 @@ export const muteBlockUserController = {
 
       // Create a new mute record
       const mute = await MuteBlockUser.create({
-        user,
-        targetUser,
-        mute: true,
+        initiatoruser : user,
+        receiveduser : targetUser,
+        isMute: true,
       });
+
+      await mute.save();
 
       return res.status(201).json({ message: 'User muted successfully', mute });
     } catch (error) {
@@ -43,15 +47,15 @@ export const muteBlockUserController = {
       const { userId, targetUserId } = req.body;
 
       // Find the user and target user by IDs
-      const user = await User.findOne(userId);
-      const targetUser = await User.findOne(targetUserId);
+      const user = await User.findOne( { where: {id : userId}});
+      const targetUser = await User.findOne({ where: {id : targetUserId}});
 
       if (!user || !targetUser) {
         return res.status(404).json({ message: 'User or target user not found' });
       }
 
       // Check if the user is currently muted
-      const existingMute = await MuteBlockUser.findOne({ user, targetUser, mute: true });
+      const existingMute = await MuteBlockUser.findOne({where: {   initiatoruserid : userId, receiveduserid: targetUserId, isMute: true }});
 
       if (!existingMute) {
         return res.status(400).json({ message: 'User is not muted' });

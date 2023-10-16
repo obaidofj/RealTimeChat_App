@@ -4,7 +4,7 @@ import { User } from '../db/entities/user.entity.js';
 import { MessegeType } from '../types/messege.types.js';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import upload from '../middlewares/multerConfig.js';
+import upload from '../middlewares/multerconfig.js';
 
 
 export const messageController = {

@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Route for muting a user
 router.post('/mute', muteBlockUserController.muteUser);
-
+ 
 // Route for unmuting a user
 router.post('/unmute', muteBlockUserController.unmuteUser);
 

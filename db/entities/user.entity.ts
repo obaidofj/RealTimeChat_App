@@ -33,7 +33,7 @@ export class User  extends BaseEntity  {
   @Column({ nullable: false })
   password: string
   
-
+ 
   chatGroups : ChatGroup[];
   notifications: Notification[];
   paymentTransactions: PaymentTransaction[];
@@ -44,10 +44,10 @@ export class User  extends BaseEntity  {
     @OneToMany(() => ConnectionFriendship, (ConnectionFriendship) => ConnectionFriendship.recipient)
     receivedConnectionFriendship: ConnectionFriendship[];
   
-    @OneToMany(() => MuteBlockUser, (muteBlock) => muteBlock.affecteduser)
+    @OneToMany(() => MuteBlockUser, (muteBlock) => muteBlock.initiatoruser)
     initiatedMuteBlocks: MuteBlockUser[];
   
-    @OneToMany(() => MuteBlockUser, (muteBlock) => muteBlock.affecteduser)
+    @OneToMany(() => MuteBlockUser, (muteBlock) => muteBlock.receiveduser)
     receivedMuteBlocks: MuteBlockUser[];
 
 

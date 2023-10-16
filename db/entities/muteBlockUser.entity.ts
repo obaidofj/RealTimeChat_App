@@ -10,7 +10,7 @@ export class MuteBlockUser  extends BaseEntity {
   @Column()
   isMute: boolean;
 
-  @Column()
+  @Column() 
   isBlock: boolean;
 
   @ManyToOne(() => User, (user) => user.initiatedMuteBlocks)
@@ -18,13 +18,13 @@ export class MuteBlockUser  extends BaseEntity {
   initiatoruser: Relation<User>; 
 
   @Column({ name: 'initiatoruserid' }) 
-  initiatoruser: number; 
+  initiatoruserid: number; 
 
   @ManyToOne(() => User, (user) => user.receivedMuteBlocks)
   @JoinColumn({ name: 'receiveduserid' }) 
-  affecteduser: Relation<User>; 
+  receiveduser: Relation<User>; 
 
   @Column({ name: 'receiveduserid' }) 
-  senderid: number; 
+  receiveduserid: number; 
   
 }
