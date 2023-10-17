@@ -1,4 +1,27 @@
 
-export function isAbsent(value:any) {
-    return value === null || value === undefined;
-  }
+export function isAbsent(value) {
+  return value === null || value === undefined || value === '';
+}
+
+
+export function validateNotEmptyFields(fieldsToCheck ,req ,res) {
+  
+    const body=req.body;
+
+      const fieldsMissing=[];
+
+      // Check if any of the specified fields are empty
+      for (const field of fieldsToCheck) {
+        if (isAbsent(body[field])) {
+          fieldsMissing.push(field);
+        }
+      }
+    
+    if(fieldsMissing.length !== 0)
+    { 
+       return { msgcode:100, message: `${fieldsMissing.join(', ')} field/s must have value` };    
+    }
+    else
+       return {};
+
+    }

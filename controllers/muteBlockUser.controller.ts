@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { MuteBlockUser } from '../db/entities/muteBlockUser.entity.js';
 import { User } from '../db/entities/user.entity.js';
-import { validateNotEmptyFields } from '../middlewares/validation.js';
+import { validateNotEmptyFields } from '../utils/validationUtils.js';
 
 export const muteBlockUserController = {
   // Mute a user
@@ -9,8 +9,11 @@ export const muteBlockUserController = {
     try {
       const { userId, targetUserId } = req.body;
       
-      validateNotEmptyFields ([ userId, targetUserId]);
+      const isValid=validateNotEmptyFields ([ 'userId' , 'targetUserId' ],req,res);
        
+      if(Object.keys(isValid).length !==0)
+        return res.status(404).json(isValid);
+
       // Find the user and target user by IDs
       const user = await User.findOne( { where: {id : userId}});
       const targetUser = await User.findOne({ where: {id : targetUserId}});
@@ -22,7 +25,7 @@ export const muteBlockUserController = {
      
       // Check if the user is already muted
 
-      const existingMute = await MuteBlockUser.findOne({where: {   initiatoruserid : userId, receiveduserid: targetUserId, isMute: true }});
+      const existingMute = await MuteBlockUser.findOne({ where: {   initiatoruserid : userId , receiveduserid: targetUserId , isMute: true }});
 
       if (existingMute) {
         return res.status(400).json({ message: 'User is already muted' });
@@ -48,6 +51,11 @@ export const muteBlockUserController = {
   async unmuteUser(req: Request, res: Response) {
     try {
       const { userId, targetUserId } = req.body;
+
+      const isValid=validateNotEmptyFields ([ 'userId' , 'targetUserId' ],req,res);
+
+      if(Object.keys(isValid).length !==0)
+      return res.status(404).json(isValid);
 
       // Find the user and target user by IDs
       const user = await User.findOne( { where: {id : userId}});
@@ -79,6 +87,11 @@ export const muteBlockUserController = {
     try {
       const { userId, targetUserId } = req.body;
 
+      const isValid=validateNotEmptyFields ([ 'userId' , 'targetUserId' ],req,res);
+
+      if(Object.keys(isValid).length !==0)
+      return res.status(404).json(isValid);
+
       // Find the user and target user by IDs
       const user = await User.findOne(userId);
       const targetUser = await User.findOne(targetUserId);
@@ -88,7 +101,7 @@ export const muteBlockUserController = {
       }
 
       // Check if the user is already blocked
-      const existingBlock = await MuteBlockUser.findOne({ user, targetUser, block: true });
+      const existingBlock = await MuteBlockUser.findOne({where: {   initiatoruserid : userId, receiveduserid: targetUserId, isBlock: true }} );
 
       if (existingBlock) {
         return res.status(400).json({ message: 'User is already blocked' });
@@ -96,9 +109,9 @@ export const muteBlockUserController = {
 
       // Create a new block record
       const block = await MuteBlockUser.create({
-        user,
-        targetUser,
-        block: true,
+        initiatoruser : user,
+        receiveduser : targetUser,
+        isBlock: true,
       });
 
       return res.status(201).json({ message: 'User blocked successfully', block });
@@ -113,6 +126,11 @@ export const muteBlockUserController = {
     try {
       const { userId, targetUserId } = req.body;
 
+      const isValid=validateNotEmptyFields ([ 'userId' , 'targetUserId' ],req,res);
+
+      if(Object.keys(isValid).length !==0)
+      return res.status(404).json(isValid);
+    
       // Find the user and target user by IDs
       const user = await User.findOne(userId);
       const targetUser = await User.findOne(targetUserId);
@@ -122,7 +140,7 @@ export const muteBlockUserController = {
       }
 
       // Check if the user is currently blocked
-      const existingBlock = await MuteBlockUser.findOne({ user, targetUser, block: true });
+      const existingBlock = await MuteBlockUser.findOne({where: {   initiatoruserid : userId, receiveduserid: targetUserId, isBlock: true }} );
 
       if (!existingBlock) {
         return res.status(400).json({ message: 'User is not blocked' });
@@ -138,21 +156,26 @@ export const muteBlockUserController = {
     }
   },
 
-  // Get user's mute and block lists
-  async getUserLists(req: Request, res: Response) {
+  // Get user's mute and block lists initiated from user
+  async getUserInitiatedLists(req: Request, res: Response) {
     try {
-      const userId = req.params.userId;
+      const userId = Number(req.params.userId);
+
+      // const isValid=validateNotEmptyFields ([ 'userId' ],req,res);
+
+      // if(Object.keys(isValid).length !==0)
+      // return res.status(404).json(isValid);
 
       // Find the user by ID
-      const user = await User.findOne(userId);
+      const user = await User.findOne({where : {id:userId}});
 
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
 
       // Get user's mute and block lists
-      const muteList = await MuteBlockUser.find({ user, mute: true }, { relations: ['targetUser'] });
-      const blockList = await MuteBlockUser.find({ user, block: true }, { relations: ['targetUser'] });
+      const muteList = await MuteBlockUser.find({ where :{ initiatoruserid :userId , isMute: true} ,  relations: ['initiatoruser'] });
+      const blockList = await MuteBlockUser.find({ where :{ initiatoruserid :userId , isBlock: true} , relations: ['initiatoruser'] } );
 
       return res.status(200).json({ muteList, blockList });
     } catch (error) {
@@ -160,4 +183,29 @@ export const muteBlockUserController = {
       return res.status(500).json({ message: 'Internal server error' });
     }
   },
+
+
+  // Get mute and block lists recieved to user
+  async getUserRecivedLists(req: Request, res: Response) {
+    try {
+      const userId = Number(req.params.userId);
+
+      // Find the user by ID
+      const user = await User.findOne({where : {id:userId}});
+
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      // Get user's mute and block lists
+      const muteList = await MuteBlockUser.find({ where :{ receiveduserid :userId , isMute: true} ,  relations: ['receiveduser'] });
+      const blockList = await MuteBlockUser.find({ where :{ receiveduserid :userId , isBlock: true} , relations: ['receiveduser'] } );
+
+      return res.status(200).json({ muteList, blockList });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+  
 };
