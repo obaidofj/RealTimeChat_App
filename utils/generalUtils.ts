@@ -7,3 +7,4 @@ export async function isFlageSet(flagType:string) {
 
   return result[0]?.value ?? false; 
 }  
+

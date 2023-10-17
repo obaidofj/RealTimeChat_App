@@ -1,21 +1,24 @@
 import { Request, Response } from 'express';
 import { MuteBlockUser } from '../db/entities/muteBlockUser.entity.js';
 import { User } from '../db/entities/user.entity.js';
+import { validateNotEmptyFields } from '../middlewares/validation.js';
 
 export const muteBlockUserController = {
   // Mute a user
   async muteUser(req: Request, res: Response) {
     try {
       const { userId, targetUserId } = req.body;
- 
+      
+      validateNotEmptyFields ([ userId, targetUserId]);
+       
       // Find the user and target user by IDs
       const user = await User.findOne( { where: {id : userId}});
       const targetUser = await User.findOne({ where: {id : targetUserId}});
-
-      if (!user || !targetUser) {
+      
+      if (!user || !targetUser) { 
         return res.status(404).json({ message: 'User or target user not found' });
       }
-
+      
      
       // Check if the user is already muted
 
