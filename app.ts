@@ -30,13 +30,13 @@ app.use(cookieParser());
 app.use(express.json());  
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
+ 
 app.use('/', indexRouter);
 app.use('/auth', userRouter);
 app.use('/chat', chatGroupRouter);
 app.use('/messege', upload.single('file'), messegeRouter);
 app.use('/blockmute', muteBlockRouter);
-app.use('/notify', notificationRouter);
+app.use('/notify', notificationRouter); 
 app.use('/order', orderRouter);
 app.use('/payment', paymentRouter);
 app.use('/product', productRouter);

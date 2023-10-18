@@ -1,30 +1,28 @@
 import { Entity,BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, Relation, JoinColumn } from 'typeorm';
 import { User } from './user.entity.js';
+import { connStatus } from '../../types/connection.types.js';
 
 @Entity()
 export class ConnectionFriendship  extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ default: false })
-  isAccepted: boolean;
+  @Column()
+  status: connStatus;
 
-  @ManyToOne(() => User, (user) => user.getInitiatedConnectionFriendship)
+  @ManyToOne(() => User, (user) => user.initiatedConnectionFriendship)
   @JoinColumn({ name: 'initiatoUserId' })  
-  initiator: Relation<User>; 
+  initiator: Relation<User>;  
 
-  @Column({ name: 'senderid' }) 
-  senderid: number; 
+  @Column({ name: 'initiatoUserId' }) 
+  initiatoUserId: number; 
 
-  @ManyToOne(() => User, (user) => user.getReceivedConnectionFriendship)
+  @ManyToOne(() => User, (user) => user.receivedConnectionFriendship)
   @JoinColumn({ name: 'recipientUserId' }) 
   recipient: Relation<User>; 
 
-  @Column({ name: 'recipient' }) 
-  senderid: number; 
-
-
-    
+  @Column({ name: 'recipientUserId' }) 
+  recipientUserId: number; 
 
 
 }

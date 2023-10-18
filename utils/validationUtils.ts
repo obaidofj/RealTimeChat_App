@@ -4,9 +4,14 @@ export function isAbsent(value) {
 }
 
 
-export function validateNotEmptyFields(fieldsToCheck ,req ,res) {
+export function validateNotEmptyFields(fieldsToCheck ,req ,res ,type="body") {
   
-    const body=req.body;
+  let body;
+
+  if(type=='params')
+    body=req.params;
+  else if (type=='body')
+    body=req.body;
 
       const fieldsMissing=[];
 

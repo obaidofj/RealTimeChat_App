@@ -31,8 +31,7 @@ export class User  extends BaseEntity  {
     }
   }
   @Column({ nullable: false })
-  password: string
-  
+  password: string;
  
   chatGroups : ChatGroup[];
   notifications: Notification[];
