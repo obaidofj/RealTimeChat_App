@@ -15,6 +15,7 @@ let Order = class Order {
     quantity;
     totalAmount;
     createdAt;
+    // @ts-ignore
     user;
     paymentTr;
 };

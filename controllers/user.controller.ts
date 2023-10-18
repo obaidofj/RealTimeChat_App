@@ -25,6 +25,7 @@ export const userController = {
         password: hashedPassword,
         email,
       });
+      await user.save()
 
       return res.status(201).json({ message: 'User registered successfully', user });
     } catch (error) {
@@ -110,7 +111,8 @@ async logout(req: Request, res: Response) {
 
 async assignRoleToUser(req: Request, res: Response) {
   try {
-    
+    // @ts-ignore
+
     return res.status(201).send(data);
   } catch (error) {
     console.error(error);

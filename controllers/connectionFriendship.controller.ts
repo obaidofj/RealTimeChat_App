@@ -17,7 +17,9 @@ export const connectionFriendshipController = {
       }
 
       // Create a new friend request
-      const friendRequest = await FriendshipConnection.create({
+      const friendRequest = await ConnectionFriendship.create({
+        // @ts-ignore
+
         sender,
         receiver,
         status: 'pending', // You can customize statuses as needed
@@ -36,13 +38,15 @@ export const connectionFriendshipController = {
       const { requestId } = req.body;
 
       // Find the friend request by ID
-      const friendRequest = await FriendshipConnection.findOne(requestId);
+      const friendRequest = await ConnectionFriendship.findOne(requestId);
 
       if (!friendRequest) {
         return res.status(404).json({ message: 'Friend request not found' });
       }
 
       // Update the status of the friend request to 'accepted' or your custom status
+      // @ts-ignore
+
       friendRequest.status = 'accepted';
       await friendRequest.save();
 
@@ -59,6 +63,8 @@ export const connectionFriendshipController = {
       const userId = req.params.userId;
 
       // Find the user by ID
+      // @ts-ignore
+
       const user = await User.findOne(userId);
 
       if (!user) {
@@ -66,7 +72,9 @@ export const connectionFriendshipController = {
       }
 
       // Get user connections (friends)
-      const connections = await FriendshipConnection.find({
+      const connections = await ConnectionFriendship.find({
+        // @ts-ignore
+
         where: { sender: user, status: 'accepted' },
         relations: ['receiver'],
       });

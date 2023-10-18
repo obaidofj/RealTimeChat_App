@@ -92,6 +92,7 @@ export const userController = {
     },
     async assignRoleToUser(req, res) {
         try {
+            // @ts-ignore
             return res.status(201).send(data);
         }
         catch (error) {

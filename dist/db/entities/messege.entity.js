@@ -13,7 +13,9 @@ let Message = class Message extends BaseEntity {
     id;
     content;
     createdAt;
+    // @ts-ignore
     sender;
+    // @ts-ignore
     receiver;
     attachments;
 };

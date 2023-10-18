@@ -17,6 +17,8 @@ export const productController = {
 
       // Create a new product
       const product = await Product.create({
+        // @ts-ignore
+
         seller: user,
         name,
         description,

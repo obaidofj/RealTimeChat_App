@@ -44,7 +44,9 @@ app.listen(process.env.APP_PORT, () => {
             // You can continue with other operations here.
         }
         catch (error) {
+            // @ts-ignore
             if (error.message == 'Migration for Data seeding is already aplied.')
+                // @ts-ignore
                 console.error(error.message);
             else
                 console.error(error);

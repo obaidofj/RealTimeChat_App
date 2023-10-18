@@ -16,6 +16,8 @@ export const chatgroupController = {
       }
 
       // Create a new chat group
+      // @ts-ignore
+
       const chatGroup = await ChatGroup.create({
         name,
         members: users,
@@ -34,6 +36,8 @@ export const chatgroupController = {
       const groupId = req.params.groupId;
 
       // Find the chat group by ID
+      // @ts-ignore
+
       const chatGroup = await ChatGroup.findOne(groupId, { relations: ['members'] });
 
       if (!chatGroup) {

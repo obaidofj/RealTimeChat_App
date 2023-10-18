@@ -1,3 +1,4 @@
+import { ConnectionFriendship } from '../db/entities/connectionFriendship.entity.js';
 import { User } from '../db/entities/user.entity.js';
 export const connectionFriendshipController = {
     // Send a friend request
@@ -11,7 +12,8 @@ export const connectionFriendshipController = {
                 return res.status(404).json({ message: 'Sender or receiver not found' });
             }
             // Create a new friend request
-            const friendRequest = await FriendshipConnection.create({
+            const friendRequest = await ConnectionFriendship.create({
+                // @ts-ignore
                 sender,
                 receiver,
                 status: 'pending', // You can customize statuses as needed
@@ -28,11 +30,12 @@ export const connectionFriendshipController = {
         try {
             const { requestId } = req.body;
             // Find the friend request by ID
-            const friendRequest = await FriendshipConnection.findOne(requestId);
+            const friendRequest = await ConnectionFriendship.findOne(requestId);
             if (!friendRequest) {
                 return res.status(404).json({ message: 'Friend request not found' });
             }
             // Update the status of the friend request to 'accepted' or your custom status
+            // @ts-ignore
             friendRequest.status = 'accepted';
             await friendRequest.save();
             return res.status(200).json({ message: 'Friend request accepted' });
@@ -47,12 +50,14 @@ export const connectionFriendshipController = {
         try {
             const userId = req.params.userId;
             // Find the user by ID
+            // @ts-ignore
             const user = await User.findOne(userId);
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
             // Get user connections (friends)
-            const connections = await FriendshipConnection.find({
+            const connections = await ConnectionFriendship.find({
+                // @ts-ignore
                 where: { sender: user, status: 'accepted' },
                 relations: ['receiver'],
             });

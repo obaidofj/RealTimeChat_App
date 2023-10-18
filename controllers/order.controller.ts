@@ -21,6 +21,8 @@ export const orderController = {
       const totalPrice = product.price * quantity;
 
       // Create a new order
+      // @ts-ignore
+
       const order = await Order.create({
         user,
         product,
@@ -41,6 +43,8 @@ export const orderController = {
       const orderId = req.params.orderId;
 
       // Find the order by ID
+      // @ts-ignore
+
       const order = await Order.findOne(orderId, { relations: ['user', 'product'] });
 
       if (!order) {

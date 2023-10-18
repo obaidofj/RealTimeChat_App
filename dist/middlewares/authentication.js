@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { User } from '../db/entities/user.entity.js';
+// @ts-ignore
 const authenticate = async (req, res, next) => {
     const token = req.headers['authorization'] || '';
     let tokenIsValid = verifyToken(token);
@@ -13,6 +14,7 @@ const authenticate = async (req, res, next) => {
         res.status(401).send("You are Unauthenticated!");
     }
 };
+// @ts-ignore
 const verifyToken = (token) => {
     let IsValid;
     try {

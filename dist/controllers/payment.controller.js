@@ -28,11 +28,13 @@ export const paymentController = {
         try {
             const userId = req.params.userId;
             // Find the user by ID
+            // @ts-ignore
             const user = await User.findOne(userId);
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
             // Get the user's payment transactions
+            // @ts-ignore
             const payments = await PaymentTransaction.find({ where: { user } });
             return res.status(200).json({ payments });
         }
