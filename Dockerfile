@@ -15,9 +15,9 @@ RUN npm ci
 # Now copy the project files
 ADD . . 
 # Build the app
-RUN npm run build
+RUN npm run build-tsc
 
 HEALTHCHECK --interval=10s --timeout=3s \
   CMD curl -f http://localhost/ || exit 1
 # When running the container, execute the following command
-CMD node ./dist/app.js
+CMD npm run dev 
