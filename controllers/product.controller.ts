@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Product } from '../db/entities/product.entity.js';
 import { User } from '../db/entities/user.entity.js';
+import { validateNotEmptyFields } from '../utils/validationUtils.js';
 
 export const productController = {
   // Create a product
@@ -8,8 +9,14 @@ export const productController = {
     try {
       const { userId, name, description, price } = req.body;
 
+      
+      const isValid=validateNotEmptyFields ([ 'userId' , 'name' ,  'price' ],req,res);
+       
+      if(Object.keys(isValid).length !==0)
+        return res.status(404).json(isValid);
+      
       // Find the user by ID
-      const user = await User.findOne(userId);
+      const user = await User.findOne({ where: {id : userId}});
 
       if (!user) {
         return res.status(404).json({ message: 'User not found' });

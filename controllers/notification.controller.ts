@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Notification } from '../db/entities/notification.entity.js';
 import { User } from '../db/entities/user.entity.js';
+import { validateNotEmptyFields } from '../utils/validationUtils.js';
 
 export const notificationController = {
   // Create a notification
@@ -8,8 +9,13 @@ export const notificationController = {
     try {
       const { userId, message } = req.body;
 
+      const isValid=validateNotEmptyFields ([ 'userId' , 'message' ],req,res);
+       
+      if(Object.keys(isValid).length !==0)
+        return res.status(404).json(isValid);
+
       // Find the user by ID
-      const user = await User.findOne(userId);
+      const user = await User.findOne( { where: {id : userId}});
 
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
@@ -31,10 +37,10 @@ export const notificationController = {
   // Get all notifications for a user
   async getUserNotifications(req: Request, res: Response) {
     try {
-      const userId = req.params.userId;
+      const userId = Number(req.params.userId);
 
       // Find the user by ID
-      const user = await User.findOne(userId);
+      const user = await User.findOne( { where: {id : userId}});
 
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
