@@ -18,7 +18,7 @@ import { QueryRunner } from 'typeorm';
 import {seedDatabase} from './db/seeds/seedDB.js'
 import { fileURLToPath } from 'url';
 import path from 'path';
-import upload from './middlewares/multerConfig.js';
+import upload from './middlewares/multerconfig.js';
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -42,39 +42,43 @@ app.use('/payment', paymentRouter);
 app.use('/product', productRouter);
 app.use('/connection', connectionRouter);
 
-
+ 
 app.listen(process.env.APP_PORT, () => {
     winsLogger.info( `App is listening on port ${process.env.APP_PORT}`
     );
-    
+
+});
+
+
+  
+ 
 dataSource 
     .initialize() 
-    .then( async () => {
+    .then(  () => {
       winsLogger.info(  'Data Source has been initialized!'  ); 
-      const queryRunner = dataSource.createQueryRunner()
-      try {
-        await applyMigration(queryRunner);
-        console.log("Migration has been applied successfully.");
-        // You can continue with other operations here.
-      } catch (error) {
-        if(error.message=='Migration for Data seeding is already aplied.')
-        console.error(error.message);
-        else
-        console.error(error);
-        // Handle errors or perform cleanup here if needed.
-      } finally {
-        // await queryRunner.release();
-        // Release the queryRunner when done.
-      }
      
-    })
+    }) 
     .catch((err) => {
       winsLogger.error({level: 'info',
       message: 'Error during Data Source initialization: ' + err,
       timestamp: new Date(),});
-    }) 
+    });
     
-  });
+    const queryRunner = dataSource.createQueryRunner()
+    try {
+      await applyMigration(queryRunner);
+      console.log("Migration has been applied successfully.");
+      // You can continue with other operations here.
+    } catch (error) {
+      if(error.message=='Migration for Data seeding is already aplied.')
+      console.error(error.message);
+      else
+      console.error(error);
+      // Handle errors or perform cleanup here if needed.
+    } finally {
+      // await queryRunner.release();
+      // Release the queryRunner when done.
+    }
 
   
     

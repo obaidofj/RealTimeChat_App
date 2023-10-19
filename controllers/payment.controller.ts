@@ -49,7 +49,7 @@ export const paymentController = {
       }
 
       // Get the user's payment transactions
-      const payments = await PaymentTransaction.find({ where: { user.id: userId } });
+      const payments = await PaymentTransaction.find({ where: { id: userId } });
 
       return res.status(200).json({ payments });
     } catch (error) {

@@ -24,6 +24,9 @@ export class User  extends BaseEntity  {
   @Column()
   email: string;
 
+  chatGroups : ChatGroup[];
+  paymentTransactions: PaymentTransaction[];  
+
   @BeforeInsert()
   async hashPassword() {
     if (this.password) {
@@ -33,9 +36,11 @@ export class User  extends BaseEntity  {
   @Column({ nullable: false })
   password: string;
  
-  chatGroups : ChatGroup[];
+
+
+  @OneToMany(() => Notification, n => n.notificationRecipient , { eager: true})
   notifications: Notification[];
-  paymentTransactions: PaymentTransaction[];
+
   
    @OneToMany(() => ConnectionFriendship, (ConnectionFriendship) => ConnectionFriendship.initiator)
    initiatedConnectionFriendship : ConnectionFriendship[];

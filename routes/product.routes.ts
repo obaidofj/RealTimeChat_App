@@ -9,4 +9,6 @@ router.post('/create', productController.createProduct);
 // Route for getting all products
 router.get('/all', productController.getAllProducts);
 
+router.get('/:prodId', productController.getProductByID);
+
 export default router;

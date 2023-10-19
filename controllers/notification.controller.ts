@@ -23,10 +23,12 @@ export const notificationController = {
 
       // Create a new notification
       const notification = await Notification.create({
-        recipient: user,
+        notificationRecipient: user,
         message,
       });
 
+      await notification.save();
+      
       return res.status(201).json({ message: 'Notification created successfully', notification });
     } catch (error) {
       console.error(error);
@@ -40,14 +42,14 @@ export const notificationController = {
       const userId = Number(req.params.userId);
 
       // Find the user by ID
-      const user = await User.findOne( { where: {id : userId}});
+      const user = await User.findOne( { where: {id : userId} });
 
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
 
       // Get all notifications for the user
-      const notifications = await Notification.find({ where: { recipient: user } });
+      const notifications = user.notifications ; //await Notification.find({ where: { id: userId } });
 
       return res.status(200).json({ notifications });
     } catch (error) {
