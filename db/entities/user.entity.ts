@@ -10,6 +10,7 @@ import { ConnectionFriendship } from './connectionFriendship.entity.js';
 import { Profile } from './profile.entity.js';
 import { Role } from './role.entity.js';
 import bcrypt from 'bcrypt';
+import { Order } from './order.entity.js';
 // import { Message } from './messege.entity.js'; 
 
 
@@ -26,6 +27,7 @@ export class User  extends BaseEntity  {
 
   chatGroups : ChatGroup[];
   paymentTransactions: PaymentTransaction[];  
+  orders : Order[];
 
   @BeforeInsert()
   async hashPassword() {

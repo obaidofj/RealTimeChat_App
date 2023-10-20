@@ -1,4 +1,4 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, OneToOne, JoinColumn, Relation } from 'typeorm';
 import { User } from './user.entity.js'; 
 import { Order } from './order.entity.js';
 
@@ -18,6 +18,10 @@ export class PaymentTransaction  extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.paymentTransactions)
   user: User; 
+
+  @OneToOne(()=>Order , order => order.paymentTr )
+  @JoinColumn()
+  order:Relation<Order>
 
 
 

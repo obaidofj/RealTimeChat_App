@@ -3,42 +3,69 @@ import { Order } from '../db/entities/order.entity.js';
 import { User } from '../db/entities/user.entity.js';
 import { Product } from '../db/entities/product.entity.js';
 import { validateNotEmptyFields } from '../utils/validationUtils.js';
+import { In} from 'typeorm';
+import { OrderProduct } from '../db/entities/orderProducts.entity.js';
 
 export const orderController = {
   // Create an order
   async createOrder(req: Request, res: Response) {
     try {
-      const { userId, productId, quantity } = req.body;
 
-      
-      const isValid=validateNotEmptyFields ([ 'userId' , 'productId' , 'quantity' ],req,res);
+
+       const { products, userId } = req.body;
+
+      const isValid=validateNotEmptyFields ([ 'userId' , 'products'  ],req,res);
        
       if(Object.keys(isValid).length !==0)
         return res.status(404).json(isValid);
       
-      // Find the user and product by IDs
-      const user = await User.findOne( { where: {id : userId}});
-      const product = await Product.findOne( { where: {id : productId}});
+       // Calculate the total price and total quantity
+       let orderTotal = 0;
+       let orderTotalQuantity = 0;
 
-      if (!user || !product) {
-        return res.status(404).json({ message: 'User or product not found' });
-      }
+          const productIds = products.map((product) => product.id);
+      
+          // Ensure that product IDs exist in the database
+          const existingProducts = await Product.find({ where: { id: In(productIds) }});
+      
+          // Check if all products are found in the database
+          if (existingProducts.length !== productIds.length) {
+            return res.status(400).json({ error: 'One or more product IDs do not exist.' });
+          }
+      
+      
+      
+  // Create OrderProducts to associate products with quantities and update totals
+  const orderProducts = products.map((product) => {
+    const existingProduct = existingProducts.find((p) => p.id === product.id);
 
-      // Calculate the total price based on product price and quantity
-      const totalPrice = product.price * quantity;
+    const orderProduct = new OrderProduct();
+    orderProduct.product = existingProduct;
+    orderProduct.quantity = product.quantity;
 
-      // Create a new order
-      const order = await Order.create({
-        user,
-        product,
-        quantity,
-        totalPrice,
-      });
+    orderTotal += existingProduct.price * product.quantity;
+    orderTotalQuantity += product.quantity;
 
-      return res.status(201).json({ message: 'Order created successfully', order });
+    return orderProduct;
+  });
+       
+        
+          const orderUser = userId;
+         
+      
+          const order = await Order.create({
+
+            orderProducts:  orderProducts,
+            totalQuantity : orderTotalQuantity,
+            totalPrice : orderTotal,
+            user : userId 
+
+           }).save(); // Use the repository to save the order
+
+          return res.status(201).json({ message: 'Order created successfully', order });
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ message: 'Internal server error' + error});
     }
   },
 
