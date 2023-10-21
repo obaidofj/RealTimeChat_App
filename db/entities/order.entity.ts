@@ -14,10 +14,10 @@ export class Order extends BaseEntity{
 
   // @Column()
   // quantity: number;
-  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
+  // @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
   orderProducts: OrderProduct[];
 
-  @Column()
+  @Column() 
   totalQuantity: number; 
   
   @Column({ type: 'decimal', precision: 10, scale: 2 })

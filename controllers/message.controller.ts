@@ -13,7 +13,7 @@ export const messageController = {
 
 
     try {
-      let { senderId, receiverId, content ,type } = req.body;
+      let { senderId, receiverId, text  } = req.body;
 
       const senderIdNum=parseInt(senderId);
       // Check if sender and receiver users exist
@@ -23,32 +23,57 @@ export const messageController = {
       if (!sender || !receiver) {
         return res.status(404).json({ message: 'Sender or receiver not found' });
       }
-
+ 
       // if(req.file)
       
-      if(type==MessegeType.ATTACHMENT)
-      content=req.file.destination + req.file.filename;
+      // if(type==MessegeType.ATTACHMENT)
+      // attachmentsUrls=req.file.destination + req.file.filename;
+  
+      // Access the uploaded files from req.files
+  const uploadedFiles = req.files;
+  let notUploadedFiles=[];
+  let attachmentsUrls:string[]=[];
 
+  // Create an array to track which files were successfully uploaded
+  uploadedFiles?.map((file, index) => {
+    if (file) {
+      attachmentsUrls.push(file.filename)
+    } else {
+      notUploadedFiles.push(file.originalname)
+    }
+  });
+
+      
+      if(req.files?.length > 0 && (req.files?.length !== attachmentsUrls.length ))
+      {
+       const filesMessege = "Some files are not uploaded due to size limit or another error , max file size is 12MB"
+      }
+
+    // if (req.files && req.files.length === 0) {
+    //   // No files were uploaded.
+    //   res.status(400).json('No files were uploaded.');
+    //   // return;
+    // }
       // res.send({
       //   message: 'File Uploaded Successfully!',
       //   file: fileURL
       // });
 
       // Create a new message
-      if (req.file) {
+      // if (req.file) {
       const message = await Message.create({
+        text,
+        attachmentsUrls,
         sender,
         receiver,
-        content,
-        type:MessegeType[type]
       });
        
       await message.save()
 
       return res.status(201).json({ info: 'Message sent successfully', message });
-    }
-    else
-     return res.status(400).json({ info: 'there was error in uploading fiel' });
+    // }
+    // else
+    //  return res.status(400).json({ info: 'there was error in uploading fiel' });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal server error' });

@@ -27,7 +27,7 @@ export const paymentController = {
         user,
         amount,
         currency,
-      });
+      }).save();
 
       return res.status(201).json({ message: 'Payment created successfully', payment });
     } catch (error) {
@@ -49,7 +49,7 @@ export const paymentController = {
       }
 
       // Get the user's payment transactions
-      const payments = await PaymentTransaction.find({ where: { id: userId } });
+      const payments = await PaymentTransaction.find({ where: { user: { id: userId } } });
 
       return res.status(200).json({ payments });
     } catch (error) {

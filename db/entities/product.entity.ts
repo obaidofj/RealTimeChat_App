@@ -11,7 +11,7 @@ export class Product  extends BaseEntity {
 
   @Column()
   name: string;
-
+ 
   @Column('text')
   description: string;
   
@@ -25,7 +25,7 @@ export class Product  extends BaseEntity {
   // //order: Relation<Order>;
   
   // //@OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)
-  // //orderProducts: OrderProduct[];
+ orderProducts: OrderProduct[];
 
   // @ManyToOne(() => User, (user) => user.products)
   // seller: User; 

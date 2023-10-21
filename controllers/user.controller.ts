@@ -57,8 +57,30 @@ export const userController = {
       }
 
       // Here you can generate a JWT token for user authentication
+      const token = jwt.sign(
+        {
+          username: user.username ,
+          email: user.email,
+        },
+        process.env.JWT_SECRET || '',
+        {
+          expiresIn: "300m"
+        }
+      );
 
-      return res.status(200).json({ message: 'Login successful', user });
+     
+        res.cookie('username', user.username, {
+          maxAge: 60 * 60 * 1000
+        });
+        res.cookie('loginTime', Date.now(), {
+          maxAge: 60 * 60 * 1000
+        });
+        res.cookie('token', token, {
+          maxAge: 60 * 60 * 1000
+        });
+       
+
+      return res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal server error' });

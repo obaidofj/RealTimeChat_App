@@ -7,12 +7,12 @@ export class OrderProduct extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-//   //@ManyToOne(() => Order, (order) => order.orderProducts)
-//   //order: Relation<Order>;
+  @ManyToOne(() => Order, (order) => order.orderProducts)
+  order: Relation<Order>;
 
-//   //@ManyToOne(() => Product, (product) => product.orderProducts)
-//   //product: Product;
-
+  @ManyToOne(() => Product, (product) => product.orderProducts)
+  product: Product;
+ 
   @Column()
   quantity: number;
 }

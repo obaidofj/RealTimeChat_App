@@ -3,7 +3,8 @@ import { User } from '../db/entities/user.entity.js';
 
 
 const authenticate = async (req, res, next) => {
-    const token = req.headers['authorization'] || '';
+    const token = req.headers['authorization'] || req.cookies['token'] ||'';
+
     let tokenIsValid = verifyToken(token);
     if (tokenIsValid) {
         const decoded = jwt.decode(token, { json: true });
@@ -18,7 +19,7 @@ const authenticate = async (req, res, next) => {
 const verifyToken = (token) => {
     let IsValid;
     try {
-        IsValid = jwt.verify(token, process.env.SECRET_KEY || '');
+        IsValid = jwt.verify(token, process.env.JWT_SECRET || '');
         return IsValid;
     }
     catch (error) { }

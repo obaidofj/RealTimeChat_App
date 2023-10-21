@@ -19,6 +19,7 @@ import {seedDatabase} from './db/seeds/seedDB.js'
 import { fileURLToPath } from 'url';
 import path from 'path';
 import upload from './middlewares/multerconfig.js';
+import { authenticate } from './middlewares/authentication.js';
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -32,9 +33,11 @@ app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
  
 app.use('/', indexRouter);
+
 app.use('/auth', userRouter);
+app.use(authenticate);
 app.use('/chat', chatGroupRouter);
-app.use('/messege', upload.single('file'), messegeRouter);
+app.use('/messege',  messegeRouter);
 app.use('/blockmute', muteBlockRouter);
 app.use('/notify', notificationRouter); 
 app.use('/order', orderRouter);

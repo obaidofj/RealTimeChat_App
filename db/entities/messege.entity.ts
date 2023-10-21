@@ -12,14 +12,17 @@ export class Message extends BaseEntity {
   id: number;
 
   @Column()
-  content: string;
+  text: string;
 
-  @Column({
-    type: "enum",
-    enum: MessegeType,
-    default: MessegeType.MESSEGE,
-  })
-  type: MessegeType;
+  // @Column({
+  //   type: "enum",
+  //   enum: MessegeType,
+  //   default: MessegeType.MESSEGE,
+  // })
+  // type: MessegeType;
+
+  @Column('simple-array', { nullable: true })
+  attachmentsUrls: string[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
@@ -38,5 +41,5 @@ export class Message extends BaseEntity {
   @Column({ name: 'receiverid' }) 
   receiverid: number; 
 
-  attachments: Attachment[];
+  // attachments: Attachment[];
 }

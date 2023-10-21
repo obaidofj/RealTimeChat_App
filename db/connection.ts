@@ -25,7 +25,7 @@ import { OrderProduct } from "./entities/orderProducts.entity.js";
       username: process.env.DB_USER_NAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [ User, Message,Attachment,ChatGroup,ConnectionFriendship,MuteBlockUser,Notification,Order,Product,PaymentTransaction ,Permissions, Profile, Role ,OrderProduct, Flags], 
+      entities: [ User, Message,ChatGroup,ConnectionFriendship,MuteBlockUser,Notification,Order,Product,PaymentTransaction ,Permissions, Profile, Role ,OrderProduct, Flags], 
       migrations: [] ,
       logging: [ "error"],
       synchronize: true,
