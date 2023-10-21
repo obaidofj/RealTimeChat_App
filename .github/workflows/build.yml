@@ -28,7 +28,7 @@ jobs:
         password: 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
 
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ghcr.io/m-alsuleibi/livechat:${{ steps.image_version.outputs.gitsha }}
+      run: docker build . --file Dockerfile --tag ghcr.io/obaidofj/livechat:${{ steps.image_version.outputs.gitsha }}
 
     - name: Publish docker image
-      run: docker push ghcr.io/m-alsuleibi/livechat:${{ steps.image_version.outputs.gitsha }}
+      run: docker push ghcr.io/obaidofj/livechat:${{ steps.image_version.outputs.gitsha }}
