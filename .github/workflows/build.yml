@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "mohammad-2" ]
   pull_request:
-    branches: [ "dev" ]
+    branches: [ "mohammad-2" ]
   
 
 jobs:
@@ -25,22 +25,4 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ghcr.io/m-alsuleibi/express-docker:${{ steps.image_version.outputs.gitsha }}
-    - name: Publish docker image
-      run: docker push ghcr.io/m-alsuleibi/express-docker:${{ steps.image_version.outputs.gitsha }}
-    - name: configure docker host
-      uses: khaledez/configure-docker-host@v1 #can be always used 
-      with:
-        host: 13.40.45.17
-        user: github
-        ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
-    - name: deploy
-      run: docker compose -f docker-compose-prod.yml up -d
-      env: 
-        DB_PASSWORD: ${{secrets.DB_PASSWORD}}  
-    
-    - name: print logs 
-      if: always()
-      run: docker compose logs 
+        password: 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
