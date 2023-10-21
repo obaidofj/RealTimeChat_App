@@ -32,3 +32,10 @@ jobs:
 
     - name: Publish docker image
       run: docker push ghcr.io/obaidofj/livechat:${{ steps.image_version.outputs.gitsha }}
+
+    - name: configure docker host
+      uses: khaledez/configure-docker-host@v1 #can be always used 
+      with:
+        host: 172.17.0.1
+        user: github
+        ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}

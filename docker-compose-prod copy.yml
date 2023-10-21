@@ -17,7 +17,7 @@ services:
     restart: always
 
   app:
-    image: ghcr.io/m-alsuleibi/express-docker:1aa8446
+    image: ghcr.io/obaidofj/livechat:7af331f
     restart: always
     environment:
       - APP_PORT=80
