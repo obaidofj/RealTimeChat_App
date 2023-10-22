@@ -78,7 +78,8 @@ export const userController = {
         res.cookie('token', token, {
           maxAge: 60 * 60 * 1000
         });
-       
+        
+        // res.send();
 
       return res.status(200).json({ message: 'Login successful', token });
     } catch (error) {

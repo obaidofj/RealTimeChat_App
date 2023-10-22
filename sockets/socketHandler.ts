@@ -1,37 +1,64 @@
-// Import necessary modules and models
 import socketIO from 'socket.io';
-// const { Message } = require('../models/Message');
+import { Message } from '../db/entities/messege.entity.js';
+import { User } from '../db/entities//user.entity.js';
+import {messageController} from '../controllers/message.controller.js'; // Import your message controller
 
-// Initialize a socket.io server
-module.exports = (server) => {
-  const io = socketIO(server);
+ const socketHandler = (io) => {
+//   const io = socketIO(server);
 
-  // Define a connection event when a client connects
   io.on('connection', (socket) => {
     console.log('A user connected');
 
-    // Handle incoming messages
-    socket.on('message', async (data) => {
-      try {
-        // Save the message to the database (you may need to modify this based on your models)
-        const message = new Message({
-          text: data.text,
-          sender: data.sender,
-          receiver: data.receiver,
-        });
-        await message.save();
+    const token = socket.handshake.headers.authorization?.split(' ')[1];
 
-        // Broadcast the message to the sender and receiver
-        socket.emit('message', message); // Send to the sender
-        socket.to(data.receiver).emit('message', message); // Send to the receiver
-      } catch (error) {
-        console.error(error);
-      }
-    });
+    socket.on('join', (username) => {
+      socket.join('global');
+      // ...
 
-    // Handle disconnect event when a client disconnects
-    socket.on('disconnect', () => {
-      console.log('A user disconnected');
+      socket.on('message', async (data, callback) => {
+        const senderId = getusernameBySocketId(socket.id);
+        if (!senderId) {
+          // Handle the case where the sender is not found (e.g., session expired)
+          return;
+        }
+
+    //     const user = await User.findOne({ where: { username } });
+    //   if (!user) {
+    //     return res.status(404).json({ message: 'User not found' });
+    //   }
+
+        // Call the sendMessage method from your message controller
+        const req = { body: { senderId, receiverId: data.receiver, text: data.text } };
+        const res = {
+          status: (code) => {
+            // Handle the response status (e.g., 201 for success, 500 for an error)
+            if (code === 201) {
+              // Notify the sender that the message was sent successfully
+              callback({ status: 'sent' });
+            } else {
+              // Handle errors
+            }
+          },
+        };
+        messageController.sendMessage(req, res);
+      });
+
+      socket.on('disconnect', () => {
+        // Handle user disconnect
+        // ...
+      });
     });
   });
+
+  // Helper function to get the user ID associated with a socket ID
+  function getusernameBySocketId(socketId) {
+    for (const username in connectedUsers) {
+      if (connectedUsers[username].socketId === socketId) {
+        return username;
+      }
+    }
+    return null;
+  }
 };
+
+export default socketHandler;

@@ -20,6 +20,12 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import upload from './middlewares/multerconfig.js';
 import { authenticate } from './middlewares/authentication.js';
+import cors from 'cors';
+import http from 'http'; // Import the HTTP module
+// import socketIo from 'socket.io'; // Import Socket.io
+// import socketIO from 'socket.io';
+import socketIO , {Server} from 'socket.io';
+import socketHandler from './sockets/socketHandler.js';
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -27,10 +33,22 @@ const __dirname = path.dirname(__filename);
 
 var app = express();
 
+app.use(cors({
+  origin: '*',
+  credentials: true
+}));
+
 app.use(cookieParser()); 
 app.use(express.json());  
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Set up HTTP server for Socket.io
+const server = http.createServer(app);
+// const io = socketIO(server);
+const io = new Server(server);
+// io.attachApp(app);
+socketHandler(io);
  
 app.use('/', indexRouter);
 

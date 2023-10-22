@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { Message } from '../db/entities/messege.entity.js';
 import { User } from '../db/entities/user.entity.js';
-import { MessegeType } from '../types/messege.types.js';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import upload from '../middlewares/multerconfig.js';

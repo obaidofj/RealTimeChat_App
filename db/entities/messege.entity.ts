@@ -3,7 +3,7 @@ import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDa
 import { Attachment } from './attachment.entity.js';
 
 import { User } from './user.entity.js'; 
-import { MessegeType } from '../../types/messege.types.js';
+import { MessegeStatus } from '../../types/messege.types.js';
 
 
 @Entity()
@@ -14,12 +14,6 @@ export class Message extends BaseEntity {
   @Column()
   text: string;
 
-  // @Column({
-  //   type: "enum",
-  //   enum: MessegeType,
-  //   default: MessegeType.MESSEGE,
-  // })
-  // type: MessegeType;
 
   @Column('simple-array', { nullable: true })
   attachmentsUrls: string[];
@@ -41,5 +35,13 @@ export class Message extends BaseEntity {
   @Column({ name: 'receiverid' }) 
   receiverid: number; 
 
+  @Column({
+    type: "enum",
+    enum: MessegeStatus,
+    default: MessegeStatus.SENT,
+  })
+  status: MessegeStatus;
+
+  
   // attachments: Attachment[];
 }
