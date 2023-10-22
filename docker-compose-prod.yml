@@ -17,7 +17,7 @@ services:
     restart: always
 
   app:
-    image: ghcr.io/obaidofj/livechat:7af331f
+    image: ghcr.io/obaidofj/livechat:$GIT_VERSION #dynamic image version
     restart: always
     environment:
       - APP_PORT=80
