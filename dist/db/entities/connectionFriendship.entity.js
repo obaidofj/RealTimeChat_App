@@ -12,7 +12,9 @@ import { User } from './user.entity.js';
 let ConnectionFriendship = class ConnectionFriendship extends BaseEntity {
     id;
     isAccepted;
+    // @ts-ignore
     initiator;
+    // @ts-ignore
     recipient;
 };
 __decorate([

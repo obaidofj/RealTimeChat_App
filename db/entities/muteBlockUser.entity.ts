@@ -12,9 +12,11 @@ export class MuteBlockUser  extends BaseEntity {
 
   @Column()
   isBlock: boolean;
+// @ts-ignore
 
   @ManyToOne(() => User, (user) => user.initiatedMuteBlocks)
   sourceUser: User; 
+// @ts-ignore
 
   @ManyToOne(() => User, (user) => user.receivedMuteBlocks)
   affectedUser: User; 

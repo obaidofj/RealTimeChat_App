@@ -11,19 +11,25 @@ import { Message } from './messege.entity.js';
 @Entity()
 export class User  extends BaseEntity  {
   @PrimaryGeneratedColumn()
+
   id: number;
 
   @Column({ unique: true })
+
   username: string;
 
   @Column()
+
   email: string;
 
   @Column()
+
   password: string; 
 
   chatGroups : ChatGroup[];
+
   notifications: Notification[];
+
   paymentTransactions: PaymentTransaction[];
   
   //  @OneToMany(() => ConnectionFriendship, (ConnectionFriendship) => ConnectionFriendship.initiator)
@@ -43,11 +49,15 @@ export class User  extends BaseEntity  {
   // receivedMessages: Message[];
 
   async getSentMessages(): Promise<Message[]> {
+    // @ts-ignore
+
     const sentMessages = await Message.find({ sender: this });
     return sentMessages;
   }
 
   async getReceivedMessages(): Promise<Message[]> {
+    // @ts-ignore
+
     const receivedMessages = await Message.find({ receiver: this });
     return receivedMessages;
   }

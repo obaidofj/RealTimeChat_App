@@ -16,6 +16,7 @@ export class Order {
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
+// @ts-ignore
 
   @ManyToOne(() => User, (user) => user.orders)
   user: User; 

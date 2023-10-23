@@ -8,9 +8,11 @@ export class ConnectionFriendship  extends BaseEntity {
 
   @Column({ default: false })
   isAccepted: boolean;
+// @ts-ignore
 
   @ManyToOne(() => User, (user) => user.friendshipsInitiated) 
   initiator: User; 
+// @ts-ignore
 
   @ManyToOne(() => User, (user) => user.friendshipsReceived)
   recipient: User; 

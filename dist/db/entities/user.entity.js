@@ -29,10 +29,12 @@ let User = class User extends BaseEntity {
     // sentMessages: Message[];
     // receivedMessages: Message[];
     async getSentMessages() {
+        // @ts-ignore
         const sentMessages = await Message.find({ sender: this });
         return sentMessages;
     }
     async getReceivedMessages() {
+        // @ts-ignore
         const receivedMessages = await Message.find({ receiver: this });
         return receivedMessages;
     }

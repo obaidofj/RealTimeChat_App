@@ -15,9 +15,11 @@ export class Message extends BaseEntity {
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
+// @ts-ignore
 
   @ManyToOne(() => User, (user) => user.sentMessages, { eager: true }) 
   sender: User;
+// @ts-ignore
 
   @ManyToOne(() => User, (user) => user.receivedMessages, { eager: true  })
   receiver: User;

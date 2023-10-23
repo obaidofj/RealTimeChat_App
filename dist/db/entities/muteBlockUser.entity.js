@@ -13,7 +13,9 @@ let MuteBlockUser = class MuteBlockUser extends BaseEntity {
     id;
     isMute;
     isBlock;
+    // @ts-ignore
     sourceUser;
+    // @ts-ignore
     affectedUser;
 };
 __decorate([
