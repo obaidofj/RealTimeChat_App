@@ -25,7 +25,7 @@ export const chatgroupController = {
       if (users.length !== userIds.length) {
         return res.status(400).json({ message: 'One or more users not found' });
       }
-
+ 
       // Create a new chat group
       const chatGroup = await ChatGroup.create({
         name,

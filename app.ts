@@ -24,7 +24,9 @@ import cors from 'cors';
 import http from 'http'; // Import the HTTP module
 // import socketIo from 'socket.io'; // Import Socket.io
 // import socketIO from 'socket.io';
-import socketIO , {Server} from 'socket.io';
+// import socketIO , {Server} from 'socket.io';
+// import socketHandler from './sockets/socketHandler.js';
+import socketHandlerMiddleware from './middlewares/socket.js';
 import socketHandler from './sockets/socketHandler.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -33,13 +35,31 @@ const __dirname = path.dirname(__filename);
 
 var app = express();
 
+
+
 app.use(cors({
-  origin: '*',
+  origin: 'http://localhost:4000',
   credentials: true
 }));
 
+app.use((req, res, next) => {
+  // Set the 'app' property on the 'req' object
+  req.app = app;
+  next();
+});
+
+// app.use(socketHandlerMiddleware);
 app.use(cookieParser()); 
 app.use(express.json());  
+
+// app.get('/fromsocket', (req, res) => {
+//   // Send a message to all connected users
+//   const socketIO = req.socketIO;
+//   socketIO.emit('message', 'Hello from the Express - Socket server!');
+
+//   res.send('Hello from the Express server!');
+// });
+
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -55,14 +75,11 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // const server = http.createServer(app);
 // const io = new Server(server, { transports: ['websocket'] });
-// socketHandler(io);
+
 
 
 // const http = require('http');
-const server = http.createServer(app);
 
-
-const io = new Server(server, { transports: ['websocket'] });
 app.use('/', indexRouter);
 
 app.use('/auth', userRouter);
@@ -76,14 +93,19 @@ app.use('/payment', paymentRouter);
 app.use('/product', productRouter);
 app.use('/connection', connectionRouter);
 
- 
-app.listen(process.env.APP_PORT, () => {
+const server= socketHandler(app);
+
+server.listen(process.env.APP_PORT, () => {
     winsLogger.info( `App is listening on port ${process.env.APP_PORT}`
     );
 
 });
 
- 
+// const server = http.createServer(app);
+
+
+// const io = new Server(server, { transports: ['websocket'] });
+
 dataSource 
     .initialize() 
     .then( async () => {
