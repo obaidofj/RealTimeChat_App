@@ -43,17 +43,30 @@ app.use(express.json());
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Set up HTTP server for Socket.io
+// // Set up HTTP server for Socket.io
+// const server = http.createServer(app);
+// // const io = socketIO(server);
+// const io = new Server(server , {transports: ['websocket'],});
+// // io.attachApp(app);
+// socketHandler(io);
+
+// const server = http.createServer(app);
+// const io = require('socket.io')(server);
+
+// const server = http.createServer(app);
+// const io = new Server(server, { transports: ['websocket'] });
+// socketHandler(io);
+
+
+// const http = require('http');
 const server = http.createServer(app);
-// const io = socketIO(server);
-const io = new Server(server);
-// io.attachApp(app);
-socketHandler(io);
- 
+
+
+const io = new Server(server, { transports: ['websocket'] });
 app.use('/', indexRouter);
 
 app.use('/auth', userRouter);
-app.use(authenticate);
+// app.use(authenticate);
 app.use('/chat', chatGroupRouter);
 app.use('/messege',  messegeRouter);
 app.use('/blockmute', muteBlockRouter);

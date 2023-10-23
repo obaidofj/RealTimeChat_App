@@ -3,13 +3,15 @@ import { User } from '../db/entities/user.entity.js';
 
 
 const authenticate = async (req, res, next) => {
-    const token = req.headers['authorization'] || req.cookies['token'] ||'';
-
+    const token = req.headers['authorization'] ||req.headers['Authorization'] || req.cookies['token'] ||'';
+    
+    
     let tokenIsValid = verifyToken(token);
+   
     if (tokenIsValid) {
         const decoded = jwt.decode(token, { json: true });
         const user = await User.findOneBy({ username: decoded?.username || '' });
-        res.locals.user = user;
+        res.locals.user = user; 
         next();
     }
     else {
