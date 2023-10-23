@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToOne, Column, Unique } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToOne, Column, Unique, JoinColumn, Relation } from 'typeorm';
 import { User } from './user.entity.js'; 
 
 @Entity()
@@ -10,14 +10,27 @@ export class MuteBlockUser  extends BaseEntity {
   @Column()
   isMute: boolean;
 
-  @Column()
+  @Column() 
   isBlock: boolean;
 // @ts-ignore
 
   @ManyToOne(() => User, (user) => user.initiatedMuteBlocks)
+<<<<<<< HEAD
   sourceUser: User; 
 // @ts-ignore
+=======
+  @JoinColumn({ name: 'initiatoruserid' }) 
+  initiatoruser: Relation<User>; 
+ 
+  @Column({ name: 'initiatoruserid' }) 
+  initiatoruserid: number; 
+>>>>>>> obaid-controllers
 
   @ManyToOne(() => User, (user) => user.receivedMuteBlocks)
-  affectedUser: User; 
+  @JoinColumn({ name: 'receiveduserid' }) 
+  receiveduser: Relation<User>; 
+
+  @Column({ name: 'receiveduserid' }) 
+  receiveduserid: number; 
+  
 }

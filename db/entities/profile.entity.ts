@@ -15,6 +15,9 @@ export class Profile extends BaseEntity {
     @Column()
     dateOfBirth: string 
 
+    @Column()
+    picture: string 
+
     user:User
 
 }

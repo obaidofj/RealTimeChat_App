@@ -14,6 +14,7 @@ import { Role } from './entities/role.entity.js';
 import { Permissions } from './entities/permissions.entity.js'; 
 import { Profile } from './entities/profile.entity.js'; 
 import { Flags } from './entities/flags.entiy.js'; 
+import { OrderProduct } from "./entities/orderProducts.entity.js";
 
 
  
@@ -24,9 +25,9 @@ import { Flags } from './entities/flags.entiy.js';
       username: process.env.DB_USER_NAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [ User, Message,Attachment,ChatGroup,ConnectionFriendship,MuteBlockUser,Notification,Order,Product,PaymentTransaction ,Permissions, Profile, Role , Flags], 
+      entities: [ User, Message,ChatGroup,ConnectionFriendship,MuteBlockUser,Notification,Order,Product,PaymentTransaction ,Permissions, Profile, Role ,OrderProduct, Flags], 
       migrations: [] ,
-      logging: true,
+      logging: [ "error"],
       synchronize: true,
     });
  
