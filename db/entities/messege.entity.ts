@@ -22,15 +22,10 @@ export class Message extends BaseEntity {
   createdAt: Date;
 // @ts-ignore
 
-<<<<<<< HEAD
-  @ManyToOne(() => User, (user) => user.sentMessages, { eager: true }) 
-  sender: User;
-// @ts-ignore
-=======
+
   @ManyToOne(() => User, (user) => user.sentMessages)
   @JoinColumn({ name: 'senderid' }) 
   sender: Relation<User>;
->>>>>>> obaid-controllers
 
   @Column({ name: 'senderid' }) 
   senderid: number; 
@@ -48,6 +43,7 @@ export class Message extends BaseEntity {
     default: MessegeStatus.SENT,
   })
   status: MessegeStatus;
+  attachments: any;
 
   
   // attachments: Attachment[];

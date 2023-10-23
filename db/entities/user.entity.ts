@@ -28,31 +28,7 @@ export class User  extends BaseEntity  {
 
   email: string;
 
-<<<<<<< HEAD
-  @Column()
 
-  password: string; 
-
-  chatGroups : ChatGroup[];
-
-  notifications: Notification[];
-
-  paymentTransactions: PaymentTransaction[];
-  
-  //  @OneToMany(() => ConnectionFriendship, (ConnectionFriendship) => ConnectionFriendship.initiator)
-  //   friendshipsInitiated : ConnectionFriendship[];
-  
-  //   @OneToMany(() => ConnectionFriendship, (ConnectionFriendship) => ConnectionFriendship.recipient)
-  //   friendshipsReceived: ConnectionFriendship[];
-  
-    // @OneToMany(() => MuteBlockUser, (muteBlock) => muteBlock.sourceUser)
-    // initiatedMuteBlocks: MuteBlockUser[];
-  
-    // @OneToMany(() => MuteBlockUser, (muteBlock) => muteBlock.affectedUser)
-    // receivedMuteBlocks: MuteBlockUser[];
-  
-  // sentMessages: Message[];
-=======
   chatGroups : ChatGroup[];
   paymentTransactions: PaymentTransaction[];  
   orders : Order[];
@@ -70,7 +46,6 @@ export class User  extends BaseEntity  {
 
   @OneToMany(() => Notification, n => n.notificationRecipient , { eager: true})
   notifications: Notification[];
->>>>>>> obaid-controllers
 
   
    @OneToMany(() => ConnectionFriendship, (ConnectionFriendship) => ConnectionFriendship.initiator)
@@ -85,21 +60,7 @@ export class User  extends BaseEntity  {
     @OneToMany(() => MuteBlockUser, (muteBlock) => muteBlock.receiveduser)
     receivedMuteBlocks: MuteBlockUser[];
 
-<<<<<<< HEAD
-  async getSentMessages(): Promise<Message[]> {
-    // @ts-ignore
 
-    const sentMessages = await Message.find({ sender: this });
-    return sentMessages;
-  }
-
-  async getReceivedMessages(): Promise<Message[]> {
-    // @ts-ignore
-
-    const receivedMessages = await Message.find({ receiver: this });
-    return receivedMessages;
-  }
-=======
 
     @OneToMany(() => Message, (messege) => messege.sender)
     sentMessages: Message[];
@@ -146,7 +107,6 @@ export class User  extends BaseEntity  {
   //   const receivedConnectionFriendship = await ConnectionFriendship.find({ recipient: this });
   //   return receivedConnectionFriendship;
   // }
->>>>>>> obaid-controllers
 
   }
   

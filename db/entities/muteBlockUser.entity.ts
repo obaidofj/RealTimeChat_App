@@ -15,16 +15,12 @@ export class MuteBlockUser  extends BaseEntity {
 // @ts-ignore
 
   @ManyToOne(() => User, (user) => user.initiatedMuteBlocks)
-<<<<<<< HEAD
-  sourceUser: User; 
-// @ts-ignore
-=======
+
   @JoinColumn({ name: 'initiatoruserid' }) 
   initiatoruser: Relation<User>; 
  
   @Column({ name: 'initiatoruserid' }) 
   initiatoruserid: number; 
->>>>>>> obaid-controllers
 
   @ManyToOne(() => User, (user) => user.receivedMuteBlocks)
   @JoinColumn({ name: 'receiveduserid' }) 

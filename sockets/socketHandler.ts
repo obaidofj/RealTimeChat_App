@@ -6,7 +6,7 @@
 import { Server } from 'socket.io';
 import http from 'http';
 
-const socketHandler = (app) => {
+const socketHandler = (app: http.RequestListener<typeof http.IncomingMessage, typeof http.ServerResponse> | undefined) => {
 // Create a new Socket.io server
 const server = http.createServer(app);
 // const io = new Server(server);

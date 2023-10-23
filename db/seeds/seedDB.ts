@@ -1,13 +1,8 @@
 import connection  from '../connection.js';
 import { User } from '../entities/user.entity.js';
 import bcrypt from 'bcrypt';
-<<<<<<< HEAD
-// @ts-ignore
 
-import {isAppliedMigration} from '../../utils/generalUtils.js'
-=======
 import {isFlageSet} from '../../utils/generalUtils.js'
->>>>>>> obaid-controllers
 
 export async function seedDatabase() {
 

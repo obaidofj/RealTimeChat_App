@@ -23,7 +23,7 @@ export const orderController = {
        let orderTotal = 0;
        let orderTotalQuantity = 0;
 
-          const productIds = products.map((product) => product.id);
+          const productIds = products.map((product: { id: any; }) => product.id);
       
           // Ensure that product IDs exist in the database
           const existingProducts = await Product.find({ where: { id: In(productIds) }});
@@ -36,7 +36,7 @@ export const orderController = {
       
       
   // Create OrderProducts to associate products with quantities and update totals
-  const orderProducts = products.map((product) => {
+  const orderProducts = products.map((product: { id: number; quantity: number; }) => {
     const existingProduct = existingProducts.find((p) => p.id === product.id);
 
     const orderProduct = new OrderProduct();
