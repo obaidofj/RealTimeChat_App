@@ -40,6 +40,7 @@ app.listen(process.env.APP_PORT, () => {
     message: `App is listening on port ${process.env.APP_PORT}`,
     timestamp: new Date(),});
     
+
 dataSource 
     .initialize() 
     .then( async () => {
@@ -77,4 +78,8 @@ dataSource
 
   
     
+
+});
+   
+
 export default app;
