@@ -7,22 +7,13 @@ export class ConnectionFriendship  extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-<<<<<<< HEAD
-  @Column({ default: false })
-  isAccepted: boolean;
-// @ts-ignore
 
-  @ManyToOne(() => User, (user) => user.friendshipsInitiated) 
-  initiator: User; 
-// @ts-ignore
-=======
   @Column()
   status: connStatus;
 
   @ManyToOne(() => User, (user) => user.initiatedConnectionFriendship)
   @JoinColumn({ name: 'initiatoUserId' })  
   initiator: Relation<User>;  
->>>>>>> obaid-controllers
 
   @Column({ name: 'initiatoUserId' }) 
   initiatoUserId: number; 

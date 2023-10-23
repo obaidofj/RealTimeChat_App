@@ -34,20 +34,32 @@ export const messageController = {
   let attachmentsUrls:string[]=[];
 
   // Create an array to track which files were successfully uploaded
-  uploadedFiles?.map((file, index) => {
-    if (file) {
-      attachmentsUrls.push(file.filename)
-    } else {
-      notUploadedFiles.push(file.originalname)
-    }
-  });
+  // uploadedFiles?.map((file, index) => {
+  //   if (file) {
+  //     attachmentsUrls.push(file.filename)
+  //   } else {
+  //     notUploadedFiles.push(file.originalname)
+  //   }
+  // });
+  if (Array.isArray(uploadedFiles)) {
+    uploadedFiles.map((file, index) => {
+      if (file) {
+        attachmentsUrls.push(file.filename);
+      } else {
+        notUploadedFiles.push(file.originalname);
+      }
+    });
+  } else {
+    // Handle the case where uploadedFiles is not an array
+  }
+  
 
       
       if(req.files?.length > 0 && (req.files?.length !== attachmentsUrls.length ))
       {
        const filesMessege = "Some files are not uploaded due to size limit or another error , max file size is 12MB"
       }
-
+      
     // if (req.files && req.files.length === 0) {
     //   // No files were uploaded.
     //   res.status(400).json('No files were uploaded.');
