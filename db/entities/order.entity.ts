@@ -33,6 +33,7 @@ export class Order extends BaseEntity{
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
+// @ts-ignore
 
 
   @OneToOne(()=>PaymentTransaction , {  eager: true ,nullable:true } )

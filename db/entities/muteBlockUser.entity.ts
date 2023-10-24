@@ -12,8 +12,10 @@ export class MuteBlockUser  extends BaseEntity {
 
   @Column() 
   isBlock: boolean;
+// @ts-ignore
 
   @ManyToOne(() => User, (user) => user.initiatedMuteBlocks)
+
   @JoinColumn({ name: 'initiatoruserid' }) 
   initiatoruser: Relation<User>; 
  

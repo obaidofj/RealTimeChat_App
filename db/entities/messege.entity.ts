@@ -20,6 +20,8 @@ export class Message extends BaseEntity {
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
+// @ts-ignore
+
 
   @ManyToOne(() => User, (user) => user.sentMessages)
   @JoinColumn({ name: 'senderid' }) 
@@ -41,6 +43,7 @@ export class Message extends BaseEntity {
     default: MessegeStatus.SENT,
   })
   status: MessegeStatus;
+  attachments: any;
 
   
   // attachments: Attachment[];

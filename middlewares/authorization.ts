@@ -8,7 +8,7 @@ const authorize = (api: string) => {
     next: express.NextFunction
   ) => {
     const permissions = res.locals.user?.role?.permissions || [];
-    if (permissions.filter(p => p.name === api).length > 0) {
+    if (permissions.filter((p: { name: string; }) => p.name === api).length > 0) {
       next();
     } else {
       res.status(403).send("You don't have the permission to access this resource!");

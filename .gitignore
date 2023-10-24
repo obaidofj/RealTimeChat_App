@@ -1,8 +1,14 @@
 node_modules 
 .env 
+<<<<<<< HEAD
+logs   
+deployment_key 
+infrastructure 
+=======
 logs  
 dist     
 uploads  
 test 
 
+>>>>>>> obaid-controllers
 localfiles 

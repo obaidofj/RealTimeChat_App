@@ -7,6 +7,7 @@ export class ConnectionFriendship  extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+
   @Column()
   status: connStatus;
 

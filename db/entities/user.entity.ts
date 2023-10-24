@@ -17,13 +17,17 @@ import { Order } from './order.entity.js';
 @Entity()
 export class User  extends BaseEntity  {
   @PrimaryGeneratedColumn()
+
   id: number;
 
   @Column({ unique: true })
+
   username: string;
 
   @Column()
+
   email: string;
+
 
   chatGroups : ChatGroup[];
   paymentTransactions: PaymentTransaction[];  
@@ -55,6 +59,7 @@ export class User  extends BaseEntity  {
   
     @OneToMany(() => MuteBlockUser, (muteBlock) => muteBlock.receiveduser)
     receivedMuteBlocks: MuteBlockUser[];
+
 
 
     @OneToMany(() => Message, (messege) => messege.sender)
