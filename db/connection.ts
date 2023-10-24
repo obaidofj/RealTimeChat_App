@@ -1,7 +1,23 @@
-import { DataSource } from "typeorm";
-import winsLogger from "../middleware/logging.js";
+import { DataSource } from "typeorm"
+import winsLogger from "../middlewares/logging.js";
+import { Message } from './entities/messege.entity.js'; 
+import { Attachment } from './entities/attachment.entity.js'; 
+import { ChatGroup } from './entities/chatGroup.entity.js'; 
+import { ConnectionFriendship } from './entities/connectionFriendship.entity.js'; 
+import { MuteBlockUser } from './entities/muteBlockUser.entity.js'; 
+import { Notification } from './entities/notification.entity.js'; 
+import { Order } from './entities/order.entity.js'; 
+import { PaymentTransaction } from './entities/paymentTransaction.entity.js'; 
+import { Product } from './entities/product.entity.js'; 
+import { User } from './entities/user.entity.js'; 
+import { Role } from './entities/role.entity.js'; 
+import { Permissions } from './entities/permissions.entity.js'; 
+import { Profile } from './entities/profile.entity.js'; 
+import { Flags } from './entities/flags.entiy.js'; 
+import { OrderProduct } from "./entities/orderProducts.entity.js";
 
 
+ 
     const connection = new DataSource({
       type: 'mysql', 
       host: process.env.DB_HOST,
@@ -9,21 +25,12 @@ import winsLogger from "../middleware/logging.js";
       username: process.env.DB_USER_NAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [ '/entities/*.js'], 
-      migrations: ['./**/migration/*.ts'],
-      synchronize: true, 
-      logging: true, 
+      entities: [ User, Message,ChatGroup,ConnectionFriendship,MuteBlockUser,Notification,Order,Product,PaymentTransaction ,Permissions, Profile, Role ,OrderProduct, Flags], 
+      migrations: [] ,
+      logging: [ "error"],
+      synchronize: true,
     });
-
-    export const initDB = async () =>
-    await connection.initialize().then(() => {
-      winsLogger.log(  {level: 'info',
-      message: 'Connected to DB!',
-      timestamp: new Date(),});
-    }).catch(err => {
-      winsLogger.error({level: 'info',
-      message: 'Failed to connect to DB: ' + err,
-      timestamp: new Date(),});
-    });
+ 
+    
   
   export default connection;
