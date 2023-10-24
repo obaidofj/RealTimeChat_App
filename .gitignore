@@ -4,3 +4,6 @@ logs
 deployment_key 
 infrastructure 
 localfiles 
+dist 
+test 
+uploads 
