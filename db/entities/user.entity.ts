@@ -11,13 +11,14 @@ import { Profile } from './profile.entity.js';
 import { Role } from './role.entity.js';
 import bcrypt from 'bcrypt';
 import { Order } from './order.entity.js';
+import { Exclude, Expose, Transform } from 'class-transformer';
 // import { Message } from './messege.entity.js'; 
 
 
 @Entity()
 export class User  extends BaseEntity  {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number; 
 
   @Column({ unique: true })
   username: string;
@@ -29,6 +30,7 @@ export class User  extends BaseEntity  {
   paymentTransactions: PaymentTransaction[];  
   orders : Order[];
 
+
   @BeforeInsert()
   async hashPassword() {
     if (this.password) {
@@ -36,9 +38,17 @@ export class User  extends BaseEntity  {
     }
   }
   @Column({ nullable: false })
+  @Exclude()
   password: string;
- 
 
+   // Define a custom transformation to exclude the password property
+   @Transform(({ value }) => undefined, { toPlainOnly: true })
+   @Expose({ toPlainOnly: true })
+   getPassword() {
+     return undefined;
+   }
+ 
+ 
 
   @OneToMany(() => Notification, n => n.notificationRecipient , { eager: true})
   notifications: Notification[];

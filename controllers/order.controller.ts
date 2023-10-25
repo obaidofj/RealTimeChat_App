@@ -5,6 +5,7 @@ import { Product } from '../db/entities/product.entity.js';
 import { validateNotEmptyFields } from '../utils/validationUtils.js';
 import { In} from 'typeorm';
 import { OrderProduct } from '../db/entities/orderProducts.entity.js';
+import { plainToClass } from 'class-transformer';
 
 export const orderController = {
   // Create an order
@@ -72,15 +73,18 @@ export const orderController = {
   // Get order information
   async getOrderInfo(req: Request, res: Response) {
     try {
-      const orderId = req.params.orderId;
+      const orderId = Number(req.params.orderId);
 
       // Find the order by ID  
-      const order = await Order.findOne({ where: {id : orderId},  relations: ['user', 'product'] });
+      const order = await Order.findOne({ where: {id : orderId},  relations: ['user', 'orderProducts'] });
 
       if (!order) {
         return res.status(404).json({ message: 'Order not found' });
       }
-
+// Use class-transformer to exclude the password property from the User entity
+const orderWithExcludedPassword = plainToClass(Order, order, {
+  excludeExtraneousValues: true,
+});
       return res.status(200).json({ order });
     } catch (error) {
       console.error(error);

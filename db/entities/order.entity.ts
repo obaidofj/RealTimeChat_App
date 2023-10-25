@@ -15,7 +15,8 @@ export class Order extends BaseEntity{
   // @Column()
   // quantity: number;
   // @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
-  orderProducts: OrderProduct[];
+
+  // orderProducts: OrderProduct[];
 
   @Column() 
   totalQuantity: number; 
@@ -26,9 +27,16 @@ export class Order extends BaseEntity{
   // @OneToMany(() => Product, (product) => product.order)
   // products: Product[];
 
+  // @OneToMany(() => OrderProduct, (orderProd) => orderProd.order,{
+  //   cascade: ['insert', 'update'],
+  // })
+  // orderProducts : Relation<OrderProduct []>
 
+  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
+  orderProducts: OrderProduct[];
 
   @ManyToOne(() => User, (user) => user.orders)
+  
   user: User;
 
   @CreateDateColumn({ type: 'timestamp' })

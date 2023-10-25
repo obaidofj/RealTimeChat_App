@@ -3,15 +3,22 @@
 // Create a new Express app
 // const express = require('express');
 // const app = express();
+import jwt from 'jsonwebtoken';
 import { Server } from 'socket.io';
 import http from 'http';
+import { User } from '../db/entities/user.entity.js';
+import { threadId } from 'worker_threads';
+import { MessegeStatus } from '../types/messege.types.js';
+import express from 'express';
+import { messageController } from '../controllers/message.controller.js';
 
-const socketHandler = (app) => {
+const socketHandler = (app: http.RequestListener<typeof http.IncomingMessage, typeof http.ServerResponse> | undefined) => {
 // Create a new Socket.io server
 const server = http.createServer(app);
 // const io = new Server(server);
 // const server = http.createServer(app);
 // const io = require('socket.io')(server, { transports: ['websocket'] });
+
 
 
   // Initialize Socket.io
@@ -21,14 +28,52 @@ const server = http.createServer(app);
 const users = [];
 
 // Listen for new connections
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
   // Add the new user to the list
-  users.push(socket);
 
+  const token:string|undefined = ( socket.handshake.headers.cookie?.split(';').find(c => c.trim().startsWith('token='))?.split('=')[1] );
+// console.log(socket.handshake.headers.cookie?.split(';').find(c => c.trim().startsWith('token=')));
+
+  // let tokenIsValid = verifyToken(token);
+   
+  // if (tokenIsValid) {
+  const decoded = jwt.decode(token as string) as {username:string};
+  const user = await User.findOneBy({ username: decoded?.username || '' });
+  // }
+// }
+const socketId=socket.id;
+
+// console.log(socketId ,'-', token);
+
+users[socketId] = user?.username;
+
+console.log(users);
+
+  // users.push({ toString(socketId) : user?.username});
+
+  //const token = socket.handshake.headers.authorization?.split(' ')[1];
+
+ 
   // Listen for messages from the user
-  socket.on('message', (message) => {
+  socket.on('message', async (data, callback) => {
+    // console.log(socket.handshake.headers.cookie ? socket.handshake.headers.cookie.split(';').find(c => c.trim().startsWith('token='))?.split('=')[1] : null);
+
+      // const username = getusernameBySocketId(socket.id,users);
+
+      //   if (!username) {
+      //     // Handle the case where the sender is not found (e.g., session expired)
+      //     console.log('user not conected' , users);//throw new Error
+      //     return;
+      //   }
+
+
+
+
+      
+
+
     // Broadcast the message to all connected users
-    io.emit('message', message);
+    io.emit('message', data); // do this need to be with db saving ?
   });
 
   // Listen for the user disconnecting
@@ -47,10 +92,24 @@ return server;
 
 };
 
+
+function getusernameBySocketId(socketId,users) {
+  for (const user of users) {
+    if (user.socketId === socketId) {
+      return user.name;
+    }
+  }
+  return null;
+}
+
 export default socketHandler;
 
 
 
+
+function verifyToken(token: string | undefined) {
+  throw new Error('Function not implemented.');
+}
 // // Create a new Express app
 // import express from 'express';
 // const app = express();
