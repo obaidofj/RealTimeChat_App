@@ -1,20 +1,20 @@
-import { Entity,BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Message } from './messege.entity.js'; 
+// import { Entity,BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+// import { Message } from './messege.entity.js'; 
 
-@Entity()
-export class Attachment  extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+// @Entity()
+// export class Attachment  extends BaseEntity {
+//   @PrimaryGeneratedColumn()
+//   id: number;
 
-  @Column()
-  filename: string;
+//   @Column()
+//   filename: string;
 
-  @Column()
-  mimeType: string;
+//   @Column()
+//   mimeType: string;
 
-  @Column()
-  size: number;
+//   @Column()
+//   size: number;
 
-  @ManyToOne(() => Message, (message) => message.attachments)
-  message: Message; 
-}
+//   @ManyToOne(() => Message, (message) => message.attachments)
+//   message: Message; 
+// }

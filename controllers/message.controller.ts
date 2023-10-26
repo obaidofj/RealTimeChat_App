@@ -12,47 +12,46 @@ export const messageController = {
 
 
     try {
-      let { senderId, receiverId, text  } = req.body;
+      let { senderId, receiverId, text } = req.body;
 
-      const senderIdNum=parseInt(senderId);
+      const senderIdNum = parseInt(senderId);
       // Check if sender and receiver users exist
-      const sender = await User.findOne({ where: {id:senderId}});
-      const receiver = await User.findOne({ where:{ id:receiverId}});
+      const sender = await User.findOne({ where: { id: senderId } });
+      const receiver = await User.findOne({ where: { id: receiverId } });
 
       if (!sender || !receiver) {
         return res.status(404).json({ message: 'Sender or receiver not found' });
       }
- 
+
       // if(req.file)
-      
+
       // if(type==MessegeType.ATTACHMENT)
       // attachmentsUrls=req.file.destination + req.file.filename;
-  
+
       // Access the uploaded files from req.files
-  const uploadedFiles = req.files;
-  let notUploadedFiles=[];
-  let attachmentsUrls:string[]=[];
+      const uploadedFiles = req.files as Express.Multer.File[] || [];
+      let notUploadedFiles = [];
+      let attachmentsUrls: string[] = [];
 
-  // Create an array to track which files were successfully uploaded
-  uploadedFiles?.map((file, index) => {
-    if (file) {
-      attachmentsUrls.push(file.filename)
-    } else {
-      notUploadedFiles.push(file.originalname)
-    }
-  });
+      // Create an array to track which files were successfully uploaded
+      uploadedFiles?.map((file, index) => {
+        if (file) {
+          attachmentsUrls.push(file.filename)
+        } else {
+          notUploadedFiles.push(file.originalname)
+        }
+      });
 
-      
-      if(req.files?.length > 0 && (req.files?.length !== attachmentsUrls.length ))
-      {
-       const filesMessege = "Some files are not uploaded due to size limit or another error , max file size is 12MB"
+
+      if ( !!req.files?.length  && (req.files?.length !== attachmentsUrls.length)) {
+        const filesMessege = "Some files are not uploaded due to size limit or another error , max file size is 12MB"
       }
 
-    // if (req.files && req.files.length === 0) {
-    //   // No files were uploaded.
-    //   res.status(400).json('No files were uploaded.');
-    //   // return;
-    // }
+      // if (req.files && req.files.length === 0) {
+      //   // No files were uploaded.
+      //   res.status(400).json('No files were uploaded.');
+      //   // return;
+      // }
       // res.send({
       //   message: 'File Uploaded Successfully!',
       //   file: fileURL
@@ -66,13 +65,13 @@ export const messageController = {
         sender,
         receiver,
       });
-       
+
       await message.save()
 
       return res.status(201).json({ info: 'Message sent successfully', message });
-    // }
-    // else
-    //  return res.status(400).json({ info: 'there was error in uploading fiel' });
+      // }
+      // else
+      //  return res.status(400).json({ info: 'there was error in uploading fiel' });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal server error' });
@@ -87,15 +86,15 @@ export const messageController = {
       // Find messages between the two users
       const messages = await Message.find({
         where: [
-          { senderid : userId1, receiverid: userId2 },
-          { senderid : userId2, receiverid: userId1 },
+          { senderid: Number(userId1), receiverid: Number(userId2) },
+          { senderid: Number(userId2), receiverid: Number(userId1) },
         ],
       });
 
       return res.status(200).json({ messages });
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ message: 'Internal server error'+error });
+      return res.status(500).json({ message: 'Internal server error' + error });
     }
   },
 };

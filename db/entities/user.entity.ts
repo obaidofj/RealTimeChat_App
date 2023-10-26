@@ -11,6 +11,7 @@ import { Profile } from './profile.entity.js';
 import { Role } from './role.entity.js';
 import bcrypt from 'bcrypt';
 import { Order } from './order.entity.js';
+import { Exclude } from 'class-transformer';
 // import { Exclude, Expose, Transform } from 'class-transformer';
 // import { Message } from './messege.entity.js'; 
 
@@ -39,7 +40,7 @@ export class User  extends BaseEntity  {
   }
  
   // @Exclude()
-  @Column({ nullable: false })
+  @Column({ nullable: false ,select:false })
   password: string;
 
   //  // Define a custom transformation to exclude the password property

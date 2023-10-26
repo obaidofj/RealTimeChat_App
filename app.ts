@@ -137,8 +137,9 @@ dataSource
 
       const queryRunner = dataSource.createQueryRunner()
 
-      await applyMigration(queryRunner);
-      console.log("Migration has been applied successfully.");
+      // await applyMigration(queryRunner);
+      // console.log("Migration has been applied successfully.");
+
       const server = socketHandler(app);
       server.listen(process.env.APP_PORT, () => {
         winsLogger.info(`App is listening on port ${process.env.APP_PORT}`

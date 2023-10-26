@@ -1,7 +1,6 @@
 import { DataSource } from "typeorm"
 import winsLogger from "../middlewares/logging.js";
 import { Message } from './entities/messege.entity.js';
-import { Attachment } from './entities/attachment.entity.js';
 import { ChatGroup } from './entities/chatGroup.entity.js';
 import { ConnectionFriendship } from './entities/connectionFriendship.entity.js';
 import { MuteBlockUser } from './entities/muteBlockUser.entity.js';

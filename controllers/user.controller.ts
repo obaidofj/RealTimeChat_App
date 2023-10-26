@@ -58,7 +58,7 @@ async getUserProfileByID(req: Request, res: Response) {
       return res.status(404).json({ message: 'User is not found' });
     }
     
-   if(user[0]?.profile?.id)
+   if(user[0].profile?.id)
     return res.status(200).json({ userid: user[0].id, profile:user[0].profile });
   else
     return res.status(404).json({messege:'There is no profile for user :' + user[0].id});

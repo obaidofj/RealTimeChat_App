@@ -13,50 +13,51 @@ import express from 'express';
 import { messageController } from '../controllers/message.controller.js';
 
 const socketHandler = (app: http.RequestListener<typeof http.IncomingMessage, typeof http.ServerResponse> | undefined) => {
-// Create a new Socket.io server
-const server = http.createServer(app);
-// const io = new Server(server);
-// const server = http.createServer(app);
-// const io = require('socket.io')(server, { transports: ['websocket'] });
+  // Create a new Socket.io server
+  const server = http.createServer(app);
+  // const io = new Server(server);
+  // const server = http.createServer(app);
+  // const io = require('socket.io')(server, { transports: ['websocket'] });
 
 
 
   // Initialize Socket.io
   const io = new Server(server, { transports: ['websocket'] });
+  console.log("here");
 
-// Create a list to store connected users
-const users = [];
+  // Create a list to store connected users
+  const users = [];
 
-// Listen for new connections
-io.on('connection', async (socket) => {
-  // Add the new user to the list
+  // Listen for new connections
+  io.on('connection', async (socket) => {
+    // Add the new user to the list
 
-  const token:string|undefined = ( socket.handshake.headers.cookie?.split(';').find(c => c.trim().startsWith('token='))?.split('=')[1] );
-// console.log(socket.handshake.headers.cookie?.split(';').find(c => c.trim().startsWith('token=')));
+    const token: string | undefined = (socket.handshake.headers.cookie?.split(';').find(c => c.trim().startsWith('token='))?.split('=')[1]);
+    // console.log(socket.handshake.headers.cookie?.split(';').find(c => c.trim().startsWith('token=')));
 
-  // let tokenIsValid = verifyToken(token);
-   
-  // if (tokenIsValid) {
-  const decoded = jwt.decode(token as string) as {username:string};
-  const user = await User.findOneBy({ username: decoded?.username || '' });
-  // }
-// }
-const socketId=socket.id;
+    // let tokenIsValid = verifyToken(token);
 
-// console.log(socketId ,'-', token);
+    // if (tokenIsValid) {
+    const decoded = jwt.decode(token as string) as { username: string };
+    // const user = await User.findOneBy({ username: decoded?.username || '' });
+    // }
+    // }
+    const socketId = socket.id;
 
-users[socketId] = user?.username;
+    // console.log(socketId ,'-', token);
 
-console.log(users);
+    // users[socketId] = user?.username;
 
-  // users.push({ toString(socketId) : user?.username});
+    console.log(users);
 
-  //const token = socket.handshake.headers.authorization?.split(' ')[1];
+    // users.push({ toString(socketId) : user?.username});
 
- 
-  // Listen for messages from the user
-  socket.on('message', async (data, callback) => {
-    // console.log(socket.handshake.headers.cookie ? socket.handshake.headers.cookie.split(';').find(c => c.trim().startsWith('token='))?.split('=')[1] : null);
+    //const token = socket.handshake.headers.authorization?.split(' ')[1];
+
+
+    // Listen for messages from the user
+    socket.on('message', async (data, callback) => {
+      // console.log(socket.handshake.headers.cookie ? socket.handshake.headers.cookie.split(';').find(c => c.trim().startsWith('token='))?.split('=')[1] : null);
 
       // const username = getusernameBySocketId(socket.id,users);
 
@@ -69,31 +70,31 @@ console.log(users);
 
 
 
-      
 
 
-    // Broadcast the message to all connected users
-    io.emit('message', data); // do this need to be with db saving ?
-  });   
 
-  // Listen for the user disconnecting
-  socket.on('disconnect', () => {
-    // Remove the user from the list
-    users.splice(users.indexOf(socket), 1);
+      // Broadcast the message to all connected users
+      io.emit('message', data); // do this need to be with db saving ?
+    });
+
+    // Listen for the user disconnecting
+    socket.on('disconnect', () => {
+      // Remove the user from the list
+      users.splice(users.indexOf(socket), 1);
+    });
   });
-});
 
-// Start the server
-// server.listen(3001, () => {
-//   console.log('Server listening on port 3001');
-// });
+  // Start the server
+  // server.listen(3001, () => {
+  //   console.log('Server listening on port 3001');
+  // });
 
-return server;
+  return server;
 
 };
 
 
-function getusernameBySocketId(socketId,users) {
+function getusernameBySocketId(socketId, users) {
   for (const user of users) {
     if (user.socketId === socketId) {
       return user.name;
@@ -156,7 +157,7 @@ function verifyToken(token: string | undefined) {
 // //  const socketHandler = (io) => {
 // // //   const io = socketIO(server);
 
-// //   io.on('connection', (socket) => { 
+// //   io.on('connection', (socket) => {
 // //     console.log('A user connected');
 
 // //     const token = socket.handshake.headers.authorization?.split(' ')[1];

@@ -119,7 +119,7 @@ async verify(req: Request, res: Response) {
 async assignRoleToUser(req: Request, res: Response) {
   try {
     
-    return res.status(201).send(data);
+    // return res.status(201).send(data);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });
