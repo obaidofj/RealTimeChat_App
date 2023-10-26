@@ -32,7 +32,9 @@ export class Order extends BaseEntity{
   // })
   // orderProducts : Relation<OrderProduct []>
 
-  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
+  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order,{
+    cascade: ['insert', 'update'],
+  })
   orderProducts: OrderProduct[];
 
   @ManyToOne(() => User, (user) => user.orders)

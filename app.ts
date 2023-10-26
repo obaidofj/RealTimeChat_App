@@ -14,6 +14,7 @@ import orderRouter from './routes/order.routes.js'
 import paymentRouter from './routes/payment.routes.js'
 import productRouter from './routes/product.routes.js'
 import connectionRouter from './routes/connectionFriendship.routes.js'
+import fileRouter from './routes/file.routes.js'
 import { QueryRunner } from 'typeorm';
 import {seedDatabase} from './db/seeds/seedDB.js'
 import { fileURLToPath } from 'url';
@@ -28,13 +29,14 @@ import http from 'http'; // Import the HTTP module
 // import socketHandler from './sockets/socketHandler.js';
 import socketHandlerMiddleware from './middlewares/socket.js';
 import socketHandler from './sockets/socketHandler.js';
-
+import fs from 'fs';
+ 
 const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
 
 var app = express();
-
+ 
 
 
 app.use(cors({
@@ -42,15 +44,34 @@ app.use(cors({
   credentials: true
 }));
 
-app.use((req, res, next) => {
-  // Set the 'app' property on the 'req' object
-  req.app = app;
-  next();
-});
-
+// app.use((req, res, next) => {
+//   // Set the 'app' property on the 'req' object
+//   req.app = app;
+//   next();
+// });
+ 
 // app.use(socketHandlerMiddleware);
 app.use(cookieParser()); 
 app.use(express.json());  
+
+// // Create a Redis client
+// const client = redis.createClient({
+//   host: 'localhost', // Change to your Redis server's host
+//   port: 6379,        // Change to your Redis server's port
+// });
+
+// // Set up session middleware with Redis as the store
+// app.use(
+//   session({
+//     store: new RedisStore({ client }),
+//     secret: 'your-secret-key',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//       secure: false, // Change to true if using HTTPS
+//     },
+//   })
+// );
 
 // app.get('/fromsocket', (req, res) => {
 //   // Send a message to all connected users
@@ -81,6 +102,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // const http = require('http');
 
 app.use('/', indexRouter);
+
+app.use('/file', fileRouter);
+
 
 app.use('/auth', userRouter);
 // app.use(authenticate);
