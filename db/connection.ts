@@ -27,7 +27,7 @@ import { OrderProduct } from "./entities/orderProducts.entity.js";
       database: process.env.DB_NAME,
       entities: [ User, Message,ChatGroup,ConnectionFriendship,MuteBlockUser,Notification,Order,Product,PaymentTransaction ,Permissions, Profile, Role ,OrderProduct, Flags], 
       migrations: [] ,
-      logging: [ "error"],
+      logging: true, // [ "error"],
       synchronize: true,
     });
  

@@ -11,7 +11,7 @@ import { Profile } from './profile.entity.js';
 import { Role } from './role.entity.js';
 import bcrypt from 'bcrypt';
 import { Order } from './order.entity.js';
-import { Exclude, Expose, Transform } from 'class-transformer';
+// import { Exclude, Expose, Transform } from 'class-transformer';
 // import { Message } from './messege.entity.js'; 
 
 
@@ -37,16 +37,17 @@ export class User  extends BaseEntity  {
       this.password = await bcrypt.hash(this.password, 10)
     }
   }
+ 
+  // @Exclude()
   @Column({ nullable: false })
-  @Exclude()
   password: string;
 
-   // Define a custom transformation to exclude the password property
-   @Transform(({ value }) => undefined, { toPlainOnly: true })
-   @Expose({ toPlainOnly: true })
-   getPassword() {
-     return undefined;
-   }
+  //  // Define a custom transformation to exclude the password property
+  //  @Transform(({ value }) => undefined, { toPlainOnly: true })
+  //  @Expose({ toPlainOnly: true })
+  //  getPassword() {
+  //    return undefined;
+  //  }
  
  
 
