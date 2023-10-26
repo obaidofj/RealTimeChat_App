@@ -2,10 +2,12 @@ import jwt from 'jsonwebtoken';
 import { User } from '../db/entities/user.entity.js';
 
 
-const authenticate = async (req, res, next) => {
-    const token = req.headers['authorization'] ||req.headers['Authorization'] || req.cookies['token'] ||'';
+const authenticate = async (req,res,next) => {
+    // const authenticate = async (req: { headers: { [x: string]: any; }; cookies: { [x: string]: any; }; }, res: { locals: { user: User | null; }; status: (arg0: number) => { (): any; new(): any; send: { (arg0: string): void; new(): any; }; }; }, next: () => void) => {
     
-    
+    const token = req.cookies['token'] || req.headers['authorization'] ||req.headers['Authorization'] || '';
+    // res.status(201).send(token);
+    // return;
     let tokenIsValid = verifyToken(token);
    
     if (tokenIsValid) {

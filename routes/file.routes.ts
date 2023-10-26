@@ -31,29 +31,29 @@ router.get('/:name', (req, res ,next) => {
       const fileExtension = path.extname(fileName);
       let contentType = 'application/octet-stream'; // Default content type for unknown files
 
-      switch (fileExtension) {
-        case '.json':
-          contentType = 'application/json';
-          break;
-        case '.txt':
-          contentType = 'text/plain';
-          break;
-        case '.jpg':
-        case '.jpeg':
-          contentType = 'image/jpeg';
-          break;
-        case '.png':
-          contentType = 'image/png';
-          break;
-        // Add more cases for other file types as needed
-      }
-
+      // switch (fileExtension) {
+      //   case '.json':
+      //     contentType = 'application/json';
+      //     break;
+      //   case '.txt':
+      //     contentType = 'text/plain';
+      //     break;
+      //   case '.jpg':
+      //   case '.jpeg':
+      //     contentType = 'image/jpeg';
+      //     break;
+      //   case '.png':
+      //     contentType = 'image/png'; 
+      //     break;
+      //   // Add more cases for other file types as needed
+      // }
+   
       // Set the appropriate content type header
       res.setHeader('Content-Type', contentType);
-
+ 
       // Send the file as binary data
       res.send(data);
-    }
+    } 
   });
 });
 

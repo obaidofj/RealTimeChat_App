@@ -74,7 +74,7 @@ console.log(users);
 
     // Broadcast the message to all connected users
     io.emit('message', data); // do this need to be with db saving ?
-  });
+  });   
 
   // Listen for the user disconnecting
   socket.on('disconnect', () => {

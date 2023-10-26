@@ -1,6 +1,5 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn, Relation } from 'typeorm';
 
-import { Attachment } from './attachment.entity.js';
 
 import { User } from './user.entity.js'; 
 import { MessegeStatus } from '../../types/messege.types.js';
