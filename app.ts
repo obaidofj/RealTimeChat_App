@@ -22,7 +22,10 @@ import path from 'path';
 import upload from './middlewares/multerconfig.js';
 import { authenticate } from './middlewares/authentication.js';
 import cors from 'cors';
-import http from 'http'; // Import the HTTP module
+import http from 'http';
+import AWS from 'aws-sdk'
+
+// Import the HTTP module
 // import socketIo from 'socket.io'; // Import Socket.io
 // import socketIO from 'socket.io';
 // import socketIO , {Server} from 'socket.io';
