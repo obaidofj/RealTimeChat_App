@@ -80,16 +80,53 @@ async getUserProfileByUserName(req: Request, res: Response) {
         return res.status(404).json({ message: 'User is not found' });
       }
 
-      if(user[0]?.profile?.id)
-    return res.status(200).json({ userid: user[0].id, profile:user[0].profile });
-     else
-    return res.status(404).json({messege:'There is no profile for user :' + user[0].id});
+        if(user[0]?.profile?.id)
+      return res.status(200).json({ userid: user[0].id, profile:user[0].profile });
+       else
+      return res.status(404).json({messege:'There is no profile for user :' + user[0].id});
 
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: 'Internal server error' });
-    }
-  },
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+    },
+
+// logout of user
+async logout(req: Request, res: Response) {
+  try {
+    
+    return res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+},
+
+// async assignRoleToUser(req: Request, res: Response) {
+//   try {
+    
+//     return res.status(201).send(data);
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ message: 'Internal server error' });
+//   }
+// },
+
+async verify(req: Request, res: Response) {
+  try {
+    const token = req.body.token;
+  if (verify(token)) {
+      res.status(200).send({ 'token': true, 'msg': 'The token is right' });
+  }
+  else {
+      res.status(200).send({ 'token': false, 'msg': 'The token is wrong' });
+  }
+    
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+},
 
  
 
