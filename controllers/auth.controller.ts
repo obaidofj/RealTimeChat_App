@@ -45,11 +45,13 @@ export const authController = {
       const { username, password } = req.body;
 
       // Find the user by username
-      const user = await User.findOne({ where: { username } });
+      // const user = await User.findOne({ where: { username } , addSelect:(password)});
+      const user = await User.findOne({ where: { username }, select: ['id','username', 'email','password'] });
+
+
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-
       // Compare the provided password with the hashed password
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch) {

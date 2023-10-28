@@ -111,7 +111,7 @@ app.use('/file', fileRouter);
 
 
 app.use('/auth', authRouter);
-// app.use(authenticate);
+app.use(authenticate);
 app.use('/user', userRouter);
 app.use('/chat', chatGroupRouter);
 app.use('/messege', messegeRouter);
