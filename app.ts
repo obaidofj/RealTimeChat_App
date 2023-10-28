@@ -44,7 +44,7 @@ var app = express();
 
 
 app.use(cors({
-  origin: 'http://localhost:4000',
+  origin: 'http://127.0.0.1:4000',
   credentials: true
 }));
 
@@ -134,10 +134,7 @@ dataSource
   .then(async () => {
     winsLogger.info('Data Source has been initialized!');
     try {
-
-
-
-
+      
       const queryRunner = dataSource.createQueryRunner()
 
       // await applyMigration(queryRunner);
