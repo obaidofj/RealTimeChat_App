@@ -6,3 +6,12 @@ declare module "express-session" {
         userId?: number;
     }
 }
+
+declare module 'express' {
+  export interface Request {
+    session: {
+      username: string; 
+      userId: number;
+    };
+  }
+}

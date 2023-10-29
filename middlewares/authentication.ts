@@ -30,4 +30,5 @@ const verifyToken = (token) => {
     }
     catch (error) { }
 };
+
 export { authenticate, verifyToken as verify };

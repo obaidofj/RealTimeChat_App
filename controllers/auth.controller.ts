@@ -32,8 +32,12 @@ export const authController = {
         email,
       });
       await user.save();
+      
+      // Create a new object without the password
+      const userWithoutPassword = { ...user };
+      delete userWithoutPassword.password;
 
-      return res.status(201).json({ message: 'User registered successfully', user });
+      return res.status(201).json({ message: 'User registered successfully', user: userWithoutPassword });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal server error' });
@@ -94,7 +98,27 @@ export const authController = {
     }
   },
 
+// Route to check the session based on the token
+// async checkSession (req, res)  {
+//   const sessionToken = req.headers.authorization.split('Bearer ')[1]; // Extract the token from the header
 
+//   // Validate the token and look up the user's session
+//   if (isValidToken(sessionToken)) {
+//     const userSession = getSessionData(sessionToken); // Implement this function to get the user's session data
+
+//     if (userSession) {
+//       // Continue the user's session
+//       req.session.userId = userSession.userId;
+//       res.json({ success: true });
+//     } else {
+//       res.status(401).json({ error: 'Invalid token' });
+//     }
+//   } else {
+//     res.status(401).json({ error: 'Invalid token' });
+//   }
+// },
+
+  
 // logout of user
 async logout(req: Request, res: Response) {
   try {

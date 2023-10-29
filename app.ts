@@ -24,18 +24,14 @@ import upload from './middlewares/multerconfig.js';
 import { authenticate } from './middlewares/authentication.js';
 import cors from 'cors';
 import http from 'http';
-import AWS from 'aws-sdk'
-
-
-// Import the HTTP module
-// import socketIo from 'socket.io'; // Import Socket.io
-// import socketIO from 'socket.io';
-// import socketIO , {Server} from 'socket.io';
-// import socketHandler from './sockets/socketHandler.js';
-import socketHandlerMiddleware from './middlewares/socket.js';
+import AWS from 'aws-sdk';
+import socketIOSession from 'express-socket.io-session';
+// import socketHandlerMiddleware from './middlewares/socket.js';
 import socketHandler from './sockets/socketHandler.js';
+import { Server } from 'http';
 import fs from 'fs';
 import session from 'express-session';
+
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -67,17 +63,20 @@ app.use(express.json());
 // });
 
 // Set up session middleware with Redis as the store
-app.use(
-  session({
-    //store: new RedisStore({ client }),
-    secret: process.env.SESSION_SECRET_KEY,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      secure: false, // Change to true if using HTTPS
-    },
-  })
-);
+ 
+
+
+const sessionMiddleware = session({
+  secret: process.env.SESSION_SECRET_KEY,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: false,
+    maxAge: 60 * 60 * 1000 * 12,
+  },
+}); //as express.RequestHandler;
+
+app.use(sessionMiddleware);
 
 // route to retrieve session data
 app.get('/getSessionData', (req, res) => {
@@ -99,22 +98,6 @@ app.get('/getSessionData', (req, res) => {
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// // Set up HTTP server for Socket.io
-// const server = http.createServer(app);
-// // const io = socketIO(server);
-// const io = new Server(server , {transports: ['websocket'],});
-// // io.attachApp(app);
-// socketHandler(io);
-
-// const server = http.createServer(app);
-// const io = require('socket.io')(server);
-
-// const server = http.createServer(app);
-// const io = new Server(server, { transports: ['websocket'] });
-
-
-
-// const http = require('http');
 
 app.use('/', indexRouter);
 
@@ -133,25 +116,26 @@ app.use('/payment', paymentRouter);
 app.use('/product', productRouter);
 app.use('/connection', connectionRouter);
 
+const server = http.createServer(app); // Create an HTTP server
+// const server = new Server(app);
 
+// Use express-socket.io-session middleware to share sessions
+const io = socketHandler(server);
+// io.use(socketIOSession(app.locals.session, { autoSave: true }));
 
-// const server = http.createServer(app);
-
-
-// const io = new Server(server, { transports: ['websocket'] });
 
 dataSource
   .initialize()
   .then(async () => {
     winsLogger.info('Data Source has been initialized!');
     try {
-      
+
       const queryRunner = dataSource.createQueryRunner()
 
       // await applyMigration(queryRunner);
       // console.log("Migration has been applied successfully.");
-
-      const server = socketHandler(app);
+      // cost user={req.session.username,}
+      // const server = socketHandler(app);
       server.listen(process.env.APP_PORT, () => {
         winsLogger.info(`App is listening on port ${process.env.APP_PORT}`
         );

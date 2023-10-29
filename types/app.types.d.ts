@@ -28,4 +28,4 @@ namespace AppTypes {
 
 }
 
-export {AppTypes}
+export {AppTypes }

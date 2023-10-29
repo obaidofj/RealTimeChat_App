@@ -14,7 +14,9 @@ router.post('/logout', authenticate , authController.logout);
 
 router.post('/assignrole', authenticate ,authController.assignRoleToUser );
 
-router.post('/verify',  authController.verify );
+router.post('/verify', authController.verify);
+
+// router.post('/checkSession',  authController.checkSession );
 
 
 export default router;

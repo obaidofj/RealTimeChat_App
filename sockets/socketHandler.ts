@@ -1,7 +1,5 @@
 
-// Create a new Express app
-// const express = require('express');
-// const app = express();
+
 import jwt from 'jsonwebtoken';
 import { Server } from 'socket.io';
 import http from 'http';
@@ -10,19 +8,54 @@ import { threadId } from 'worker_threads';
 import { MessegeStatus } from '../types/messege.types.js';
 import express from 'express';
 import { messageController } from '../controllers/message.controller.js';
+import socketIo from 'socket.io';
+// import { AppTypes } from "../types/app.types.js";
 
-const socketHandler = (app: http.RequestListener<typeof http.IncomingMessage, typeof http.ServerResponse> | undefined) => {
-  // Create a new Socket.io server
-  const server = http.createServer(app);
-  // const io = new Server(server);
-  // const server = http.createServer(app);
-  // const io = require('socket.io')(server, { transports: ['websocket'] });
 
+type SessionData = {
+  username: string;
+  userId: number;
+  // Add other properties as needed
+};
+
+const socketHandler = (server) => {//app: http.RequestListener<typeof http.IncomingMessage, typeof http.ServerResponse> | undefined
+
+
+  let username = '';
+  let userId = null;
 
   // Initialize Socket.io
   const io = new Server(server, { transports: ['websocket'] });
-  console.log("here");
+  // console.log("here");
 
+  // io.use((socket, next) => {
+  //   sessionMiddleware(socket.request, socket.request.res, next);
+  // });
+
+   io.use((socket, next) => {
+    // Here, we manually parse cookies from the handshake request
+    const cookie = socket.handshake.headers.cookie;
+    const sessionID = cookie.split('=')[1]; // Extract the session ID
+
+    // You may want to consider additional error handling here
+    if (!sessionID) {
+      return next(new Error('No session cookie found'));
+    }
+
+    // Retrieve the session store and get the session
+    const sessionStore = socket.request.sessionStore;
+    sessionStore.get(sessionID, (err, session) => {
+      if (err || !session) {
+        return next(new Error('Error retrieving session'));
+      }
+
+      // Attach the session data to the socket
+      socket.request.session = session;
+
+      next();
+    });
+   });
+  
   // Create a list to store connected users
   const users = [];
 
@@ -35,25 +68,19 @@ const socketHandler = (app: http.RequestListener<typeof http.IncomingMessage, ty
 
     // console.log(socketId ,'-', token);
 
-    // users[socketId] = user?.username;
+      // Access session data
+    const sessionData = socket.request.session;
+    
+    users[socketId] = { "username":sessionData.username, "userid":sessionData.userId };
 
     console.log(users);
 
-    // users.push({ toString(socketId) : user?.username});
-
-    //const token = socket.handshake.headers.authorization?.split(' ')[1];
 
 
     // Listen for messages from the user
     socket.on('message',  (data, callback) => {
       
-      // const username = getusernameBySocketId(socket.id,users);
-
-      //   if (!username) {
-      //     // Handle the case where the sender is not found (e.g., session expired)
-      //     console.log('user not conected' , users);//throw new Error
-      //     return;
-      //   }
+  
 
       // Broadcast the message to all connected users
       io.emit('message', data); // do this need to be with db saving ?
@@ -66,9 +93,19 @@ const socketHandler = (app: http.RequestListener<typeof http.IncomingMessage, ty
     });
   });
 
-  return server;
+  return io;
 
 };
+
+// Helper function to parse cookies from the header string
+// function parseCookies(cookieString) {
+//   const cookies = {};
+//   cookieString.split(';').forEach((cookie) => {
+//     const parts = cookie.split('=');
+//     cookies[parts[0].trim()] = parts[1];
+//   });
+//   return cookies;
+// }
 
 
 function getusernameBySocketId(socketId, users) {
