@@ -7,7 +7,8 @@ import connection from '../db/connection.js';
 import { EntityManager } from 'typeorm';
 import { Profile } from '../db/entities/profile.entity.js';
 import { UserTypes } from '../types/user.types.js';
-
+import { AppTypes } from "../types/app.types.js";
+// import { Session } from 'express-session';
 
 export const authController = {
   // User registration
@@ -81,8 +82,11 @@ export const authController = {
           maxAge: 60 * 60 * 1000
         });
         
+ 
         // res.send();
-
+      (req.session as unknown as Session & { username: string }).username  = user.username,
+      (req.session as unknown as Session & { userId: number }).userId = user.id;
+      
       return res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
       console.error(error);

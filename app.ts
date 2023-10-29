@@ -26,6 +26,7 @@ import cors from 'cors';
 import http from 'http';
 import AWS from 'aws-sdk'
 
+
 // Import the HTTP module
 // import socketIo from 'socket.io'; // Import Socket.io
 // import socketIO from 'socket.io';
@@ -34,6 +35,7 @@ import AWS from 'aws-sdk'
 import socketHandlerMiddleware from './middlewares/socket.js';
 import socketHandler from './sockets/socketHandler.js';
 import fs from 'fs';
+import session from 'express-session';
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -64,18 +66,27 @@ app.use(express.json());
 //   port: 6379,        // Change to your Redis server's port
 // });
 
-// // Set up session middleware with Redis as the store
-// app.use(
-//   session({
-//     store: new RedisStore({ client }),
-//     secret: 'your-secret-key',
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: {
-//       secure: false, // Change to true if using HTTPS
-//     },
-//   })
-// );
+// Set up session middleware with Redis as the store
+app.use(
+  session({
+    //store: new RedisStore({ client }),
+    secret: process.env.SESSION_SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: false, // Change to true if using HTTPS
+    },
+  })
+);
+
+// route to retrieve session data
+app.get('/getSessionData', (req, res) => {
+  // Retrieve session data from the server's session store
+  const sessionData = req.session;
+
+  // Send the session data as JSON in the response
+  res.json(sessionData);
+});
 
 // app.get('/fromsocket', (req, res) => {
 //   // Send a message to all connected users

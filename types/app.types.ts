@@ -15,6 +15,15 @@ namespace AppTypes {
        
       }  
       
+    export interface Session {
+        username?: string;
+        userId?: number;
+    }
+
+    export interface PartialSessionData {
+        username?: string;
+        userId?: number;
+    }
 
 
 }

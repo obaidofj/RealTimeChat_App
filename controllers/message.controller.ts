@@ -66,9 +66,14 @@ export const messageController = {
         receiver,
       });
 
-      await message.save()
+      await message.save();
+      // Retrieve the 'username' and 'userId' properties from sessionData
+      const sessionData = {
+        username: (req.session as unknown as { username: string }).username,
+        userId: (req.session as unknown as { userId: number }).userId,
+      };
 
-      return res.status(201).json({ info: 'Message sent successfully', message });
+      return res.status(201).json({ info: 'Message sent successfully', message, sessionData: sessionData, });
       // }
       // else
       //  return res.status(400).json({ info: 'there was error in uploading fiel' });
