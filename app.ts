@@ -30,7 +30,9 @@ import socketIOSession from 'express-socket.io-session';
 import socketHandler from './sockets/socketHandler.js';
 import { Server } from 'http';
 import fs from 'fs';
-import session from 'express-session';
+import { Server as SocketIOServer } from 'socket.io';
+import  session, {SessionData } from 'express-session';
+
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -78,7 +80,7 @@ const sessionMiddleware = session({
 
 app.use(sessionMiddleware);
 
-// route to retrieve session data
+// route to   retrieve session data
 app.get('/getSessionData', (req, res) => {
   // Retrieve session data from the server's session store
   const sessionData = req.session;
@@ -123,6 +125,10 @@ const server = http.createServer(app); // Create an HTTP server
 const io = socketHandler(server);
 // io.use(socketIOSession(app.locals.session, { autoSave: true }));
 
+
+io.use((socket, next) => {
+  sessionMiddleware(socket.request, {} as any, next);
+});
 
 dataSource
   .initialize()

@@ -1,7 +1,9 @@
 
 
 import jwt from 'jsonwebtoken';
-import { Server } from 'socket.io';
+
+import { Server as SocketIOServer } from 'socket.io';
+
 import http from 'http';
 import { User } from '../db/entities/user.entity.js';
 import { threadId } from 'worker_threads';
@@ -25,36 +27,36 @@ const socketHandler = (server) => {//app: http.RequestListener<typeof http.Incom
   let userId = null;
 
   // Initialize Socket.io
-  const io = new Server(server, { transports: ['websocket'] });
+  const io = new SocketIOServer(server, { transports: ['websocket'] });
   // console.log("here");
 
   // io.use((socket, next) => {
   //   sessionMiddleware(socket.request, socket.request.res, next);
   // });
 
-   io.use((socket, next) => {
-    // Here, we manually parse cookies from the handshake request
-    const cookie = socket.handshake.headers.cookie;
-    const sessionID = cookie.split('=')[1]; // Extract the session ID
+  //  io.use((socket, next) => {
+  //   // Here, we manually parse cookies from the handshake request
+  //   const cookie = socket.handshake.headers.cookie;
+  //   const sessionID = cookie.split('=')[1]; // Extract the session ID
 
-    // You may want to consider additional error handling here
-    if (!sessionID) {
-      return next(new Error('No session cookie found'));
-    }
+  //   // You may want to consider additional error handling here
+  //   if (!sessionID) {
+  //     return next(new Error('No session cookie found'));
+  //   }
 
-    // Retrieve the session store and get the session
-    const sessionStore = socket.request.sessionStore;
-    sessionStore.get(sessionID, (err, session) => {
-      if (err || !session) {
-        return next(new Error('Error retrieving session'));
-      }
+  //   // Retrieve the session store and get the session
+  //   const sessionStore = socket.request.sessionStore;
+  //   sessionStore.get(sessionID, (err, session) => {
+  //     if (err || !session) {
+  //       return next(new Error('Error retrieving session'));
+  //     }
 
-      // Attach the session data to the socket
-      socket.request.session = session;
+  //     // Attach the session data to the socket
+  //     socket.request.session = session;
 
-      next();
-    });
-   });
+  //     next();
+  //   });
+  //  });
   
   // Create a list to store connected users
   const users = [];
@@ -63,13 +65,13 @@ const socketHandler = (server) => {//app: http.RequestListener<typeof http.Incom
   io.on('connection', async (socket) => {
     // Add the new user to the list
 
-   
     const socketId = socket.id;
 
     // console.log(socketId ,'-', token);
 
-      // Access session data
+    // Access session data
     const sessionData = socket.request.session;
+
     
     users[socketId] = { "username":sessionData.username, "userid":sessionData.userId };
 
