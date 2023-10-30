@@ -33,4 +33,4 @@ jobs:
         run: |
           ssh -i ${{ env.AWS_SSH_KEY }} ec2-user@${{ env.EC2_INSTANCE_IP }} "docker pull ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/my-app:latest"
           ssh -i ${{ env.AWS_SSH_KEY }} ec2-user@${{ env.EC2_INSTANCE_IP }} "docker run -d -p 80:80 --name my-app-container ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/my-app:latest"
-  
+   
