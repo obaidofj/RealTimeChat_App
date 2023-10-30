@@ -27,7 +27,7 @@ jobs:
           docker tag my-app ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_URI }}:latest
           docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_URI }}:latest
       - name: SSH into EC2 instance and run Docker container
-        env:
+        env: 
           EC2_INSTANCE_IP: ${{ secrets.EC2_INSTANCE_IP }}
           AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
         run: |
