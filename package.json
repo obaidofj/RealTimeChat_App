@@ -7,6 +7,7 @@
   "scripts": {
     "build-tsc": "tsc -w",
     "run-watch": "nodemon ./dist/app.js",
+    "build": "tsc --project .",
     "dev": "concurrently \"npm:build-tsc\"  \"npm:run-watch\"",
     "test": "tsc && jest --coverage"
   },
