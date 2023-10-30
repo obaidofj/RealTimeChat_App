@@ -58,6 +58,14 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.json());
 
+
+
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+});
+
 // // Create a Redis client
 // const client = redis.createClient({
 //   host: 'localhost', // Change to your Redis server's host
@@ -122,7 +130,7 @@ const server = http.createServer(app); // Create an HTTP server
 // const server = new Server(app);
 
 // Use express-socket.io-session middleware to share sessions
-const io = socketHandler(server);
+export const io = socketHandler(server);
 // io.use(socketIOSession(app.locals.session, { autoSave: true }));
 
 

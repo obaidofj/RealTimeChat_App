@@ -91,7 +91,7 @@ export const authController = {
       (req.session as unknown as Session & { username: string }).username  = user.username,
       (req.session as unknown as Session & { userId: number }).userId = user.id;
       
-      return res.status(200).json({ message: 'Login successful', token });
+      return res.status(200).json({ message: 'Login successful', token , user:{name:user.username, id:user.id} });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal server error' });

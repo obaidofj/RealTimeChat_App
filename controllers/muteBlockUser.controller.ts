@@ -93,8 +93,8 @@ export const muteBlockUserController = {
       return res.status(404).json(isValid);
 
       // Find the user and target user by IDs
-      const user = await User.findOne(userId);
-      const targetUser = await User.findOne(targetUserId);
+      const user = await User.findOne({ where: { id: userId } });
+      const targetUser = await User.findOne({ where: { id: targetUserId } });
 
       if (!user || !targetUser) {
         return res.status(404).json({ message: 'User or target user not found' });
@@ -113,6 +113,7 @@ export const muteBlockUserController = {
         receiveduser : targetUser,
         isBlock: true,
       });
+      await block.save();
 
       return res.status(201).json({ message: 'User blocked successfully', block });
     } catch (error) {
@@ -132,8 +133,8 @@ export const muteBlockUserController = {
       return res.status(404).json(isValid);
     
       // Find the user and target user by IDs
-      const user = await User.findOne(userId);
-      const targetUser = await User.findOne(targetUserId);
+      const user = await User.findOne({ where: { id: userId } });
+      const targetUser = await User.findOne({ where: { id: targetUserId } });
 
       if (!user || !targetUser) {
         return res.status(404).json({ message: 'User or target user not found' });

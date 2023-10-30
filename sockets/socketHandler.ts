@@ -19,9 +19,9 @@ type SessionData = {
   userId: number;
   // Add other properties as needed
 };
-
+ export const connectedUsers = [];
 const socketHandler = (server) => {//app: http.RequestListener<typeof http.IncomingMessage, typeof http.ServerResponse> | undefined
-
+ 
 
   let username = '';
   let userId = null;
@@ -59,7 +59,7 @@ const socketHandler = (server) => {//app: http.RequestListener<typeof http.Incom
   //  });
   
   // Create a list to store connected users
-  const users = [];
+ 
 
   // Listen for new connections
   io.on('connection', async (socket) => {
@@ -73,25 +73,27 @@ const socketHandler = (server) => {//app: http.RequestListener<typeof http.Incom
     const sessionData = socket.request.session;
 
     
-    users[socketId] = { "username":sessionData.username, "userid":sessionData.userId };
+    connectedUsers[socketId] = { "username":sessionData.username, "userid":sessionData.userId };
 
-    console.log(users);
+    console.log(connectedUsers);
 
 
 
     // Listen for messages from the user
     socket.on('message',  (data, callback) => {
-      
-  
-
+      const socketId =findSocketIdByUsername(data.user.username);
+      // io.to(receiverSocketId).emit('message', {
       // Broadcast the message to all connected users
       io.emit('message', data); // do this need to be with db saving ?
     });
 
     // Listen for the user disconnecting
     socket.on('disconnect', () => {
-      // Remove the user from the list
-      users.splice(users.indexOf(socket), 1);
+       // Remove the user from the users array
+  deleteUserBySocketId(socket.id);
+
+  // Emit a "userDisconnected" event to notify other clients about the disconnected user
+  socket.broadcast.emit('userDisconnected', findUsernameBySocketId(socket.id));
     });
   });
 
@@ -99,24 +101,29 @@ const socketHandler = (server) => {//app: http.RequestListener<typeof http.Incom
 
 };
 
-// Helper function to parse cookies from the header string
-// function parseCookies(cookieString) {
-//   const cookies = {};
-//   cookieString.split(';').forEach((cookie) => {
-//     const parts = cookie.split('=');
-//     cookies[parts[0].trim()] = parts[1];
-//   });
-//   return cookies;
-// }
 
 
-function getusernameBySocketId(socketId, users) {
-  for (const user of users) {
-    if (user.socketId === socketId) {
-      return user.name;
+function deleteUserBySocketId(socketId) {
+  delete connectedUsers[socketId];
+}
+
+function findSocketIdByUsername(username) {
+  for (const socketId in connectedUsers) {
+    if (connectedUsers[socketId].username === username) {
+      return socketId;
     }
   }
-  return null;
+  return null; 
+}
+export function findUsernameBySocketId(socketId) {
+  for (const key in connectedUsers) {
+    if (connectedUsers.hasOwnProperty(key)) {
+      if (connectedUsers[key].socketId === socketId) {
+        return connectedUsers[key].username;
+      }
+    }
+  }
+  return null; // Return null if socket ID is not found
 }
 
 export default socketHandler;
