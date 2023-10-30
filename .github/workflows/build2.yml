@@ -1,0 +1,35 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - deploy2 # Adjust the branch name as needed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to AWS ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push Docker image
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          docker build -t my-app .
+          docker tag my-app ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/my-app:latest
+          docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/my-app:latest
+
+      - name: SSH into EC2 instance and run Docker container
+        env:
+          EC2_INSTANCE_IP: ${{ secrets.EC2_INSTANCE_IP }}
+          AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
+        run: |
+          ssh -i ${{ env.AWS_SSH_KEY }} ec2-user@${{ env.EC2_INSTANCE_IP }} "docker pull ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/my-app:latest"
+          ssh -i ${{ env.AWS_SSH_KEY }} ec2-user@${{ env.EC2_INSTANCE_IP }} "docker run -d -p 80:80 --name my-app-container ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/my-app:latest"
