@@ -1,27 +1,22 @@
 import express from 'express';
-import { userController } from '../controllers/user.controller.js';
+import { authController } from '../controllers/auth.controller.js';
 import { authenticate } from '../middlewares/authentication.js';
 
 const router = express.Router();
 
 // Route for user registration
-router.post('/register',   userController.register);
+router.post('/register',   authController.register);
 
 // Route for user login
-router.post('/login', userController.login);
+router.post('/login', authController.login);
 
-router.post('/profile/', authenticate , userController.insertProfile);
+router.post('/logout', authenticate , authController.logout);
 
-// Route for retrieving user profile
-router.get('/profile/id/:userId', authenticate ,userController.getUserProfileByID);
+router.post('/assignrole', authenticate ,authController.assignRoleToUser );
 
-router.get('/profile/name/:userName', authenticate ,userController.getUserProfileByUserName);
+router.post('/verify', authController.verify);
 
-router.post('/logout', authenticate , userController.logout);
-
-router.post('/assignrole', authenticate ,userController.assignRoleToUser );
-
-router.post('/verify',  userController.verify );
+// router.post('/checkSession',  authController.checkSession );
 
 
 export default router;

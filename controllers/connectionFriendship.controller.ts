@@ -11,28 +11,28 @@ export const connectionFriendshipController = {
     try {
       const { senderId, receiverId } = req.body;
 
-      const isValid=validateNotEmptyFields ([ 'senderId' , 'receiverId' ],req,res);
-       
-      if(Object.keys(isValid).length !==0)
+      const isValid = validateNotEmptyFields(['senderId', 'receiverId'], req, res);
+
+      if (Object.keys(isValid).length !== 0)
         return res.status(404).json(isValid);
 
       // Check if the sender and receiver users exist
-      const sender = await User.findOne( { where: {id : senderId}});
-      const receiver = await User.findOne( { where: {id : receiverId}});
+      const sender = await User.findOne({ where: { id: senderId } });
+      const receiver = await User.findOne({ where: { id: receiverId } });
 
       if (!sender || !receiver) {
         return res.status(404).json({ message: 'Sender or receiver not found' });
       }
 
-      const friendConn = await ConnectionFriendship.findOne({ where: {initiatoUserId : senderId , recipientUserId : receiverId }} );
-      if(friendConn)
+      const friendConn = await ConnectionFriendship.findOne({ where: { initiatoUserId: senderId, recipientUserId: receiverId } });
+      if (friendConn)
         return res.status(200).json({ message: 'Friendship/Connection already sent' });
 
       // Create a new friend request
       const friendRequest = await ConnectionFriendship.create({
-        initiator : sender,
-        recipient : receiver,
-        status: connStatus.Pending, 
+        initiator: sender,
+        recipient: receiver,
+        status: connStatus.Pending,
       });
 
       await friendRequest.save();
@@ -49,19 +49,19 @@ export const connectionFriendshipController = {
     try {
       const { requestId } = req.body;
 
-      const isValid=validateNotEmptyFields ([ 'requestId' ],req,res);
-       
-      if(Object.keys(isValid).length !==0)
+      const isValid = validateNotEmptyFields(['requestId'], req, res);
+
+      if (Object.keys(isValid).length !== 0)
         return res.status(404).json(isValid);
 
       // Find the friend request by ID
-      const friendRequest = await ConnectionFriendship.findOne({ where: {id : requestId}} );
+      const friendRequest = await ConnectionFriendship.findOne({ where: { id: requestId } });
 
       if (!friendRequest) {
         return res.status(404).json({ message: 'Friend request not found' });
       }
 
-      if(friendRequest.status===connStatus.Accepted)
+      if (friendRequest.status === connStatus.Accepted)
         return res.status(200).json({ message: 'Friend request already accepted' });
 
       // Update the status of the friend request to 'accepted' or your custom status
@@ -70,30 +70,30 @@ export const connectionFriendshipController = {
 
       return res.status(200).json({ message: 'Friend request accepted' });
 
-    } catch (error) { 
+    } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal server error' });
     }
   },
 
-   // Accept a friend request
-   async rejectFriendRequest(req: Request, res: Response) {
+  // Accept a friend request
+  async rejectFriendRequest(req: Request, res: Response) {
     try {
       const { requestId } = req.body;
 
-      const isValid=validateNotEmptyFields ([ 'requestId' ],req,res);
-       
-      if(Object.keys(isValid).length !==0)
+      const isValid = validateNotEmptyFields(['requestId'], req, res);
+
+      if (Object.keys(isValid).length !== 0)
         return res.status(404).json(isValid);
 
       // Find the friend request by ID
-      const friendRequest = await ConnectionFriendship.findOne({ where: {id : requestId}} );
+      const friendRequest = await ConnectionFriendship.findOne({ where: { id: requestId } });
 
       if (!friendRequest) {
         return res.status(404).json({ message: 'Friend request not found' });
       }
-      if(friendRequest.status===connStatus.Rejected)
-      return res.status(200).json({ message: 'Friend request already rejected' });
+      if (friendRequest.status === connStatus.Rejected)
+        return res.status(200).json({ message: 'Friend request already rejected' });
 
       // Update the status of the friend request to 'rejected' or your custom status
       friendRequest.status = connStatus.Rejected;
@@ -110,19 +110,19 @@ export const connectionFriendshipController = {
     try {
       const { requestId } = req.body;
 
-      const isValid=validateNotEmptyFields ([ 'requestId' ],req,res);
-       
-      if(Object.keys(isValid).length !==0)
+      const isValid = validateNotEmptyFields(['requestId'], req, res);
+
+      if (Object.keys(isValid).length !== 0)
         return res.status(404).json(isValid);
 
       // Find the friend request by ID
-      const friendRequest = await ConnectionFriendship.findOne({ where: {id : requestId}} );
+      const friendRequest = await ConnectionFriendship.findOne({ where: { id: requestId } });
 
       if (!friendRequest) {
         return res.status(404).json({ message: 'Friend request not found' });
       }
-      if(friendRequest.status===connStatus.Removed)
-      return res.status(200).json({ message: 'Friendship already removed' });
+      if (friendRequest.status === connStatus.Removed)
+        return res.status(200).json({ message: 'Friendship already removed' });
 
       // Update the status of the friend request to 'rejected' or your custom status
       friendRequest.status = connStatus.Removed;
@@ -141,12 +141,12 @@ export const connectionFriendshipController = {
       const userId = Number(req.params.userId);
 
       // const isValid=validateNotEmptyFields ([ 'userId' ],req,res,'params');
-       
+
       // if(Object.keys(isValid).length !==0)
       //   return res.status(404).json(isValid);
 
       // Find the user by ID
-      const user = await User.findOne({ where: {id : userId}} ); 
+      const user = await User.findOne({ where: { id: userId } });
 
       if (!user) {
         return res.status(404).json({ message: 'User not found' });

@@ -1,155 +1,123 @@
 
 
-// Create a new Express app
-// const express = require('express');
-// const app = express();
-import { Server } from 'socket.io';
+import jwt from 'jsonwebtoken';
+
+import { Server as SocketIOServer } from 'socket.io';
+
 import http from 'http';
+import { User } from '../db/entities/user.entity.js';
+import { threadId } from 'worker_threads';
+import { MessegeStatus } from '../types/messege.types.js';
+import express from 'express';
+import { messageController } from '../controllers/message.controller.js';
+import socketIo from 'socket.io';
+// import { AppTypes } from "../types/app.types.js";
 
-const socketHandler = (app) => {
-// Create a new Socket.io server
-const server = http.createServer(app);
-// const io = new Server(server);
-// const server = http.createServer(app);
-// const io = require('socket.io')(server, { transports: ['websocket'] });
 
+type SessionData = {
+  username: string;
+  userId: number;
+  // Add other properties as needed
+};
+
+const socketHandler = (server) => {//app: http.RequestListener<typeof http.IncomingMessage, typeof http.ServerResponse> | undefined
+
+
+  let username = '';
+  let userId = null;
 
   // Initialize Socket.io
-  const io = new Server(server, { transports: ['websocket'] });
+  const io = new SocketIOServer(server, { transports: ['websocket'] });
+  // console.log("here");
 
-// Create a list to store connected users
-const users = [];
+  // io.use((socket, next) => {
+  //   sessionMiddleware(socket.request, socket.request.res, next);
+  // });
 
-// Listen for new connections
-io.on('connection', (socket) => {
-  // Add the new user to the list
-  users.push(socket);
+  //  io.use((socket, next) => {
+  //   // Here, we manually parse cookies from the handshake request
+  //   const cookie = socket.handshake.headers.cookie;
+  //   const sessionID = cookie.split('=')[1]; // Extract the session ID
 
-  // Listen for messages from the user
-  socket.on('message', (message) => {
-    // Broadcast the message to all connected users
-    io.emit('message', message);
+  //   // You may want to consider additional error handling here
+  //   if (!sessionID) {
+  //     return next(new Error('No session cookie found'));
+  //   }
+
+  //   // Retrieve the session store and get the session
+  //   const sessionStore = socket.request.sessionStore;
+  //   sessionStore.get(sessionID, (err, session) => {
+  //     if (err || !session) {
+  //       return next(new Error('Error retrieving session'));
+  //     }
+
+  //     // Attach the session data to the socket
+  //     socket.request.session = session;
+
+  //     next();
+  //   });
+  //  });
+  
+  // Create a list to store connected users
+  const users = [];
+
+  // Listen for new connections
+  io.on('connection', async (socket) => {
+    // Add the new user to the list
+
+    const socketId = socket.id;
+
+    // console.log(socketId ,'-', token);
+
+    // Access session data
+    const sessionData = socket.request.session;
+
+    
+    users[socketId] = { "username":sessionData.username, "userid":sessionData.userId };
+
+    console.log(users);
+
+
+
+    // Listen for messages from the user
+    socket.on('message',  (data, callback) => {
+      
+  
+
+      // Broadcast the message to all connected users
+      io.emit('message', data); // do this need to be with db saving ?
+    });
+
+    // Listen for the user disconnecting
+    socket.on('disconnect', () => {
+      // Remove the user from the list
+      users.splice(users.indexOf(socket), 1);
+    });
   });
 
-  // Listen for the user disconnecting
-  socket.on('disconnect', () => {
-    // Remove the user from the list
-    users.splice(users.indexOf(socket), 1);
-  });
-});
-
-// Start the server
-// server.listen(3001, () => {
-//   console.log('Server listening on port 3001');
-// });
-
-return server;
+  return io;
 
 };
 
-export default socketHandler;
-
-
-
-// // Create a new Express app
-// import express from 'express';
-// const app = express();
-
-// // Create a new Socket.io server
-// // const http = require('http');
-// // const server = http.createServer(app);
-// // const io = require('socket.io')(server);
-// const socketHandler = (io) => {
-// // Create a list to store connected users
-// const users = [];
-
-// // Listen for new connections
-// io.on('connection', (socket) => {
-//   // Add the new user to the list
-//   users.push(socket);
-
-//   // Listen for messages from the user
-//   socket.on('message', (message) => {
-//     // Broadcast the message to all connected users
-//     io.emit('message', message);
+// Helper function to parse cookies from the header string
+// function parseCookies(cookieString) {
+//   const cookies = {};
+//   cookieString.split(';').forEach((cookie) => {
+//     const parts = cookie.split('=');
+//     cookies[parts[0].trim()] = parts[1];
 //   });
-
-//   // Listen for the user disconnecting
-//   socket.on('disconnect', () => {
-//     // Remove the user from the list
-//     users.splice(users.indexOf(socket), 1);
-//   });
-// });
-
-// // Start the server
-// // server.listen(3001, () => {
-// //   console.log('Server listening on port 3001');
-// // });
-
+//   return cookies;
 // }
 
-// // import socketIO from 'socket.io';
-// // import { Message } from '../db/entities/messege.entity.js';
-// // import { User } from '../db/entities//user.entity.js';
-// // import express from 'express';
-// // import {messageController} from '../controllers/message.controller.js'; // Import your message controller
 
-// //  const socketHandler = (io) => {
-// // //   const io = socketIO(server);
+function getusernameBySocketId(socketId, users) {
+  for (const user of users) {
+    if (user.socketId === socketId) {
+      return user.name;
+    }
+  }
+  return null;
+}
 
-// //   io.on('connection', (socket) => { 
-// //     console.log('A user connected');
+export default socketHandler;
 
-// //     const token = socket.handshake.headers.authorization?.split(' ')[1];
-
-// //     socket.on('join', (username) => {
-// //       socket.join('global');
-// //       // ...
-
-// //       socket.on('message', async (data, callback) => {
-// //         const senderId = getusernameBySocketId(socket.id);
-// //         if (!senderId) {
-// //           // Handle the case where the sender is not found (e.g., session expired)
-// //           return;
-// //         }
-
-// //     //     const user = await User.findOne({ where: { username } });
-// //     //   if (!user) {
-// //     //     return res.status(404).json({ message: 'User not found' });
-// //     //   }
-
-// //         // Call the sendMessage method from your message controller
-// //         const req = { body: { senderId, receiverId: data.receiver, text: data.text } } as express.Request;
-// //         const res = {
-// //           status: (code) => {
-// //             // Handle the response status (e.g., 201 for success, 500 for an error)
-// //             if (code === 201) {
-// //               // Notify the sender that the message was sent successfully
-// //               callback({ status: 'sent' });
-// //             } else {
-// //               // Handle errors
-// //             }
-// //           },
-// //         };
-// //         messageController.sendMessage(req, res);
-// //       });
-
-// //       socket.on('disconnect', () => {
-// //         // Handle user disconnect
-// //         // ...
-// //       });
-// //     });
-// //   });
-
-// //   // Helper function to get the user ID associated with a socket ID
-// //   function getusernameBySocketId(socketId) {
-// //     for (const username in connectedUsers) {
-// //       if (connectedUsers[username].socketId === socketId) {
-// //         return username;
-// //       }
-// //     }
-// //     return null;
-// //   }
-// // };
-
-// export default socketHandler;
