@@ -8,8 +8,10 @@ const router = express.Router();
 // Route for sending a message
 router.post('/', upload.array('files'), messageController.sendMessage);
 
+router.post('/', upload.array('files'), messageController.sendMessage);
+
 // Route for retrieving  messages between two users
-router.get('/:userId1/:userId2', messageController.getMessages);
+router.get('/say', messageController.say);
 
 // // Route for retrieving sent messages from user
 // router.get('/:userId1/:userId2', messageController.getSentMessages);

@@ -103,4 +103,40 @@ export const messageController = {
       return res.status(500).json({ message: 'Internal server error' + error });
     }
   },
+
+  async say(req, res)  {
+  try {
+    const userMessage = req.body.message; // Assuming the question is passed in the request body
+
+    // Create a message payload for the ChatGPT API
+  //   const payload = {
+  //     messages: [
+  //       { role: 'system', content: 'You are a helpful assistant.' },
+  //       { role: 'user', content: userMessage },
+  //     ],
+  // model: 'gpt-3.5-turbo',
+  //   };
+
+  //   const response = await axios.post(
+  //     'https://api.openai.com/v1/chat/completions',
+  //     payload,
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${OPENAI_API_KEY}`,
+  //         'Content-Type': 'application/json',
+  //       },
+  //     }
+  //   );
+
+  //   const answer = response.data.choices[0].message.content;
+
+    res.json({ "answer":"hi" });
+  } catch (error) {
+    // console.error(error);
+    console.error(error.response.data);
+    res.status(500).json({ error: 'An error occurred while processing your request' });
+  }
+},
+
+  
 };
