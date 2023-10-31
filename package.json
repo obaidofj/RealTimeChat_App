@@ -7,11 +7,11 @@
   "scripts": {
     "build-tsc": "tsc -w",
     "run-watch": "nodemon ./dist/app.js",
-    "build": "tsc --project .",
+    "build": "tsc --skipLibCheck && tsc --project .",
     "dev": "concurrently \"npm:build-tsc\"  \"npm:run-watch\"",
     "test": "tsc && jest --coverage"
   },
-  "repository": {
+  "repository": { 
     "type": "git",
     "url": "git+https://github.com/obaidofj/RealTimeChat_App.git"
   },
