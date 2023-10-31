@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
  
 

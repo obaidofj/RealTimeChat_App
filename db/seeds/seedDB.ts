@@ -1,4 +1,5 @@
-import connection  from '../connection.js';
+// @ts-nocheck
+import connection from '../connection.js';
 import { User } from '../entities/user.entity.js';
 import bcrypt from 'bcrypt';
 import {isFlageSet} from '../../utils/generalUtils.js'

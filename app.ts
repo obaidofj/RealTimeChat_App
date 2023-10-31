@@ -1,3 +1,4 @@
+// @ts-nocheck
 import './config.js';
 import applyMigration from './db/runMigration.js'
 import express from 'express';

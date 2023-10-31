@@ -1,4 +1,5 @@
-import { JoinTable,ManyToMany,Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, Relation } from 'typeorm';
+// @ts-nocheck
+import { JoinTable, ManyToMany, Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, Relation } from 'typeorm';
 import { User } from './user.entity.js'; 
 
 

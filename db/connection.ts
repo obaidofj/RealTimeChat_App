@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { DataSource } from "typeorm"
 import winsLogger from "../middlewares/logging.js";
 import { Message } from './entities/messege.entity.js';

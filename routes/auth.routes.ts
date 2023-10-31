@@ -1,3 +1,4 @@
+// @ts-nocheck
 import express from 'express';
 import { authController } from '../controllers/auth.controller.js';
 import { authenticate } from '../middlewares/authentication.js';

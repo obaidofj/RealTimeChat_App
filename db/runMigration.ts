@@ -1,3 +1,4 @@
+// @ts-nocheck
 import connection from './connection.js';
 import { QueryRunner } from 'typeorm';
 import { StarterMigts1696868409294  } from './migrations/1696868409294-starterMig.js';

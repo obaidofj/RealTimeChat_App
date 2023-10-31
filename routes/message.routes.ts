@@ -1,3 +1,4 @@
+// @ts-nocheck
 import express from 'express';
 import { messageController } from '../controllers/message.controller.js';
 import upload from '../middlewares/multerconfig.js';

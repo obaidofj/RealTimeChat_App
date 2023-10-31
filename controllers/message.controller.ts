@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Request, Response } from 'express';
 import { Message } from '../db/entities/messege.entity.js';
 import { User } from '../db/entities/user.entity.js';

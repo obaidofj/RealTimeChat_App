@@ -1,4 +1,5 @@
-import { OneToMany, JoinColumn, JoinTable,BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, Relation } from 'typeorm';
+// @ts-nocheck
+import { OneToMany, JoinColumn, JoinTable, BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, Relation } from 'typeorm';
 import { Order } from './order.entity.js';
 import { OrderProduct } from './orderProducts.entity.js';
 

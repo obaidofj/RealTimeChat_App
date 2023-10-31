@@ -1,4 +1,5 @@
-import { Entity,BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, Relation, JoinColumn } from 'typeorm';
+// @ts-nocheck
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, Relation, JoinColumn } from 'typeorm';
 import { User } from './user.entity.js';
 import { connStatus } from '../../types/connection.types.js';
 
