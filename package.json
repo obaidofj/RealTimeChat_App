@@ -7,10 +7,11 @@
   "scripts": {
     "build-tsc": "tsc -w",
     "run-watch": "nodemon ./dist/app.js",
+    "build": "tsc --project .",
     "dev": "concurrently \"npm:build-tsc\"  \"npm:run-watch\"",
     "test": "tsc && jest --coverage"
   },
-  "repository": {
+  "repository": { 
     "type": "git",
     "url": "git+https://github.com/obaidofj/RealTimeChat_App.git"
   },
@@ -43,10 +44,9 @@
     "supertest": "^6.3.3",
     "typeorm": "^0.3.17",
     "uuid": "^9.0.1",
-    "winston": "^3.11.0"
-  },
-  "devDependencies": {
-    "@babel/preset-env": "^7.23.2",
+    "winston": "^3.11.0",
+
+        "@babel/preset-env": "^7.23.2",
     "@types/bcrypt": "^5.0.0",
     "@types/chalk": "^2.2.0",
     "@types/cookie-parser": "^1.4.4",
@@ -67,5 +67,8 @@
     "nodemon": "^3.0.1",
     "ts-jest": "^29.1.1",
     "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+
   }
 }

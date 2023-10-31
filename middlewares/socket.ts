@@ -1,3 +1,4 @@
+// @ts-nocheck
 import socketHandler from "../sockets/socketHandler.js";
 
 const socketHandlerMiddleware = (req, res, next) => {

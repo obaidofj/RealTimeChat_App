@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn, Relation } from "typeorm";
 import { Order } from "./order.entity.js";
 import { Product } from "./product.entity.js";

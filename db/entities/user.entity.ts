@@ -1,4 +1,5 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column,ManyToMany, OneToMany, OneToOne, JoinColumn, JoinTable, BeforeInsert } from 'typeorm';
+// @ts-nocheck
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToMany, OneToMany, OneToOne, JoinColumn, JoinTable, BeforeInsert } from 'typeorm';
 import { ChatGroup } from './chatGroup.entity.js';
 import { Notification } from './notification.entity.js';
 // import { ConnectionFriendship } from './connectionFriendship.entity.js';

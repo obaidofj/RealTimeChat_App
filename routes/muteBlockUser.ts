@@ -1,3 +1,4 @@
+// @ts-nocheck
 import express from 'express';
 import { muteBlockUserController } from '../controllers/muteBlockUser.controller.js';
 

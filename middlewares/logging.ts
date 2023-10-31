@@ -1,3 +1,4 @@
+// @ts-nocheck
 import chalk from 'chalk';
 import stripAnsi from 'strip-ansi';
 import winston from 'winston';

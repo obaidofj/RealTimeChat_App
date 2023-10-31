@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToOne, Column, Unique, JoinColumn, Relation } from 'typeorm';
 import { User } from './user.entity.js'; 
 

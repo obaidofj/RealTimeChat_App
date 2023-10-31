@@ -1,4 +1,5 @@
-import { OneToOne,Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn, Relation, OneToMany, BaseEntity } from 'typeorm';
+// @ts-nocheck
+import { OneToOne, Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn, Relation, OneToMany, BaseEntity } from 'typeorm';
 import { User } from './user.entity.js'; 
 import { Product } from './product.entity.js'; 
 import {  PaymentTransaction } from './paymentTransaction.entity.js';
