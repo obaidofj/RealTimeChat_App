@@ -11,7 +11,7 @@ router.post('/', upload.array('files'), messageController.sendMessage);
 router.post('/', upload.array('files'), messageController.sendMessage);
 
 // Route for retrieving  messages between two users
-router.get('/say', messageController.say);
+router.post('/say', messageController.say);
 
 // // Route for retrieving sent messages from user
 // router.get('/:userId1/:userId2', messageController.getSentMessages);
