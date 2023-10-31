@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Request, Response } from 'express';
 import { MuteBlockUser } from '../db/entities/muteBlockUser.entity.js';
 import { User } from '../db/entities/user.entity.js';

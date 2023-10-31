@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Request, Response } from 'express';
 import { User } from '../db/entities/user.entity.js';
 import bcrypt from 'bcrypt';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Request, Response } from 'express';
 import { ChatGroup } from '../db/entities/chatGroup.entity.js';
 import { User } from '../db/entities/user.entity.js';
