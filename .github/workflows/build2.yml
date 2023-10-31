@@ -32,7 +32,7 @@ jobs:
           ECR_REPOSITORY_URI: ${{ secrets.ECR_REPOSITORY_URI }}
         run: |
           npm install --include=dev
-          npm run build --silent
+          npm run build --silent --ignore-optional-checks
           docker build -t my-app .
           docker tag my-app ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_URI }}:latest
           docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_URI }}:latest
