@@ -82,6 +82,8 @@ const sessionMiddleware = session({
   
 app.use(sessionMiddleware);
 
+app.use('/', indexRouter);
+ 
 // route to   retrieve session data
 app.get('/getSessionData', (req, res) => {
   // Retrieve session data from the server's session store
@@ -103,7 +105,7 @@ app.get('/getSessionData', (req, res) => {
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
-app.use('/', indexRouter);
+
 
 app.use('/file', fileRouter);
 
