@@ -40,11 +40,11 @@ jobs:
           ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
 
       - name: deploy
-        run: docker compose -f docker-compose-prod.yml up -d
         env:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_NAME: ${{ secrets.DB_NAME }}
           GIT_VERSION: ${{ steps.image_version.outputs.gitsha }}
+        run: echo ${{ secrets.DB_NAME }} - ${{ steps.image_version.outputs.gitsha }}# docker compose -f docker-compose-prod.yml up -d
 
       - name: print logs #This step will be executed even if previous steps fails
         if: always()
