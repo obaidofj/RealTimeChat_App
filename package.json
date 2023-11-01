@@ -10,7 +10,7 @@
     "build": "tsc --project .",
     "dev": "concurrently \"npm:build-tsc\"  \"npm:run-watch\"",
     "test": "tsc && jest --coverage"
-  },
+  },  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/obaidofj/RealTimeChat_App.git"
