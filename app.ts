@@ -79,7 +79,7 @@ const sessionMiddleware = session({
     maxAge: 60 * 60 * 1000 * 12,
   },
 }); //as express.RequestHandler;
-
+  
 app.use(sessionMiddleware);
 
 // route to   retrieve session data
