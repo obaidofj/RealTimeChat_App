@@ -69,7 +69,7 @@ app.use(express.json());
 // Set up session middleware with Redis as the store
 
   
-
+  
 const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET_KEY,
   resave: false,
