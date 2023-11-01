@@ -1,4 +1,5 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToMany, OneToMany, OneToOne, JoinColumn, JoinTable, BeforeInsert } from 'typeorm';
 import { ChatGroup } from './chatGroup.entity.js';
 import { Notification } from './notification.entity.js';
@@ -18,9 +19,9 @@ import { Exclude } from 'class-transformer';
 
 
 @Entity()
-export class User  extends BaseEntity  {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number; 
+  id: number;
 
   @Column({ unique: true })
   username: string;
@@ -28,9 +29,9 @@ export class User  extends BaseEntity  {
   @Column()
   email: string;
 
-  chatGroups : ChatGroup[];
-  paymentTransactions: PaymentTransaction[];  
-  orders : Order[];
+  chatGroups: ChatGroup[];
+  paymentTransactions: PaymentTransaction[];
+  orders: Order[];
 
 
   @BeforeInsert()
@@ -39,9 +40,9 @@ export class User  extends BaseEntity  {
       this.password = await bcrypt.hash(this.password, 10)
     }
   }
- 
+
   // @Exclude()
-  @Column({ nullable: false ,select:false })
+  @Column({ nullable: false, select: false })
   password: string;
 
   //  // Define a custom transformation to exclude the password property
@@ -50,42 +51,42 @@ export class User  extends BaseEntity  {
   //  getPassword() {
   //    return undefined;
   //  }
- 
- 
 
-  @OneToMany(() => Notification, n => n.notificationRecipient , { eager: true})
+
+
+  @OneToMany(() => Notification, n => n.notificationRecipient, { eager: true })
   notifications: Notification[];
 
-  
-   @OneToMany(() => ConnectionFriendship, (ConnectionFriendship) => ConnectionFriendship.initiator)
-   initiatedConnectionFriendship : ConnectionFriendship[];
-  
-    @OneToMany(() => ConnectionFriendship, (ConnectionFriendship) => ConnectionFriendship.recipient)
-    receivedConnectionFriendship: ConnectionFriendship[];
-  
-    @OneToMany(() => MuteBlockUser, (muteBlock) => muteBlock.initiatoruser)
-    initiatedMuteBlocks: MuteBlockUser[];
-  
-    @OneToMany(() => MuteBlockUser, (muteBlock) => muteBlock.receiveduser)
-    receivedMuteBlocks: MuteBlockUser[];
+
+  @OneToMany(() => ConnectionFriendship, (ConnectionFriendship) => ConnectionFriendship.initiator)
+  initiatedConnectionFriendship: ConnectionFriendship[];
+
+  @OneToMany(() => ConnectionFriendship, (ConnectionFriendship) => ConnectionFriendship.recipient)
+  receivedConnectionFriendship: ConnectionFriendship[];
+
+  @OneToMany(() => MuteBlockUser, (muteBlock) => muteBlock.initiatoruser)
+  initiatedMuteBlocks: MuteBlockUser[];
+
+  @OneToMany(() => MuteBlockUser, (muteBlock) => muteBlock.receiveduser)
+  receivedMuteBlocks: MuteBlockUser[];
 
 
-    @OneToMany(() => Message, (messege) => messege.sender)
-    sentMessages: Message[];
-  
-    @OneToMany(() => Message, (messege) => messege.receiver)
-    receivedMessages: Message[];
+  @OneToMany(() => Message, (messege) => messege.sender)
+  sentMessages: Message[];
+
+  @OneToMany(() => Message, (messege) => messege.receiver)
+  receivedMessages: Message[];
 
 
-    @ManyToMany(() => Role, role => role.users, {  eager: true })
-    @JoinTable()
-    roles: Role[];
-  
+  @ManyToMany(() => Role, role => role.users, { eager: true })
+  @JoinTable()
+  roles: Role[];
 
-    @OneToOne(() => Profile, profile => profile.user, { cascade: true, eager: true })
-    @JoinColumn()
-    profile:Profile
-    
+
+  @OneToOne(() => Profile, profile => profile.user, { cascade: true, eager: true })
+  @JoinColumn()
+  profile: Profile
+
   // async getSentMessages(): Promise<Message[]> {
   //   const sentMessages = await Message.find({ sender: this });
   //   return sentMessages;
@@ -116,5 +117,5 @@ export class User  extends BaseEntity  {
   //   return receivedConnectionFriendship;
   // }
 
-  }
-  
+}
+

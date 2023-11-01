@@ -1,4 +1,5 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn, Relation } from "typeorm";
 import { Order } from "./order.entity.js";
 import { Product } from "./product.entity.js";
@@ -14,7 +15,7 @@ export class OrderProduct extends BaseEntity {
 
   @ManyToOne(() => Product, (product) => product.orderProducts)
   product: Relation<Product>;
- 
+
   @Column()
   quantity: number;
 }

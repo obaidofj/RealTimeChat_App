@@ -1,4 +1,5 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import { Request, Response } from 'express';
 import { Notification } from '../db/entities/notification.entity.js';
 import { User } from '../db/entities/user.entity.js';
@@ -10,13 +11,13 @@ export const notificationController = {
     try {
       const { userId, message } = req.body;
 
-      const isValid=validateNotEmptyFields ([ 'userId' , 'message' ],req,res);
-       
-      if(Object.keys(isValid).length !==0)
+      const isValid = validateNotEmptyFields(['userId', 'message'], req, res);
+
+      if (Object.keys(isValid).length !== 0)
         return res.status(404).json(isValid);
 
       // Find the user by ID
-      const user = await User.findOne( { where: {id : userId}});
+      const user = await User.findOne({ where: { id: userId } });
 
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
@@ -29,7 +30,7 @@ export const notificationController = {
       });
 
       await notification.save();
-      
+
       return res.status(201).json({ message: 'Notification created successfully', notification });
     } catch (error) {
       console.error(error);
@@ -43,14 +44,14 @@ export const notificationController = {
       const userId = Number(req.params.userId);
 
       // Find the user by ID
-      const user = await User.findOne( { where: {id : userId} });
+      const user = await User.findOne({ where: { id: userId } });
 
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
 
       // Get all notifications for the user
-      const notifications = user.notifications ; //await Notification.find({ where: { id: userId } });
+      const notifications = user.notifications; //await Notification.find({ where: { id: userId } });
 
       return res.status(200).json({ notifications });
     } catch (error) {

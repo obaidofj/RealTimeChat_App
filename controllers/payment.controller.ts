@@ -1,4 +1,5 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import { Request, Response } from 'express';
 import { PaymentTransaction } from '../db/entities/paymentTransaction.entity.js';
 import { User } from '../db/entities/user.entity.js';
@@ -9,15 +10,15 @@ export const paymentController = {
   async createPayment(req: Request, res: Response) {
     try {
       const { userId, amount, currency } = req.body;
-    
-      
-      const isValid=validateNotEmptyFields ([ 'userId' , 'amount' , 'currency' ],req,res);
-       
-      if(Object.keys(isValid).length !==0)
+
+
+      const isValid = validateNotEmptyFields(['userId', 'amount', 'currency'], req, res);
+
+      if (Object.keys(isValid).length !== 0)
         return res.status(404).json(isValid);
 
       // Find the user by ID
-      const user = await User.findOne({ where: {id : userId}});
+      const user = await User.findOne({ where: { id: userId } });
 
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
@@ -43,7 +44,7 @@ export const paymentController = {
       const userId = Number(req.params.userId);
 
       // Find the user by ID
-      const user = await User.findOne({ where: {id : userId}});
+      const user = await User.findOne({ where: { id: userId } });
 
       if (!user) {
         return res.status(404).json({ message: 'User not found' });

@@ -1,4 +1,5 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 
 import multer from 'multer';
 
@@ -8,12 +9,14 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, callback) => {
     callback(null, Date.now() + '-' + file.originalname);
-  }, 
-  
+  },
+
 });
 
-const upload = multer({ storage, limits: {
-  fileSize: 1000 * 1000 *12, // 12 MB
-}, });
+const upload = multer({
+  storage, limits: {
+    fileSize: 1000 * 1000 * 12, // 12 MB
+  },
+});
 
 export default upload;

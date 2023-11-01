@@ -1,21 +1,22 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import path from "path";
 import fs from 'fs';
 import express from 'express';
 
 const router = express.Router();
- 
 
-router.get('/:name', (req, res ,next) => {
+
+router.get('/:name', (req, res, next) => {
   const fileName = req.params.name?.toString() || '';
   console.log(fileName);
-  
+
 
   // Validate fileName to prevent directory traversal
   if (fileName.includes('..')) {
     res.status(400).send('Invalid file name');
     return;
-  } 
+  }
 
   const filePath = path.join('uploads', fileName);
 
@@ -48,13 +49,13 @@ router.get('/:name', (req, res ,next) => {
       //     break;
       //   // Add more cases for other file types as needed
       // }
-   
+
       // Set the appropriate content type header
       res.setHeader('Content-Type', contentType);
- 
+
       // Send the file as binary data
       res.send(data);
-    } 
+    }
   });
 });
 

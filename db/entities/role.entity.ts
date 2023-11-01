@@ -1,4 +1,5 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToMany, JoinTable, OneToMany } from "typeorm"
 import { User } from "./user.entity.js";
 import { Permissions } from "./permissions.entity.js";
@@ -14,8 +15,8 @@ export class Role extends BaseEntity {
     @ManyToMany(() => Permissions, { cascade: true, eager: true })
     @JoinTable()
     permissions: Permissions[];
-  
+
     users: User[];
-    
+
 }
 

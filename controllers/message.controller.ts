@@ -1,10 +1,12 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import { Request, Response } from 'express';
 import { Message } from '../db/entities/messege.entity.js';
 import { User } from '../db/entities/user.entity.js';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import upload from '../middlewares/multerconfig.js';
+import axios from 'axios';
 
 
 export const messageController = {
@@ -44,7 +46,7 @@ export const messageController = {
       });
 
 
-      if ( !!req.files?.length  && (req.files?.length !== attachmentsUrls.length)) {
+      if (!!req.files?.length && (req.files?.length !== attachmentsUrls.length)) {
         const filesMessege = "Some files are not uploaded due to size limit or another error , max file size is 12MB"
       }
 
@@ -103,4 +105,41 @@ export const messageController = {
       return res.status(500).json({ message: 'Internal server error' + error });
     }
   },
+
+  async say(req, res) {
+    try {
+      const userMessage = req.body.message; // Assuming the question is passed in the request body
+
+      // Create a message payload for the ChatGPT API
+      const payload = {
+        messages: [
+          { role: 'system', content: 'You are a helpful assistant.' },
+          { role: 'user', content: userMessage },
+        ],
+        model: 'gpt-3.5-turbo',
+      };
+
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const answer = response.data.choices[0].message.content;
+
+      res.json({ "answer": answer });
+    } catch (err) {
+      // console.error(error);
+      if (err.response.data)
+      console.error(err.response.data);
+      res.status(500).json({ error: 'An error occurred while processing your request' });
+    }
+  },
+
+
 };

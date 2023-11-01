@@ -1,4 +1,5 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import { Request, Response } from 'express';
 import { User } from '../db/entities/user.entity.js';
 import bcrypt from 'bcrypt';
@@ -33,7 +34,7 @@ export const authController = {
         email,
       });
       await user.save();
-      
+
       // Create a new object without the password
       const userWithoutPassword = { ...user };
       delete userWithoutPassword.password;
@@ -52,7 +53,7 @@ export const authController = {
 
       // Find the user by username
       // const user = await User.findOne({ where: { username } , addSelect:(password)});
-      const user = await User.findOne({ where: { username }, select: ['id','username', 'email','password'] });
+      const user = await User.findOne({ where: { username }, select: ['id', 'username', 'email', 'password'] });
 
 
       if (!user) {
@@ -67,7 +68,7 @@ export const authController = {
       // Here you can generate a JWT token for user authentication
       const token = jwt.sign(
         {
-          username: user.username ,
+          username: user.username,
           email: user.email,
         },
         process.env.JWT_SECRET || '',
@@ -76,22 +77,22 @@ export const authController = {
         }
       );
 
-     
-        res.cookie('username', user.username, {
-          maxAge: 60 * 60 * 1000
-        });
-        res.cookie('loginTime', Date.now(), {
-          maxAge: 60 * 60 * 1000
-        });
-        res.cookie('token', token, {
-          maxAge: 60 * 60 * 1000
-        });
-        
- 
-        // res.send();
-      (req.session as unknown as Session & { username: string }).username  = user.username,
-      (req.session as unknown as Session & { userId: number }).userId = user.id;
-      
+
+      res.cookie('username', user.username, {
+        maxAge: 60 * 60 * 1000
+      });
+      res.cookie('loginTime', Date.now(), {
+        maxAge: 60 * 60 * 1000
+      });
+      res.cookie('token', token, {
+        maxAge: 60 * 60 * 1000
+      });
+
+
+      // res.send();
+      (req.session as unknown as Session & { username: string }).username = user.username,
+        (req.session as unknown as Session & { userId: number }).userId = user.id;
+
       return res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
       console.error(error);
@@ -99,62 +100,62 @@ export const authController = {
     }
   },
 
-// Route to check the session based on the token
-// async checkSession (req, res)  {
-//   const sessionToken = req.headers.authorization.split('Bearer ')[1]; // Extract the token from the header
+  // Route to check the session based on the token
+  // async checkSession (req, res)  {
+  //   const sessionToken = req.headers.authorization.split('Bearer ')[1]; // Extract the token from the header
 
-//   // Validate the token and look up the user's session
-//   if (isValidToken(sessionToken)) {
-//     const userSession = getSessionData(sessionToken); // Implement this function to get the user's session data
+  //   // Validate the token and look up the user's session
+  //   if (isValidToken(sessionToken)) {
+  //     const userSession = getSessionData(sessionToken); // Implement this function to get the user's session data
 
-//     if (userSession) {
-//       // Continue the user's session
-//       req.session.userId = userSession.userId;
-//       res.json({ success: true });
-//     } else {
-//       res.status(401).json({ error: 'Invalid token' });
-//     }
-//   } else {
-//     res.status(401).json({ error: 'Invalid token' });
-//   }
-// },
+  //     if (userSession) {
+  //       // Continue the user's session
+  //       req.session.userId = userSession.userId;
+  //       res.json({ success: true });
+  //     } else {
+  //       res.status(401).json({ error: 'Invalid token' });
+  //     }
+  //   } else {
+  //     res.status(401).json({ error: 'Invalid token' });
+  //   }
+  // },
 
-  
-// logout of user
-async logout(req: Request, res: Response) {
-  try {
-    
-    return res.status(200).json({ message: 'Logout successful' });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Internal server error' });
-  }
-},
 
-async verify(req: Request, res: Response) {
-  try {
-    const token = req.body.token;
-  if (verify(token)) {
-      res.status(200).send({ 'token': true, 'msg': 'The token is right' });
-  }
-  else {
-      res.status(200).send({ 'token': false, 'msg': 'The token is wrong' });
-  }
-    
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Internal server error' });
-  }
-},
+  // logout of user
+  async logout(req: Request, res: Response) {
+    try {
 
-async assignRoleToUser(req: Request, res: Response) {
-  try {
-    
-    // return res.status(201).send(data);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Internal server error' });
-  }
-},
+      return res.status(200).json({ message: 'Logout successful' });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+
+  async verify(req: Request, res: Response) {
+    try {
+      const token = req.body.token;
+      if (verify(token)) {
+        res.status(200).send({ 'token': true, 'msg': 'The token is right' });
+      }
+      else {
+        res.status(200).send({ 'token': false, 'msg': 'The token is wrong' });
+      }
+
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+
+  async assignRoleToUser(req: Request, res: Response) {
+    try {
+
+      // return res.status(201).send(data);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  },
 
 };

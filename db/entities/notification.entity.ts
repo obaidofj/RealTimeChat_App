@@ -1,14 +1,15 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import { JoinTable, ManyToMany, Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, Relation } from 'typeorm';
-import { User } from './user.entity.js'; 
+import { User } from './user.entity.js';
 
 
 @Entity()
-export class Notification  extends BaseEntity {
+export class Notification extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column() 
   message: string;
 
   @Column({ default: false })
@@ -17,7 +18,7 @@ export class Notification  extends BaseEntity {
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
-  @ManyToOne(() => User, u => u.notifications )
+  @ManyToOne(() => User, u => u.notifications)
   notificationRecipient: Relation<User>;
 
 }
