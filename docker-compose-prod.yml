@@ -4,8 +4,8 @@ services:
   mysql:
     image: mysql
     environment:
-      - MYSQL_ROOT_PASSWORD='anypass123' #$DB_PASSWORD
-      - MYSQL_DATABASE='realchat' #$DB_NAME
+      - MYSQL_ROOT_PASSWORD= anypass123 #$DB_PASSWORD
+      - MYSQL_DATABASE= realchat #$DB_NAME
     volumes:
       - db-data:/var/lib/mysql
     ports:

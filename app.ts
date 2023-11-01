@@ -86,7 +86,7 @@ app.use(sessionMiddleware);
 app.get('/getSessionData', (req, res) => {
   // Retrieve session data from the server's session store
   const sessionData = req.session;
-
+ 
   // Send the session data as JSON in the response
   res.json(sessionData);
 });
