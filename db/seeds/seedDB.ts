@@ -1,15 +1,16 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import connection from '../connection.js';
 import { User } from '../entities/user.entity.js';
 import bcrypt from 'bcrypt';
-import {isFlageSet} from '../../utils/generalUtils.js'
+import { isFlageSet } from '../../utils/generalUtils.js'
 
 export async function seedDatabase() {
 
-    if(await isFlageSet('seeded') ){
-        console.log('Data already seeded.');
-        return; // db is seeded so no need for seed
-     }
+  if (await isFlageSet('seeded')) {
+    console.log('Data already seeded.');
+    return; // db is seeded so no need for seed
+  }
 
   try {
     const userRepository = connection.getRepository(User);
@@ -17,8 +18,8 @@ export async function seedDatabase() {
 
     // Insert user data
     await userRepository.insert([
-      { username: 'admin', password: `${hashedPassword}` , email: 'admin@hostname.com' },
-     
+      { username: 'admin', password: `${hashedPassword}`, email: 'admin@hostname.com' },
+
     ]);
 
     console.log('Data seeding completed.');
@@ -28,5 +29,5 @@ export async function seedDatabase() {
     await connection.close();
   }
 }
- 
+
 // seedDatabase();

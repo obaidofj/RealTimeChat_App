@@ -1,4 +1,5 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import express from 'express';
 import { chatgroupController } from '../controllers/chatGroup.controller.js';
 

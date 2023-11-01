@@ -28,7 +28,7 @@ sudo usermod --append --groups docker github
 sudo usermod --append --groups docker ubuntu
 sudo chown github:github -R /home/app
 
-github_pubkey='ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCqB09WopOPu05C7YfGfrsG28wqTRVQ4K52FOcuZnqdysPDSLXdol49ZcdLWLGj7I/zSUIb/r5ITKD6sQca1muVp+pwnQebGoHQqweGq+qbsI04PaBuowoL6DQtgSeTf8wUgb3h2Wr3G7+LGiAqvgh2UfuUhJIytncD4j/8rCKdClDF0+7OIrbzUO49O0HGNq+N0d/ySWGe8FsabCCF0VxMnDCJPZ8DrrkE0Dvzl/XI3XmVodE2pOw2wLGREX7yDoYmt6x9JFj6k84tHeH2pmGVeRVi11MhDo48nQJu2bP+mWY0Kl+bhRUtQe08fFGgJ5nzBTOya8MqoXsRagOh9xZzwfp69MitdLZyjwMN1qJA/m7OmIrb2ZfFxQofe1Wb/gJSjjfTfVLlXx4Iw7JraLMvmXJZl2V1d8RbndldruZ9Cfwy6/SQ17Kf8s07Rixg2B3VcsKrKUBC7W+DmAIjJSOB7TT6Ddv2Buh7XJohZaDhvo6vPfYVc8PQcIfZrQ+ZYlb24phPkvLGxOu9bsEdMRIMMMJ24dLgdAYePoXkYkvp+QcQdlhar+xN8IHyOcE625igmlDLGrrz9hsRQrH5xr1ly1Yxa8gJDeRPymmXiyUD1fvskXhOWl0ToerKTGb895MQRPrYO+ZlO+Z5EOByvGeHBrN59v20ljwABJ82c1D0ow== mohammad@mohammad-VivoBook-ASUSLaptop-X515EP-X515EP'
+github_pubkey='ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGTubs3N8vCYQUXxz0jXGEbOhLhv0+WUddxSow0OCILo obaidofj@gmail.com'
 
 sudo -u github sh -c "mkdir -p /home/app/.ssh && echo $github_pubkey > /home/app/.ssh/authorized_keys"
 

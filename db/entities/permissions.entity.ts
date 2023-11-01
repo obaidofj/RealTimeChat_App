@@ -1,4 +1,5 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from "typeorm"
 
 @Entity()

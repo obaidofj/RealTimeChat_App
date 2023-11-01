@@ -1,4 +1,5 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import { Request, Response } from 'express';
 import { ConnectionFriendship } from '../db/entities/connectionFriendship.entity.js';
 import { User } from '../db/entities/user.entity.js';

@@ -1,5 +1,6 @@
 // @ts-nocheck
-import './config.js';
+// to be able to deploy successfully to ecs and ec2
+import './configEnv.js';
 import applyMigration from './db/runMigration.js'
 import express from 'express';
 import dataSource from './db/connection.js';
@@ -32,7 +33,7 @@ import socketHandler from './sockets/socketHandler.js';
 import { Server } from 'http';
 import fs from 'fs';
 import { Server as SocketIOServer } from 'socket.io';
-import  session, {SessionData } from 'express-session';
+import session, { SessionData } from 'express-session';
 
 
 
@@ -66,7 +67,7 @@ app.use(express.json());
 // });
 
 // Set up session middleware with Redis as the store
- 
+
 
 
 const sessionMiddleware = session({

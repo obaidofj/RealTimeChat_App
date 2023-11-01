@@ -1,12 +1,13 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import { OneToOne, Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn, Relation, OneToMany, BaseEntity } from 'typeorm';
-import { User } from './user.entity.js'; 
-import { Product } from './product.entity.js'; 
-import {  PaymentTransaction } from './paymentTransaction.entity.js';
+import { User } from './user.entity.js';
+import { Product } from './product.entity.js';
+import { PaymentTransaction } from './paymentTransaction.entity.js';
 import { OrderProduct } from './orderProducts.entity.js';
 
 @Entity()
-export class Order extends BaseEntity{
+export class Order extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,9 +20,9 @@ export class Order extends BaseEntity{
 
   // orderProducts: OrderProduct[];
 
-  @Column() 
-  totalQuantity: number; 
-  
+  @Column()
+  totalQuantity: number;
+
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   totalPrice: number;
 
@@ -33,20 +34,20 @@ export class Order extends BaseEntity{
   // })
   // orderProducts : Relation<OrderProduct []>
 
-  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order,{
+  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order, {
     cascade: ['insert', 'update'],
   })
   orderProducts: OrderProduct[];
 
   @ManyToOne(() => User, (user) => user.orders)
-  
+
   user: User;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
 
-  @OneToOne(()=>PaymentTransaction , {  eager: true ,nullable:true } )
+  @OneToOne(() => PaymentTransaction, { eager: true, nullable: true })
   @JoinColumn()
-  paymentTr:Relation<PaymentTransaction>
+  paymentTr: Relation<PaymentTransaction>
 }

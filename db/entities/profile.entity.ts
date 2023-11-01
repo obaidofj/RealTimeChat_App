@@ -1,4 +1,5 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from "typeorm"
 import { User } from "./user.entity.js"
 
@@ -8,18 +9,18 @@ export class Profile extends BaseEntity {
     id: number
 
     @Column({ nullable: false })
-    firstName: string 
+    firstName: string
 
     @Column({ nullable: false })
-    lastName: string 
+    lastName: string
 
     @Column()
-    dateOfBirth: string 
+    dateOfBirth: string
 
     @Column()
-    picture: string 
+    picture: string
 
-    user:User
+    user: User
 
 }
 

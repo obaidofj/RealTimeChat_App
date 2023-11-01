@@ -1,4 +1,5 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 
 import jwt from 'jsonwebtoken';
 
@@ -57,7 +58,7 @@ const socketHandler = (server) => {//app: http.RequestListener<typeof http.Incom
   //     next();
   //   });
   //  });
-  
+
   // Create a list to store connected users
   const users = [];
 
@@ -72,17 +73,17 @@ const socketHandler = (server) => {//app: http.RequestListener<typeof http.Incom
     // Access session data
     const sessionData = socket.request.session;
 
-    
-    users[socketId] = { "username":sessionData.username, "userid":sessionData.userId };
+
+    users[socketId] = { "username": sessionData.username, "userid": sessionData.userId };
 
     console.log(users);
 
 
 
     // Listen for messages from the user
-    socket.on('message',  (data, callback) => {
-      
-  
+    socket.on('message', (data, callback) => {
+
+
 
       // Broadcast the message to all connected users
       io.emit('message', data); // do this need to be with db saving ?

@@ -1,14 +1,15 @@
 // @ts-nocheck
+// to be able to deploy successfully to ecs and ec2
 import express from 'express';
 import { muteBlockUserController } from '../controllers/muteBlockUser.controller.js';
 
 const router = express.Router();
 
 // Route for muting a user
-router.post('/mute',  muteBlockUserController.muteUser );
- 
+router.post('/mute', muteBlockUserController.muteUser);
+
 // Route for unmuting a user
-router.post('/unmute',  muteBlockUserController.unmuteUser);
+router.post('/unmute', muteBlockUserController.unmuteUser);
 
 // Route for blocking a user
 router.post('/block', muteBlockUserController.blockUser);
