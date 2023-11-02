@@ -17,7 +17,7 @@ services:
     restart: always
 
   app:
-    image: public.ecr.aws/y1j8x5z1/obaidecr:$GIT_VERSION #dynamic image version
+    image: 918000663876.dkr.ecr.eu-central-1.amazonaws.com/gs-blue/livechat:$GIT_VERSION #dynamic image version
     restart: always
     environment:
       - APP_PORT=80

@@ -31,14 +31,8 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build --push -t public.ecr.aws/y1j8x5z1/obaidecr:latest .
+          docker build --push -t 918000663876.dkr.ecr.eu-central-1.amazonaws.com/gs-blue/livechat:${{ steps.image_version.outputs.gitsha }} .
    
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag public.ecr.aws/y1j8x5z1/obaidecr:${{ steps.image_version.outputs.gitsha }}
-
-      - name: Publish docker image
-        run: docker push public.ecr.aws/y1j8x5z1/obaidecr:${{ steps.image_version.outputs.gitsha }}
-
       - name: configure docker host
         uses: khaledez/configure-docker-host@v1 #can be always used
         with:
