@@ -29,14 +29,9 @@ jobs:
       - name: Build and push Docker image
         env:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-          ECR_REPOSITORY_URI: ${{ secrets.ECR_REPOSITORY_URI }}
+          NAMESPACE: obaid/realtime-chat
         run: |
-          npm install --include=dev
-          npm run build --silent --ignore-optional-checks
-          docker build -t my-app .
-          docker tag my-app ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_URI }}:latest
-          docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_URI }}:latest
-        # aws ecr-public get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+          docker build --push -t ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ env.NAMESPACE }}:latest .
 
       - name: Deploy to EC2
         run: |
