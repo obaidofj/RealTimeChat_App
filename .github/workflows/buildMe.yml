@@ -3,7 +3,7 @@ name: Deploy to AWS
 on:
   push:
     branches:
-      - chat # Adjust the branch name as needed
+      - deploy2 # Adjust the branch name as needed
 
 jobs:
   deploy:
@@ -40,7 +40,7 @@ jobs:
       - name: Deploy to EC2
         run: |
           # SSH into your EC2 instance
-          ssh -i ${{ secrets.AWS_SSH_KEY }} ec2-user@${{ secrets.EC2_INSTANCE_IP }} << EOF
+          ssh -i ${{ secrets.DEPLOYMENT_KEY }} ec2-user@${{ secrets.EC2_INSTANCE_IP }} << EOF
               
           # Pull the Docker image from your ECR repository
           docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY_URI }}:latest
