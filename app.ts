@@ -163,7 +163,7 @@ dataSource
       // Release the queryRunner when done.
     }
 
-  })
+  }) 
   .catch((err) => {
     winsLogger.error({
       level: 'info',
