@@ -27,11 +27,8 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build and push Docker image
-        env:
-          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-          NAMESPACE: obaid/realtime-chat
         run: |
-          docker build --push -t ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ env.NAMESPACE }}:latest .
+          docker build --push -t public.ecr.aws/y1j8x5z1/obaidecr:latest .
 
       - name: Deploy to EC2
         run: |
