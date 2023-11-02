@@ -34,8 +34,8 @@ jobs:
           npm install --include=dev
           npm run build --silent --ignore-optional-checks
           docker build -t my-app .
-          docker tag my-app ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_URI }}:latest
-          docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_URI }}:latest
+          docker tag my-app ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_URI }}:obaidlatest
+          docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_URI }}:obaidlatest
 
       - name: Deploy to EC2
         run: |
@@ -43,10 +43,10 @@ jobs:
           ssh -i ${{ secrets.DEPLOYMENT_KEY }} ec2-user@${{ secrets.EC2_INSTANCE_IP }} << EOF
               
           # Pull the Docker image from your ECR repository
-          docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY_URI }}:latest
+          docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY_URI }}:obaidlatest
               
           # Run the Docker container
-          docker run -d -p 80:80 --name my-app-container ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY_URI }}:latest
+          docker run -d -p 80:80 --name my-app-container ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY_URI }}:obaidlatest
               
           EOF
 
