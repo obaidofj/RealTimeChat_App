@@ -25,7 +25,7 @@ jobs:
       - name: Authenticate with Amazon ECR
         run: |
           aws ecr-public get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
-          
+
       - name: Build and push Docker image
         run: |
           npm install --include=dev
@@ -33,17 +33,17 @@ jobs:
           docker build -t my-app .
           docker tag my-app ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY_URI}:obaidlatest
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY_URI}:obaidlatest
-          
-            - name: Deploy to EC2
-              run: |
+
+      - name: Deploy to EC2
+        run: |
                 # SSH into your EC2 instance
                 ssh -i ${{ secrets.DEPLOYMENT_KEY }} ec2-user@${{ secrets.EC2_INSTANCE_IP }} << EOF
-                    
+
                 # Pull the Docker image from your ECR repository
                 docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY_URI }}:obaidlatest
-                    
+
                 # Run the Docker container
                 docker run -d -p 80:80 --name my-app-container ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY_URI }}:obaidlatest
-                    
+
                 EOF
-          
+
