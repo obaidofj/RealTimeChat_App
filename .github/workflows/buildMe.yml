@@ -3,7 +3,7 @@ name: Deploy to AWS
 on:
   push:
     branches:
-      - chat # Adjust the branch name as needed
+      - deploy2 # Adjust the branch name as needed
 
 jobs:
   deploy:
@@ -36,11 +36,12 @@ jobs:
           docker build -t my-app .
           docker tag my-app ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_URI }}:latest
           docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_URI }}:latest
+        # aws ecr-public get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
 
       - name: Deploy to EC2
         run: |
           # SSH into your EC2 instance
-          ssh -i ${{ secrets.AWS_SSH_KEY }} ec2-user@${{ secrets.EC2_INSTANCE_IP }} << EOF
+          ssh -i ${{ secrets.DEPLOYMENT_KEY }} ec2-user@${{ secrets.EC2_INSTANCE_IP }} << EOF
               
           # Pull the Docker image from your ECR repository
           docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY_URI }}:latest
