@@ -81,7 +81,7 @@ const sessionMiddleware = session({
 }); //as express.RequestHandler;
   
 app.use(sessionMiddleware);
- 
+  
 app.use('/', indexRouter);
  
 // route to   retrieve session data
