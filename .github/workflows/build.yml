@@ -47,5 +47,5 @@ jobs:
           GIT_VERSION: ${{ steps.image_version.outputs.gitsha }}
 
     - name: print logs #This step will be executed even if previous steps fails
-      if: always() 
-      run: docker compose logs        
+      if: always()  
+      run: docker compose logs         

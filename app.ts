@@ -19,20 +19,20 @@ import productRouter from './routes/product.routes.js'
 import connectionRouter from './routes/connectionFriendship.routes.js'
 import fileRouter from './routes/file.routes.js'
 import { QueryRunner } from 'typeorm';
-import { seedDatabase } from './db/seeds/seedDB.js'
+// import { seedDatabase } from './db/seeds/seedDB.js'
 import { fileURLToPath } from 'url';
 import path from 'path';
-import upload from './middlewares/multerconfig.js';
+// import upload from './middlewares/multerconfig.js';
 import { authenticate } from './middlewares/authentication.js';
 import cors from 'cors';
 import http from 'http';
-import AWS from 'aws-sdk';
-import socketIOSession from 'express-socket.io-session';
+// import AWS from 'aws-sdk';
+// import socketIOSession from 'express-socket.io-session';
 // import socketHandlerMiddleware from './middlewares/socket.js';
 import socketHandler from './sockets/socketHandler.js';
-import { Server } from 'http';
-import fs from 'fs';
-import { Server as SocketIOServer } from 'socket.io';
+// import { Server } from 'http';
+// import fs from 'fs';
+// import { Server as SocketIOServer } from 'socket.io';
 import session, { SessionData } from 'express-session';
  
 
@@ -142,8 +142,8 @@ dataSource
 
       const queryRunner = dataSource.createQueryRunner()
 
-      // await applyMigration(queryRunner);
-      // console.log("Migration has been applied successfully.");
+      await applyMigration(queryRunner);
+      console.log("Migration has been applied successfully.");
       // cost user={req.session.username,}
       // const server = socketHandler(app);
       server.listen(process.env.APP_PORT, () => {
