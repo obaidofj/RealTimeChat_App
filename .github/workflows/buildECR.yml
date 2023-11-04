@@ -1,0 +1,53 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: ['deploy22']
+  pull_request:
+    branches: ['deploy22']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set image version (tag)
+        id: image_version
+        run: echo "gitsha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Configure AWS CLI
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region ${{ secrets.AWS_REGION }}
+
+      - name: Login to AWS ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push Docker image
+        run: |
+          docker build --push -t public.ecr.aws/y1j8x5z1/obaidecr:latest:${{ steps.image_version.outputs.gitsha }} . 
+        # 918000663876.dkr.ecr.eu-central-1.amazonaws.com/gs-blue/livechat:
+                                    
+      - name: configure docker host
+        uses: khaledez/configure-docker-host@v1 #can be always used
+        with:
+          host: 54.184.246.16
+          user: github
+          ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
+
+      - name: deploy
+        env:
+          DB_PASSWORD: anypass123 #{{ secrets.DB_PASSWORD }}
+          DB_NAME: realchat #{{ secrets.DB_NAME }}
+          GIT_VERSION: ${{ steps.image_version.outputs.gitsha }}
+        run: docker compose -f docker-compose-prod.yml up -d
+
+      - name: print logs #This step will be executed even if previous steps fails
+        if: always()
+        run: docker compose logs

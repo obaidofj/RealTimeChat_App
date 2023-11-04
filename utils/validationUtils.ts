@@ -1,4 +1,4 @@
-
+// @ts-nocheck
 export function isAbsent(value) {
   return value === null || value === undefined || value === '';
 }

@@ -101,11 +101,12 @@ app.get('/getSessionData', (req, res) => {
 //   res.send('Hello from the Express server!');
 // });
 
+app.use('/', indexRouter);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
-app.use('/', indexRouter);
+
 
 app.use('/file', fileRouter);
 
@@ -122,11 +123,12 @@ app.use('/payment', paymentRouter);
 app.use('/product', productRouter);
 app.use('/connection', connectionRouter);
 
-const server = http.createServer(app); // Create an HTTP server
+
+  const server = http.createServer(app); // Create an HTTP server
 // const server = new Server(app);
 
 // Use express-socket.io-session middleware to share sessions
-const io = socketHandler(server);
+export const io = socketHandler(server);
 // io.use(socketIOSession(app.locals.session, { autoSave: true }));
 
 
@@ -147,22 +149,24 @@ dataSource
       await applyMigration(queryRunner);
       winsLogger.info("Migration has been applied successfully.");
       // cost user={req.session.username,}
-      const server = socketHandler(app);
-      server.listen(process.env.APP_PORT, () => {
-        winsLogger.info(`App is listening on port ${process.env.APP_PORT}`
-        );
-      });
+      // const server = socketHandler(app);
+
 
       // You can continue with other operations here.
     } catch (error) {
+
       if (error.message == 'Migration for Data seeding is already aplied.')
-        console.error(error.message);
+         winsLogger.info(error.message);
       else
         console.error(error);
       // Handle errors or perform cleanup here if needed.
     } finally {
       // await queryRunner.release();
       // Release the queryRunner when done.
+        server.listen(process.env.APP_PORT, () => {
+        winsLogger.info(`App is listening on port ${process.env.APP_PORT}`
+        );
+      });
     }
 
   }) 
@@ -173,6 +177,8 @@ dataSource
       timestamp: new Date(),
     });
   });
+
+
 
 
 
