@@ -1,7 +1,7 @@
 // @ts-nocheck
 // to be able to deploy successfully to ecs and ec2
 import { DataSource } from "typeorm"
-import winsLogger from "../middlewares/logging.js";
+// import winsLogger from "../middlewares/logging.js";
 import { Message } from './entities/messege.entity.js';
 import { ChatGroup } from './entities/chatGroup.entity.js';
 import { ConnectionFriendship } from './entities/connectionFriendship.entity.js';

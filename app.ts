@@ -35,7 +35,7 @@ import socketHandler from './sockets/socketHandler.js';
 // import { Server as SocketIOServer } from 'socket.io';
 import session, { SessionData } from 'express-session';
  
-
+ 
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -82,7 +82,7 @@ const sessionMiddleware = session({
   
 app.use(sessionMiddleware);
   
-app.use('/', indexRouter);
+
  
 // route to   retrieve session data
 app.get('/getSessionData', (req, res) => {
@@ -105,7 +105,7 @@ app.get('/getSessionData', (req, res) => {
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
-
+app.use('/', indexRouter);
 
 app.use('/file', fileRouter);
 
@@ -134,18 +134,20 @@ io.use((socket, next) => {
   sessionMiddleware(socket.request, {} as any, next);
 });
 
+  
+ 
 dataSource
   .initialize()
   .then(async () => {
-    winsLogger.info('Data Source has been initialized!');
+   winsLogger.info('Data Source has been initialized!');
     try {
 
       const queryRunner = dataSource.createQueryRunner()
 
       await applyMigration(queryRunner);
-      console.log("Migration has been applied successfully.");
+      winsLogger.info("Migration has been applied successfully.");
       // cost user={req.session.username,}
-      // const server = socketHandler(app);
+      const server = socketHandler(app);
       server.listen(process.env.APP_PORT, () => {
         winsLogger.info(`App is listening on port ${process.env.APP_PORT}`
         );
