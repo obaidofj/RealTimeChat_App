@@ -5,10 +5,11 @@
   "description": "Real Time Chat Application",
   "main": "app.ts",
   "scripts": {
-    "build-tsc": "tsc  -w",
+   "build-tsc": "tsc -w",
     "run-watch": "nodemon ./dist/app.js",
-    "build": "tsc --project .",
     "dev": "concurrently \"npm:build-tsc\"  \"npm:run-watch\"",
+    "build": "tsc --project .",
+
     "test": "tsc && jest --coverage"
   },  
   "repository": {
