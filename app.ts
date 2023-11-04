@@ -71,7 +71,7 @@ app.use(express.json());
    
   
 const sessionMiddleware = session({
-  secret: process.env.SESSION_SECRET_KEY,
+  secret: 'DFASDE#%DFFGT#$@%^#$' , //process.env.SESSION_SECRET_KEY,
   resave: false,
   saveUninitialized: true,
   cookie: {
