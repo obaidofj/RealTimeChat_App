@@ -1,4 +1,5 @@
 # The base image that will have node dep
+# FROM node:20-alpine
 FROM node:20-alpine
 
 # Set the current working directory in the container
@@ -17,7 +18,10 @@ ADD . .
 # Build the app
 RUN npm run build
 
-HEALTHCHECK --interval=10s --timeout=3s \
-  CMD curl -f http://127.0.0.1/ || exit 1
+EXPOSE 5000
+
+# HEALTHCHECK --interval=10s --timeout=3s \
+#   CMD curl -f http://127.0.0.1/ || exit 1
 # When running the container, execute the following command
-CMD ["/usr/local/bin/node", "./dist/app.js"]
+# CMD ["/usr/local/bin/node", "./dist/app.js"]
+# CMD ["node", "./dist/app.js"]
