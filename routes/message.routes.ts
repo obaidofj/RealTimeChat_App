@@ -15,13 +15,13 @@ router.post('/', upload.array('files'), messageController.sendMessage);
 router.post('/say', messageController.say);
 
 
-// Route for retrieving sent messages from user
-router.get('/sent/:userId/:msg', messageController.getSentMessages);
+// Route for retrieving sent messages from user to user
+router.get('/sent/:userId1/:userId2', messageController.getSentMessages);
 
-// Route for retrieving messages recived messeg to the user
-router.get('/recived/:userId/:msg', messageController.getRecivedMessages);
+// Route for retrieving messages recived from a user to user
+router.get('/recived/:userId1/:userId2', messageController.getRecivedMessages);
 
-// Route for Search in messeges sent or recived by user
-router.get('search/:userId/:msg', messageController.searchMessages);
+// Route to Search in messeges sent or recived of a user
+router.get('/search/:userId1/:userId2/:msg', messageController.searchMessages);
 
 export default router;
