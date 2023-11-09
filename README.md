@@ -163,10 +163,10 @@ Your server should now be running. You can test it by making requests to the def
 ### Chat Routes
 
 #### `POST /create`
-- Description: Create a chat.
+- Description: Create a chat room.
 
 #### `GET /info`
-- Description: Get chat information.
+- Description: Get chat room information.
 
 ### Order Routes
 
@@ -179,7 +179,7 @@ Your server should now be running. You can test it by making requests to the def
 ### Payment Routes
 
 #### `POST /create`
-- Description: Create a payment.
+- Description: Create a payment to be completed to allow sending link for product and make order and payment for it.
 
 #### `GET /get-user-payment`
 - Description: Get user payments.
@@ -221,7 +221,7 @@ Your server should now be running. You can test it by making requests to the def
 
 Refer to the source code or API documentation for detailed information on each endpoint.  
 Here is the link for the documentaion :
-#### [Documentation Link](https://documenter.getpostman.com/view/11905199/2s9YRE1WjF)
+#### [Full Routes Documentation Link](https://documenter.getpostman.com/view/11905199/2s9YRE1WjF)
 
 ## Authentication
 The authentication middleware is applied globally, requiring valid authentication for most endpoints. Ensure you include the correct authentication token in your requests.
