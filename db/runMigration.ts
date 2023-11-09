@@ -1,9 +1,8 @@
 // @ts-nocheck
 // to be able to deploy successfully to ecs and ec2
-import connection from './connection.js';
 import { QueryRunner } from 'typeorm';
+import { isFlageSet } from '../utils/generalUtils.js';
 import { StarterMigts1696868409294 } from './migrations/1696868409294-starterMig.js';
-import { isFlageSet } from '../utils/generalUtils.js'
 
 async function applyMigration(queryRunner: QueryRunner) {
 
@@ -12,8 +11,7 @@ async function applyMigration(queryRunner: QueryRunner) {
   const checkApplied = await isFlageSet('migrationAplied');
 
   if (checkApplied || (Array.isArray(checkApplied) && checkApplied.length === 0)) {
-    throw new Error('Migration for Data seeding is already aplied.');
-    return; // migration for seeding is applied so no need for it
+    throw new Error('Migration for Data seeding is already applied.');
   }
 
   try {

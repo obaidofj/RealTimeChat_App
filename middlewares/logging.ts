@@ -1,7 +1,6 @@
 // @ts-nocheck
 // to be able to deploy successfully to ecs and ec2
 import chalk from 'chalk';
-import stripAnsi from 'strip-ansi';
 import winston from 'winston';
 
 const myLevels = {
@@ -43,8 +42,8 @@ const winsLogger = winston.createLogger({
   ),
   defaultMeta: { project: 'RealTimeChatApp' },
   transports: [
-    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'logs/all.log' }),
+    // new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+    // new winston.transports.File({ filename: 'logs/all.log' }),
     new winston.transports.Console({ format: winston.format.combine(customFormat) }),
   ],
 });
