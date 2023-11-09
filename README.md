@@ -65,6 +65,160 @@ Your server should now be running. You can test it by making requests to the def
 /product: Product-related endpoints  
 /connection: Connection and friendship-related endpoints  
   
+### Summary of all endpoints :   
+### Auth Routes
+
+#### `POST /register`
+- Description: Register a new user.
+
+#### `POST /login`
+- Description: Log in a user.
+
+#### `POST /logout`
+- Description: Log out a user.
+
+#### `POST /reset-password`
+- Description: Request a password reset.
+
+#### `POST /reset-password/:token`
+- Description: Reset password with token.
+
+#### `POST /request-password-reset`
+- Description: Request password reset via email link.
+
+#### `POST /verify`
+- Description: Verify user credentials.
+
+### Message Routes
+
+#### `POST /send`
+- Description: Send a message.
+
+#### `POST /send-s3-save`
+- Description: Send a message with S3 file save.
+
+#### `GET /get`
+- Description: Get messages.
+
+#### `GET /sent`
+- Description: Get sent messages.
+
+#### `GET /received`
+- Description: Get received messages.
+
+#### `GET /search`
+- Description: Search for messages.
+
+#### `GET /say`
+- Description: Get ChatGPT responses.
+
+### Block/Mute Routes
+
+#### `POST /mute`
+- Description: Mute a user.
+
+#### `POST /block`
+- Description: Block a user.
+
+#### `POST /unmute`
+- Description: Unmute a user.
+
+#### `POST /unblock`
+- Description: Unblock a user.
+
+#### `GET /initiated-mute-block`
+- Description: Get initiated mute/block connections.
+
+#### `GET /received-mute-block`
+- Description: Get received mute/block connections.
+
+### Connection Routes
+
+#### `POST /send`
+- Description: Send a connection request.
+
+#### `POST /accept`
+- Description: Accept a connection request.
+
+#### `POST /reject`
+- Description: Reject a connection request.
+
+#### `POST /remove`
+- Description: Remove a connection.
+
+#### `GET /user-connections`
+- Description: Get user connections.
+
+#### `GET /search-connections`
+- Description: Search for connections.
+
+### Notification Routes
+
+#### `POST /notify`
+- Description: Send a notification.
+
+#### `GET /get-notifications`
+- Description: Get notifications.
+
+### Chat Routes
+
+#### `POST /create`
+- Description: Create a chat.
+
+#### `GET /info`
+- Description: Get chat information.
+
+### Order Routes
+
+#### `POST /create`
+- Description: Create an order.
+
+#### `GET /info`
+- Description: Get order information.
+
+### Payment Routes
+
+#### `POST /create`
+- Description: Create a payment.
+
+#### `GET /get-user-payment`
+- Description: Get user payments.
+
+### Product Routes
+
+#### `POST /create`
+- Description: Create a product.
+
+#### `GET /all-products`
+- Description: Get all products.
+
+#### `GET /get-product`
+- Description: Get product information.
+
+### Files Routes
+
+#### `GET /get-file`
+- Description: Get a file.
+
+#### `GET /get-s3-file`
+- Description: Get an S3 file.
+
+### User Routes
+
+#### `POST /create-profile`
+- Description: Create a user profile.
+
+#### `GET /profile-by-id`
+- Description: Get profile by ID.
+
+#### `GET /profile-by-name`
+- Description: Get profile by name.
+
+#### `GET /search-users`
+- Description: Search for users.
+
+
+
 Refer to the source code or API documentation for detailed information on each endpoint.  
 Here is the link for the documentaion :
 #### [Documentation Link](https://documenter.getpostman.com/view/11905199/2s9YRE1WjF)
