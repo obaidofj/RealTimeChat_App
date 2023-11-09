@@ -8,14 +8,16 @@ Welcome to FaceingOff Chat We appreciate your interest and welcome your contribu
 2. Clone your forked repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/yourproject.git
+   git clone https://github.com/yourusername/forked.git
 
    ```
 
 3. Create a new branch for your feature or bug fix:
 
 
-``` git checkout -b feature/new-feature ```  
+``` 
+git checkout -b feature/new-feature 
+```  
 Replace feature/new-feature with a meaningful branch name.
 
 4. Make your changes and commit them:  
@@ -27,7 +29,9 @@ git commit -m "Add your meaningful commit message here"
 
 5. Push your changes to your forked repository:
 
-``` git push origin feature/new-feature ```  
+``` 
+git push origin feature/new-feature
+ ```  
 
 Create a pull request (PR) from your forked repository to the main project repository. and if you can Ensure your PR includes:  
 
