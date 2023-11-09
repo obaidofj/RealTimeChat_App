@@ -5,9 +5,11 @@ import { Message } from '../db/entities/messege.entity.js';
 import { User } from '../db/entities/user.entity.js';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import upload from '../middlewares/multerconfig.js';
+import upload  from '../middlewares/multerconfig.js';
 import axios from 'axios';
 import { ILike } from 'typeorm';
+import {   PutObjectCommand, ListObjectsCommand ,GetObjectCommand } from "@aws-sdk/client-s3";
+
 
 
 export const messageController = {
@@ -63,6 +65,91 @@ export const messageController = {
 
       // Create a new message
       // if (req.file) {
+      const message = await Message.create({
+        text,
+        attachmentsUrls,
+        sender,
+        receiver,
+      });
+
+      await message.save();
+      // Retrieve the 'username' and 'userId' properties from sessionData
+      const sessionData = {
+        username: (req.session as unknown as { username: string }).username,
+        userId: (req.session as unknown as { userId: number }).userId,
+      };
+
+      return res.status(201).json({ info: 'Message sent successfully', message, sessionData: sessionData, });
+      // }
+      // else
+      //  return res.status(400).json({ info: 'there was error in uploading fiel' });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+
+  // Send a message
+  async sendMessageS3(req: Request, res: Response) {
+
+    try {
+      let { senderId, receiverId, text } = req.body;
+
+      const senderIdNum = parseInt(senderId);
+      // Check if sender and receiver users exist
+      const sender = await User.findOne({ where: { id: senderId } });
+      const receiver = await User.findOne({ where: { id: receiverId } });
+
+      if (!sender || !receiver) {
+        return res.status(404).json({ message: 'Sender or receiver not found' });
+      }
+
+      // Access the uploaded files from req.files
+      const uploadedFiles = req.files as Express.Multer.File[] || [];
+      let notUploadedFiles = [];
+      let attachmentsUrls: string[] = [];
+      // return res.status(404).json(uploadedFiles);
+ try {
+    const s3Client = req.s3Client; // Access s3Client from the request object
+
+   for (const file of req.files) {
+     const key = Date.now() + '-' + file.originalname;
+      const params = {
+        Bucket: 'chatappattach',
+        Key: key ,
+        Body: file.buffer,
+      };
+
+      await s3Client.send(new PutObjectCommand(params));
+      attachmentsUrls.push(key)
+
+    }
+
+    // res.send('Files uploaded to S3 successfully');
+  } catch (error) {
+   console.error('Error uploading files to S3:', error);
+   notUploadedFiles.push(file.originalname)
+
+    // res.status(500).send('Error uploading files to S3');
+  }
+
+   
+
+
+      // Create an array to track which files were successfully uploaded
+      // uploadedFiles?.map((file, index) => {
+      //   if (file) {
+      //     attachmentsUrls.push(file.filename)
+      //   } else {
+      //     notUploadedFiles.push(file.originalname)
+      //   }
+      // });
+
+
+      if (!!req.files?.length && (req.files?.length !== attachmentsUrls.length)) {
+        const filesMessege = "Some files are not uploaded due to size limit or another error , max file size is 12MB"
+      }
+
       const message = await Message.create({
         text,
         attachmentsUrls,
