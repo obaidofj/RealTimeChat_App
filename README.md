@@ -1,6 +1,6 @@
-﻿# Facingoff Real Time Chat Application
+﻿# FacingOff Real Time Chat Application
 
-Description of your project goes here.
+Welcome to FacingOff Chat App, a real-time messaging application that utilizes AWS S3 for file storage, AWS SES for password resets, and Socket.IO for real-time communication. The chat app can handle multi-picture and file uploads simultaneously. Additionally, it features an integration with ChatGPT for get responses inside the chat and save them as the chat messeges .
 
 ## Table of Contents
 
