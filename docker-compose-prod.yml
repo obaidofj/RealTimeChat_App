@@ -5,7 +5,7 @@ services:
     image: mysql
     environment:
       - MYSQL_ROOT_PASSWORD= $DB_PASSWORD
-      - MYSQL_DATABASE= realtimechat
+      - MYSQL_DATABASE=realtimechat
     volumes:
       - db-data:/var/lib/mysql
     ports:

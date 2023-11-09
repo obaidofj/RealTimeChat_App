@@ -2,9 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "deploy2" ]
-  pull_request:
-    branches: [ "deploy2" ]
+    branches: [ "main" ]
   
 
 jobs:
@@ -36,7 +34,7 @@ jobs:
     - name: configure docker host
       uses: khaledez/configure-docker-host@v1 #can be always used 
       with:
-        host: 54.184.246.16
+        host: 34.210.49.113
         user: github
         ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
 
