@@ -7,10 +7,10 @@ Welcome to FaceingOff Chat We appreciate your interest and welcome your contribu
 1. Fork the repository.
 2. Clone your forked repository to your local machine:
 
-   ```bash
-   git clone https://github.com/yourusername/forked.git
+```
+git clone https://github.com/yourusername/forked.git
 
-   ```
+```
 
 3. Create a new branch for your feature or bug fix:
 
