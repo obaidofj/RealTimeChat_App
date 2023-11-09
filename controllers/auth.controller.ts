@@ -11,7 +11,12 @@ import { Profile } from '../db/entities/profile.entity.js';
 import { UserTypes } from '../types/user.types.js';
 import { AppTypes } from "../types/app.types.js";
 // import { Session } from 'express-session';
+import { MoreThan } from 'typeorm';
+import { v4 as uuidv4 } from "uuid";
+import ses from "../utils/configAws.js";
 
+  
+ 
 export const authController = {
   // User registration
   async register(req: Request, res: Response) {
@@ -122,15 +127,151 @@ export const authController = {
 
 
   // logout of user
-  async logout(req: Request, res: Response) {
-    try {
+// User logout
+async logout(req: Request, res: Response) {
+  try {
+    // Clear cookies
+    res.clearCookie('username');
+    res.clearCookie('loginTime');
+    res.clearCookie('token');
+
+    // Clear session
+    req.session.destroy((err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Internal server error' });
+      }
 
       return res.status(200).json({ message: 'Logout successful' });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: 'Internal server error' });
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+},
+
+// Reset password
+async resetPassword(req: Request, res: Response) {
+  try {
+    const { username, newPassword } = req.body;
+
+    // Check if the user exists
+    const user = await User.findOne({ where: { username } });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
+
+    // Update the user's password with the new one (make sure to hash it)
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.status(200).json({ message: 'Password reset successful' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
   },
+
+
+
+
+
+
+// Reset password request
+  async resetPasswordRequest(req: Request, res: Response) {
+    // Generate a unique token for password reset link
+    const generateResetToken = () => uuidv4();
+  try {
+    const { email } = req.body;
+
+    // Check if the user exists
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Generate a reset token
+    const resetToken = generateResetToken();
+
+    // Save the reset token and expiration time in the database
+    user.resetToken = resetToken;
+    user.resetTokenExpiration = new Date(Date.now() + 3600000 * 4); // Reset link valid for 4 hours
+    await user.save();
+
+    // Send password reset email
+    const resetLink = `https://localhost:5000/resetPasswordWithToken/${resetToken}`;
+    const emailParams = { Destination: { ToAddresses: [email] }, Message: { Body: { Html: { Data: `  <h2>Hi ${user.username},</h2>
+  <p>You have requested to reset your password. Click the link below to set a new password:</p>
+  <p> Click the following link : <a href="${resetLink}" target="_blank">Reset Password</a></p>
+
+  <p>If you didn't request this reset, please ignore this email.</p>
+
+  <p>Best regards,<br>
+  Faceingoff Chat App Team</p> ` }, Text: { Data: `  Hi ${user.username},\n
+  You have requested to reset your password. Click the link below to set a new password:\n
+   Click the following link : ${resetLink}\n
+
+  \nIf you didn't request this reset, please ignore this email.
+
+  \nBest regards,\n
+  Faceingoff Chat App Team\n ` } }, Subject: { Data: "Password Reset Request" } }, Source: "obaidofj2@gmail.com" };
+
+    // await ses.sendEmail(emailParams).promise();
+    ses.sendEmail(emailParams, (err, data) => {
+      if (err) {
+        console.error("Error sending email:", err);
+      } else {
+        console.log("Email sent successfully:", data.MessageId);
+      }
+    });
+
+    return res.status(200).json({ message: 'Password reset email sent successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+},
+
+// Reset password with token
+async resetPasswordWithToken(req: Request, res: Response) {
+  try {
+    const { resetToken } = req.params;
+    const { newPassword } = req.body;
+
+    // Check if the token is valid and not expired
+    const user = await User.findOne({
+      where: {
+        resetToken,
+        resetTokenExpiration: MoreThan ( new Date() ),
+      },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid or expired reset token' });
+    }
+
+    // Update the user's password with the new one (make sure to hash it)
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+
+    // Clear the reset token and expiration time
+    user.resetToken = null;
+    user.resetTokenExpiration = null;
+
+    await user.save();
+
+    return res.status(200).json({ message: 'The Password reset is successful' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+},
+
+
+
 
   async verify(req: Request, res: Response) {
     try {

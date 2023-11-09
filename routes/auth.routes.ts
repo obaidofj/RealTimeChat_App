@@ -12,6 +12,12 @@ router.post('/register', authController.register);
 // Route for user login
 router.post('/login', authController.login);
 
+router.post("/resetPassword", authController.resetPassword);
+
+router.post("/resetPasswordRequest", authController.resetPasswordRequest);
+
+router.post("/resetPasswordWithToken/:resetToken", authController.resetPasswordWithToken);
+
 router.post('/logout', authenticate, authController.logout);
 
 router.post('/assignrole', authenticate, authController.assignRoleToUser);

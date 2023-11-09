@@ -20,24 +20,21 @@ import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn() id: number;
 
   @Column({ unique: true })
   username: string;
 
-  @Column()
-  email: string;
+  @Column() email: string;
 
   chatGroups: ChatGroup[];
   paymentTransactions: PaymentTransaction[];
   orders: Order[];
 
-
   @BeforeInsert()
   async hashPassword() {
     if (this.password) {
-      this.password = await bcrypt.hash(this.password, 10)
+      this.password = await bcrypt.hash(this.password, 10);
     }
   }
 
@@ -52,40 +49,50 @@ export class User extends BaseEntity {
   //    return undefined;
   //  }
 
+  @Column({ nullable: true }) // Nullable because initially, there's no reset token
+  resetToken: string;
 
+  @Column({ nullable: true }) // Nullable because initially, there's no reset token expiration
+  resetTokenExpiration: Date;
+  
 
   @OneToMany(() => Notification, n => n.notificationRecipient, { eager: true })
   notifications: Notification[];
 
-
-  @OneToMany(() => ConnectionFriendship, (ConnectionFriendship) => ConnectionFriendship.initiator)
+  @OneToMany(
+    () => ConnectionFriendship,
+    ConnectionFriendship => ConnectionFriendship.initiator
+  )
   initiatedConnectionFriendship: ConnectionFriendship[];
 
-  @OneToMany(() => ConnectionFriendship, (ConnectionFriendship) => ConnectionFriendship.recipient)
+  @OneToMany(
+    () => ConnectionFriendship,
+    ConnectionFriendship => ConnectionFriendship.recipient
+  )
   receivedConnectionFriendship: ConnectionFriendship[];
 
-  @OneToMany(() => MuteBlockUser, (muteBlock) => muteBlock.initiatoruser)
+  @OneToMany(() => MuteBlockUser, muteBlock => muteBlock.initiatoruser)
   initiatedMuteBlocks: MuteBlockUser[];
 
-  @OneToMany(() => MuteBlockUser, (muteBlock) => muteBlock.receiveduser)
+  @OneToMany(() => MuteBlockUser, muteBlock => muteBlock.receiveduser)
   receivedMuteBlocks: MuteBlockUser[];
 
-
-  @OneToMany(() => Message, (messege) => messege.sender)
+  @OneToMany(() => Message, messege => messege.sender)
   sentMessages: Message[];
 
-  @OneToMany(() => Message, (messege) => messege.receiver)
+  @OneToMany(() => Message, messege => messege.receiver)
   receivedMessages: Message[];
-
 
   @ManyToMany(() => Role, role => role.users, { eager: true })
   @JoinTable()
   roles: Role[];
 
-
-  @OneToOne(() => Profile, profile => profile.user, { cascade: true, eager: true })
+  @OneToOne(() => Profile, profile => profile.user, {
+    cascade: true,
+    eager: true
+  })
   @JoinColumn()
-  profile: Profile
+  profile: Profile;
 
   // async getSentMessages(): Promise<Message[]> {
   //   const sentMessages = await Message.find({ sender: this });
@@ -116,6 +123,5 @@ export class User extends BaseEntity {
   //   const receivedConnectionFriendship = await ConnectionFriendship.find({ recipient: this });
   //   return receivedConnectionFriendship;
   // }
-
 }
 

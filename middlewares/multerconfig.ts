@@ -19,4 +19,9 @@ const upload = multer({
   },
 });
 
+export const uploadS3 = multer({
+  storage: multer.memoryStorage (),
+  limits: { fileSize: 12 * 1024 * 1024 }, // 12MB file size limit
+});
+
 export default upload;
