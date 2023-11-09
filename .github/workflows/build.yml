@@ -39,9 +39,9 @@ jobs:
         ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
 
     - name: deploy
-      run: docker compose -f docker-compose-prod.yml up -d
+      run: docker compose -f docker-compose-prod.yml up -d --remove-orphans && docker system prune -af
       env:
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_PASSWORD: very_secr3t!
           GIT_VERSION: ${{ steps.image_version.outputs.gitsha }}
 
     - name: print logs #This step will be executed even if previous steps fails
