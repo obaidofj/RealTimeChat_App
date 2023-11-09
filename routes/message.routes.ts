@@ -11,13 +11,17 @@ router.post('/', upload.array('files'), messageController.sendMessage);
 
 router.post('/', upload.array('files'), messageController.sendMessage);
 
-// Route for retrieving  messages between two users
+// Route for chatgpt
 router.post('/say', messageController.say);
 
-// // Route for retrieving sent messages from user
-// router.get('/:userId1/:userId2', messageController.getSentMessages);
 
-// // Route for retrieving messages recived messeg to user
-// router.get('/:userId1/:userId2', messageController.getRecivedMessages);
+// Route for retrieving sent messages from user to user
+router.get('/sent/:userId1/:userId2', messageController.getSentMessages);
+
+// Route for retrieving messages recived from a user to user
+router.get('/recived/:userId1/:userId2', messageController.getRecivedMessages);
+
+// Route to Search in messeges sent or recived of a user
+router.get('/search/:userId1/:userId2/:msg', messageController.searchMessages);
 
 export default router;

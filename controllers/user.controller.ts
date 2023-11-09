@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { verify } from '../middlewares/authentication.js';
 import connection from '../db/connection.js';
-import { EntityManager } from 'typeorm';
+import { EntityManager ,ILike } from 'typeorm';
 import { Profile } from '../db/entities/profile.entity.js';
 import { UserTypes } from '../types/user.types.js';
 
@@ -130,6 +130,26 @@ export const userController = {
     }
   },
 
+  // Retrieve user profile by username
+  async searchUserNames(req: Request, res: Response) {
+    try {
+      const userName = req.params.userName;
+
+      // Find the user by ID
+      const users = await User.findBy({ username: ILike(`%${userName}%`) });
+
+      if (users.length === 0) {
+        return res.status(404).json({ message: 'User is not found' });
+      }
+
+
+        return res.status(404).json({ messege: `List of users matching ${userName} :` , Users: users });
+
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  },
 
 
 

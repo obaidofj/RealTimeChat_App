@@ -14,4 +14,6 @@ router.get('/profile/id/:userId', authenticate, userController.getUserProfileByI
 
 router.get('/profile/name/:userName', authenticate, userController.getUserProfileByUserName);
 
+router.get('/search/:userName', authenticate, userController.searchUserNames);
+
 export default router

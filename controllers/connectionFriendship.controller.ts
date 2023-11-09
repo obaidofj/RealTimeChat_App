@@ -5,6 +5,7 @@ import { ConnectionFriendship } from '../db/entities/connectionFriendship.entity
 import { User } from '../db/entities/user.entity.js';
 import { validateNotEmptyFields } from '../utils/validationUtils.js';
 import { connStatus } from '../types/connection.types.js';
+import { In,  ILike } from 'typeorm';
 
 
 export const connectionFriendshipController = {
@@ -166,4 +167,32 @@ export const connectionFriendshipController = {
       return res.status(500).json({ message: 'Internal server error' });
     }
   },
+
+  async searchConnections (req: Request, res: Response) {
+    try {
+      const{ userId, userName} = req.params;
+
+      // Find the user by userName
+      const users = await User.findBy({ username: ILike(`%${userName}%`) });
+      const userIds = users.map(user => user.id);
+
+      if (users.length===0) {
+        return res.status(404).json({ message: 'No Connections found' });
+      }
+
+      // .find({ where: { id: In(productIds) } });
+      // Get user connections (friends)
+      const connections = await ConnectionFriendship.find({
+        where: { initiatoUserId: userId, recipientUserId: In(userIds) , status: connStatus.Accepted },
+        relations: ['recipient'], //
+      });
+
+      return res.status(200).json({ connections });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+
+  
 };

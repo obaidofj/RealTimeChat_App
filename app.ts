@@ -19,31 +19,31 @@ import productRouter from './routes/product.routes.js'
 import connectionRouter from './routes/connectionFriendship.routes.js'
 import fileRouter from './routes/file.routes.js'
 import { QueryRunner } from 'typeorm';
-import { seedDatabase } from './db/seeds/seedDB.js'
+// import { seedDatabase } from './db/seeds/seedDB.js'
 import { fileURLToPath } from 'url';
 import path from 'path';
-import upload from './middlewares/multerconfig.js';
+// import upload from './middlewares/multerconfig.js';
 import { authenticate } from './middlewares/authentication.js';
 import cors from 'cors';
 import http from 'http';
-import AWS from 'aws-sdk';
-import socketIOSession from 'express-socket.io-session';
+// import AWS from 'aws-sdk';
+// import socketIOSession from 'express-socket.io-session';
 // import socketHandlerMiddleware from './middlewares/socket.js';
 import socketHandler from './sockets/socketHandler.js';
-import { Server } from 'http';
-import fs from 'fs';
-import { Server as SocketIOServer } from 'socket.io';
+// import { Server } from 'http';
+// import fs from 'fs';
+// import { Server as SocketIOServer } from 'socket.io';
 import session, { SessionData } from 'express-session';
-
-
+ 
+ 
 
 const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
 
 var app = express();
-
-
+ 
+ 
 
 app.use(cors({
   origin: 'http://127.0.0.1:4000',
@@ -68,10 +68,10 @@ app.use(express.json());
 
 // Set up session middleware with Redis as the store
 
-
-
+   
+  
 const sessionMiddleware = session({
-  secret: process.env.SESSION_SECRET_KEY,
+  secret: 'DFASDE#%DFFGT#$@%^#$' , //process.env.SESSION_SECRET_KEY,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -79,14 +79,16 @@ const sessionMiddleware = session({
     maxAge: 60 * 60 * 1000 * 12,
   },
 }); //as express.RequestHandler;
-
+  
 app.use(sessionMiddleware);
+  
 
+ 
 // route to   retrieve session data
 app.get('/getSessionData', (req, res) => {
   // Retrieve session data from the server's session store
   const sessionData = req.session;
-
+ 
   // Send the session data as JSON in the response
   res.json(sessionData);
 });
@@ -99,11 +101,12 @@ app.get('/getSessionData', (req, res) => {
 //   res.send('Hello from the Express server!');
 // });
 
+app.use('/', indexRouter);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
-app.use('/', indexRouter);
+
 
 app.use('/file', fileRouter);
 
@@ -120,11 +123,12 @@ app.use('/payment', paymentRouter);
 app.use('/product', productRouter);
 app.use('/connection', connectionRouter);
 
-const server = http.createServer(app); // Create an HTTP server
+
+  const server = http.createServer(app); // Create an HTTP server
 // const server = new Server(app);
 
 // Use express-socket.io-session middleware to share sessions
-const io = socketHandler(server);
+export const io = socketHandler(server);
 // io.use(socketIOSession(app.locals.session, { autoSave: true }));
 
 
@@ -132,36 +136,40 @@ io.use((socket, next) => {
   sessionMiddleware(socket.request, {} as any, next);
 });
 
+  
+ 
 dataSource
   .initialize()
   .then(async () => {
-    winsLogger.info('Data Source has been initialized!');
+   winsLogger.info('Data Source has been initialized!');
     try {
 
       const queryRunner = dataSource.createQueryRunner()
 
-      // await applyMigration(queryRunner);
-      // console.log("Migration has been applied successfully.");
+      await applyMigration(queryRunner);
+      winsLogger.info("Migration has been applied successfully.");
       // cost user={req.session.username,}
       // const server = socketHandler(app);
-      server.listen(process.env.APP_PORT, () => {
-        winsLogger.info(`App is listening on port ${process.env.APP_PORT}`
-        );
-      });
+
 
       // You can continue with other operations here.
     } catch (error) {
+
       if (error.message == 'Migration for Data seeding is already aplied.')
-        console.error(error.message);
+         winsLogger.info(error.message);
       else
         console.error(error);
       // Handle errors or perform cleanup here if needed.
     } finally {
       // await queryRunner.release();
       // Release the queryRunner when done.
+        server.listen(process.env.APP_PORT, () => {
+        winsLogger.info(`App is listening on port ${process.env.APP_PORT}`
+        );
+      });
     }
 
-  })
+  }) 
   .catch((err) => {
     winsLogger.error({
       level: 'info',
@@ -169,6 +177,8 @@ dataSource
       timestamp: new Date(),
     });
   });
+
+
 
 
 

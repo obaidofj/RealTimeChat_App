@@ -7,6 +7,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import upload from '../middlewares/multerconfig.js';
 import axios from 'axios';
+import { ILike } from 'typeorm';
 
 
 export const messageController = {
@@ -141,5 +142,65 @@ export const messageController = {
     }
   },
 
+    // Get messages sent form user to another one
+  async getSentMessages(req: Request, res: Response) {
+    try {
+      const { userId1, userId2 } = req.params;
+
+      // Find messages between the two users
+      const messages = await Message.find({
+        where: [
+          { senderid: Number(userId1), receiverid: Number(userId2) },
+          
+        ],
+      });
+
+      return res.status(200).json({ messages });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal server error' + error });
+    }
+  },
+
+    // Get messages recived by user from another user
+  async getRecivedMessages(req: Request, res: Response) {
+    try {
+      const { userId1, userId2 } = req.params;
+
+      // Find messages between the two users
+      const messages = await Message.find({
+        where: [
+          { senderid: Number(userId2), receiverid: Number(userId1) },
+         
+        ],
+      });
+
+      return res.status(200).json({ messages });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal server error' + error });
+    }
+  },
+
+    // search messeges between two users
+  async searchMessages(req: Request, res: Response) {
+    try {
+      const { userId1, userId2 , msg } = req.params;
+      // return res.status(200).json({ userId1, userId2, msg });
+      // Find messages between the two users
+      const messages = await Message.find({
+        where: [
+          { senderid: Number(userId1), receiverid: Number(userId2), text: ILike(`%${msg}%`) },
+          { senderid: Number(userId2), receiverid: Number(userId1) , text: ILike(`%${msg}%`) },
+         
+        ],
+      });
+
+      return res.status(200).json({ messages });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal server error' + error });
+    }
+  },
 
 };

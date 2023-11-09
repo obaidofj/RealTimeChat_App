@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: ['deploy20']
+    branches: ['deploy222']
   pull_request:
-    branches: ['deploy20']
+    branches: ['deploy222']
 
 jobs:
   build:
@@ -35,15 +35,16 @@ jobs:
       - name: configure docker host
         uses: khaledez/configure-docker-host@v1 #can be always used
         with:
-          host: 35.180.32.37
+          host: 54.184.246.16
           user: github
           ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
 
       - name: deploy
-        run: docker compose -f docker-compose-prod.yml up -d
         env:
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_PASSWORD: anypass123 #{{ secrets.DB_PASSWORD }}
+          DB_NAME: realtimechatdb #{{ secrets.DB_NAME }}
           GIT_VERSION: ${{ steps.image_version.outputs.gitsha }}
+        run: docker compose -f docker-compose-prod.yml up -d
 
       - name: print logs #This step will be executed even if previous steps fails
         if: always()
