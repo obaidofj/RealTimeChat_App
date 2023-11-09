@@ -4,8 +4,8 @@ services:
   mysql:
     image: mysql
     environment:
-      - MYSQL_ROOT_PASSWORD= anypass123 #$DB_PASSWORD
-      - MYSQL_DATABASE= realtimechatdb #$DB_NAME
+      - MYSQL_ROOT_PASSWORD= $DB_PASSWORD
+      - MYSQL_DATABASE= realtimechat
     volumes:
       - db-data:/var/lib/mysql
     ports:
@@ -23,8 +23,8 @@ services:
       - APP_PORT=80
       - DB_HOST=mysql
       - DB_USER_NAME=root
-      - DB_PASSWORD=anypass123 #$DB_PASSWORD
-      - DB_NAME=realtimechatdb #$DB_NAME
+      - DB_PASSWORD=$DB_PASSWORD
+      - DB_NAME=realtimechat
     ports:
       - "80:80"
     depends_on:

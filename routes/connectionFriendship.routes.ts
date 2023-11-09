@@ -18,4 +18,6 @@ router.post('/remove', connectionFriendshipController.removeFriendeship);
 // Route for getting user connections (friends)
 router.get('/user/:userId', connectionFriendshipController.getUserConnections);
 
+router.get('/search/:userId/:userName', connectionFriendshipController.searchConnections);
+
 export default router;

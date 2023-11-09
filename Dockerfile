@@ -1,27 +1,25 @@
-# The base image that will have node dep
-# FROM node:20-alpine
-FROM node:20-alpine
+# Use an official Node.js runtime as the base image
+FROM node:14
 
-# Set the current working directory in the container
-WORKDIR /usr/app
+# Set the working directory in the container
+WORKDIR /app
 
-RUN apk add curl
+# Copy package.json and package-lock.json to the container
+COPY package*.json ./
 
-# Copy only two files to the image
-COPY package.json package-lock.json ./
+# Install application dependencies
+RUN npm install
 
-# Execute a command while building the container
-RUN npm ci
+# Copy the rest of the application source code to the container
+COPY . .
 
-# Now copy the project files
-ADD . . 
-# Build the app
-RUN npm run build
-
+# Expose a port for the application to listen on
 EXPOSE 5000
+
+# Define the command to start the application
+CMD ["node", "./dist/app.js"]
 
 # HEALTHCHECK --interval=10s --timeout=3s \
 #   CMD curl -f http://127.0.0.1/ || exit 1
-# When running the container, execute the following command
+# # When running the container, execute the following command
 # CMD ["/usr/local/bin/node", "./dist/app.js"]
-# CMD ["node", "./dist/app.js"]
