@@ -7,4 +7,4 @@ const ses = new AWS.SES({
   region: process.env.AWS_REGION_SES, // Replace with the appropriate AWS region
 });
 
-export default ses;
+export default ses; 
