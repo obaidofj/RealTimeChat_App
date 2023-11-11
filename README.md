@@ -1,6 +1,7 @@
 ﻿# FacingOff Real Time Chat Application
 
-Welcome to FacingOff Chat App, a real-time messaging application that utilizes AWS S3 for file storage, AWS SES for password resets, and Socket.IO for real-time communication. The chat app can handle multi-picture and file uploads simultaneously. Additionally, it features an integration with ChatGPT for get responses inside the chat and save them as the chat messeges .
+Welcome to FacingOff Chat App, a real-time messaging application that utilizes AWS S3 for file storage, AWS SES for password resets, and Socket.IO for real-time communication. The chat app can handle multi-picture and file uploads simultaneously. Additionally, it features an integration with ChatGPT for get responses inside the chat and save them as the chat messeges.
+also there is files to build docker image with two containers one for database and one for the express app server , and action file to deploy the image to AWS EC2 instance as CICD methodology. 
 
 ## Table of Contents
 
@@ -17,7 +18,7 @@ Welcome to FacingOff Chat App, a real-time messaging application that utilizes A
 
 ## Getting Started
 
-This project is a [Node.js](https://nodejs.org/) application built with [Express](https://expressjs.com/), [TypeORM](https://typeorm.io/), and [Socket.IO](https://socket.io/). It serves as a backend for your application.
+This project is a [Node.js](https://nodejs.org/) application built with [Express](https://expressjs.com/), [TypeORM](https://typeorm.io/), and [Socket.IO](https://socket.io/). It serves as a backend for the application.
 
 ## Prerequisites
 
